@@ -1,59 +1,68 @@
 # ==========================================
 # DISCORD SETTINGS
 # ==========================================
-discord_link = https://discord.gg/GZ9fEuctZC
-invite_code = GZ9fEuctZC
+discord_link = https://discord.gg/default-code
+invite_code = default-code
 
 # ==========================================
 # PAGE LOOK & FEEL
 # ==========================================
 background_color = #070707
-background_image = background.webp
+background_image = giphy.gif
 
-background_glow_color = #FFFFFF
-background_glow_opacity = 4
+background_glow_color = #3f2640
+background_glow_opacity = 100
 
-heading_color = #FFFFFF
-navigation_link_color = #B3B3B3
+heading_color = #f894ff
+heading_border_color = #000000
+
+logo_color = #f894ff
+logo_border_color = #000000
+
+navigation_link_color = #f894ff
+nav_border_color = #000000
+
+footer_text_color = #f894ff
+footer_border_color = #000000
 
 # ==========================================
-# JOIN BUTTON (384x56 px / 7:1)
+# JOIN BUTTON (768x112 px / 7:1)
 # ==========================================
-button_color = #FFFFFF
+button_color = #ffffff
+button_border_color = #000000
+button_border_opacity = 100
 button_text_color = #000000
-button_background_image = 
+button_text_border_color = none
+button_background_image = butterflies-pink-clouds-gif-desktop-wallpaper-cover.gif
 
 # ==========================================
-# INVITE CODE BOX (384x40 px / 10:1)
+# INVITE CODE BOX (768x80 px / 10:1)
 # ==========================================
-code_box_background = #FFFFFF
-code_box_background_opacity = 2
-code_box_border = #FFFFFF
-code_box_border_opacity = 10
-code_box_label_color = #B3B3B3
-code_box_text_color = #FFFFFF
-code_box_background_image = 
+code_box_background = #ffffff
+code_box_background_opacity = 15
+code_box_border = #000000
+code_box_border_opacity = 100
+code_box_label_color = #000000
+code_box_label_border_color = none
+code_box_text_color = #000000
+code_box_text_border_color = none
+code_box_background_image = butterflies-pink-clouds-gif-desktop-wallpaper-cover.gif
 
-# ====================================================
-# INVITE BUBBLE (BELOW CODE BOX) (384x56 px / 7:1)
-# ====================================================
-show_invite_bubble = yes
-invited_by = Nick
-bubble_icon = ⚡
+# ==========================================
+# INVITE BOX (BELOW CODE BOX) (768x112 px / 7:1)
+# ==========================================
+show_invite_bubble = no
+invited_by = @user
+bubble_icon = TXT
+emoji_position = left
 
-# Bubble box styling
-bubble_background_color = #111114
+bubble_background_color = #ffffff
 bubble_background_opacity = 100
 bubble_border_color = #262626
-bubble_border_opacity = 100
-bubble_background_image = 
+bubble_border_opacity = 0
+bubble_background_image = 8183ef202882978.webp
 
-# Inside icon tile & text
-bubble_icon_tile_color = #FFFFFF
-bubble_icon_color = #FF7A00
-bubble_text_color = #EDEDED
-
-# ==========================================
-# FOOTER
-# ==========================================
-footer_text_color = #666666
+bubble_icon_color = #000000
+bubble_icon_border_color = none
+bubble_text_color = #000000
+bubble_text_border_color = none
