@@ -61,6 +61,15 @@
       -webkit-text-stroke-linejoin: round;
       -webkit-text-stroke-linecap: round;
     }
+    .media-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      z-index: 0;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-white/20 selection:text-white relative overflow-x-hidden">
@@ -202,12 +211,12 @@
             <input id="in_glow_opacity" type="range" min="0" max="100" value="0" class="w-full accent-white py-2">
           </div>
           <div class="pt-1">
-            <label class="text-[11px] text-white/70 block mb-1">Page Background Image (1920×1080 px .webp / .gif)</label>
+            <label class="text-[11px] text-white/70 block mb-1">Page Background Media (1920×1080 px .webp / .gif / .mp4)</label>
             <div class="flex items-center gap-2">
               <input id="in_bg_image_name" type="text" value="background.webp" placeholder="background.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
                 <span>Upload</span>
-                <input id="upload_bg" type="file" accept="image/webp,image/gif,image/png,image/jpeg" class="hidden">
+                <input id="upload_bg" type="file" accept="image/webp,image/gif,image/png,image/jpeg,video/mp4" class="hidden">
               </label>
             </div>
           </div>
@@ -245,12 +254,12 @@
             <input id="in_btn_border_opacity" type="range" min="0" max="100" value="0" class="w-full accent-white py-2">
           </div>
           <div>
-            <label class="text-[11px] text-white/70 block mb-1">Button Background Image (768×112 px .webp / .gif)</label>
+            <label class="text-[11px] text-white/70 block mb-1">Button Background Media (768×112 px .webp / .gif / .mp4)</label>
             <div class="flex items-center gap-2">
               <input id="in_btn_bg_image" type="text" placeholder="button-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
                 <span>Upload</span>
-                <input id="upload_btn" type="file" accept="image/webp,image/gif,image/png,image/jpeg" class="hidden">
+                <input id="upload_btn" type="file" accept="image/webp,image/gif,image/png,image/jpeg,video/mp4" class="hidden">
               </label>
             </div>
           </div>
@@ -308,12 +317,12 @@
             </div>
           </div>
           <div>
-            <label class="text-[11px] text-white/70 block mb-1">Code Box Background Image (768×80 px .webp / .gif)</label>
+            <label class="text-[11px] text-white/70 block mb-1">Code Box Background Media (768×80 px .webp / .gif / .mp4)</label>
             <div class="flex items-center gap-2">
               <input id="in_code_box_bg_image" type="text" placeholder="code-box-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
                 <span>Upload</span>
-                <input id="upload_code_box" type="file" accept="image/webp,image/gif,image/png,image/jpeg" class="hidden">
+                <input id="upload_code_box" type="file" accept="image/webp,image/gif,image/png,image/jpeg,video/mp4" class="hidden">
               </label>
             </div>
           </div>
@@ -391,12 +400,12 @@
           </div>
 
           <div>
-            <label class="text-[11px] text-white/70 block mb-1">Box Background Image (768×112 px .webp / .gif)</label>
+            <label class="text-[11px] text-white/70 block mb-1">Box Background Media (768×112 px .webp / .gif / .mp4)</label>
             <div class="flex items-center gap-2">
               <input id="in_bubble_bg_image" type="text" placeholder="bubble-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
                 <span>Upload</span>
-                <input id="upload_bubble" type="file" accept="image/webp,image/gif,image/png,image/jpeg" class="hidden">
+                <input id="upload_bubble" type="file" accept="image/webp,image/gif,image/png,image/jpeg,video/mp4" class="hidden">
               </label>
             </div>
           </div>
@@ -427,6 +436,7 @@
         
         <!-- Sidebar Stage -->
         <div id="prev_stage" class="w-full min-h-[580px] rounded-xl flex flex-col justify-between relative overflow-hidden bg-cover bg-center">
+          <video id="prev_bg_video" class="media-layer hidden" autoplay loop muted playsinline></video>
           
           <div id="prev_glow" class="absolute inset-0 pointer-events-none flex items-center justify-center">
             <div class="w-[280px] h-[280px] blur-[80px] rounded-full"></div>
@@ -448,22 +458,25 @@
             </h1>
 
             <div class="w-full max-w-[280px] flex flex-col gap-2.5">
-              <div class="prev_btn w-full py-3 px-4 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg bg-cover bg-center overflow-hidden">
-                <svg id="prev_btn_icon" class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+              <div class="prev_btn w-full py-3 px-4 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg relative bg-cover bg-center overflow-hidden">
+                <video id="prev_btn_video" class="media-layer hidden" autoplay loop muted playsinline></video>
+                <svg id="prev_btn_icon" class="w-4 h-4 fill-current shrink-0 relative z-10" viewBox="0 0 24 24">
                   <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.078.078 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
                 </svg>
-                <span class="prev_btn_text stroke-text">Join Server</span>
+                <span class="prev_btn_text stroke-text relative z-10">Join Server</span>
               </div>
 
-              <div class="prev_code_box w-full py-2 px-3 rounded-xl text-[11px] flex items-center justify-center gap-1.5 bg-cover bg-center overflow-hidden">
-                <span class="prev_code_label stroke-text font-medium">Invite Code:</span>
-                <span class="prev_code_text stroke-text font-mono font-bold">default-code</span>
+              <div class="prev_code_box w-full py-2 px-3 rounded-xl text-[11px] flex items-center justify-center gap-1.5 relative bg-cover bg-center overflow-hidden">
+                <video id="prev_code_box_video" class="media-layer hidden" autoplay loop muted playsinline></video>
+                <span class="prev_code_label stroke-text font-medium relative z-10">Invite Code:</span>
+                <span class="prev_code_text stroke-text font-mono font-bold relative z-10">default-code</span>
               </div>
 
-              <div class="prev_bubble w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 shadow-lg bg-cover bg-center overflow-hidden">
-                <span class="prev_bubble_icon_left stroke-text text-xs font-bold shrink-0">TXT</span>
-                <span class="prev_bubble_msg stroke-text text-[11px] font-semibold tracking-wide text-center"></span>
-                <span class="prev_bubble_icon_right stroke-text text-xs font-bold shrink-0 hidden">TXT</span>
+              <div class="prev_bubble w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 shadow-lg relative bg-cover bg-center overflow-hidden">
+                <video id="prev_bubble_video" class="media-layer hidden" autoplay loop muted playsinline></video>
+                <span class="prev_bubble_icon_left stroke-text text-xs font-bold shrink-0 relative z-10">TXT</span>
+                <span class="prev_bubble_msg stroke-text text-[11px] font-semibold tracking-wide text-center relative z-10"></span>
+                <span class="prev_bubble_icon_right stroke-text text-xs font-bold shrink-0 hidden relative z-10">TXT</span>
               </div>
             </div>
           </div>
@@ -509,6 +522,7 @@
 
     <div class="flex-grow w-full overflow-y-auto flex items-center justify-center p-3 sm:p-4">
       <div id="modal_stage" class="w-full max-w-5xl h-[85vh] rounded-2xl relative overflow-hidden flex flex-col justify-between bg-cover bg-center shadow-2xl">
+        <video id="modal_bg_video" class="media-layer hidden" autoplay loop muted playsinline></video>
         
         <div id="modal_glow" class="absolute inset-0 pointer-events-none flex items-center justify-center">
           <div class="w-[500px] h-[350px] blur-[120px] rounded-full"></div>
@@ -532,22 +546,25 @@
           </h1>
 
           <div class="w-full max-w-sm flex flex-col items-center gap-4">
-            <div class="prev_btn w-full py-3.5 sm:py-4 px-6 sm:px-8 rounded-2xl font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 sm:gap-3 shadow-[0_0_35px_rgba(255,255,255,0.18)] bg-cover bg-center overflow-hidden">
-              <svg id="modal_btn_icon" class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
-                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.078.078 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+            <div class="prev_btn w-full py-3.5 sm:py-4 px-6 sm:px-8 rounded-2xl font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 sm:gap-3 shadow-[0_0_35px_rgba(255,255,255,0.18)] relative bg-cover bg-center overflow-hidden">
+              <video id="modal_btn_video" class="media-layer hidden" autoplay loop muted playsinline></video>
+              <svg id="modal_btn_icon" class="w-5 h-5 fill-current shrink-0 relative z-10" viewBox="0 0 24 24">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
               </svg>
-              <span class="prev_btn_text stroke-text">Join Server</span>
+              <span class="prev_btn_text stroke-text relative z-10">Join Server</span>
             </div>
 
-            <div class="prev_code_box w-full py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 bg-cover bg-center overflow-hidden">
-              <span class="prev_code_label stroke-text font-medium">Invite Code:</span>
-              <span class="prev_code_text stroke-text font-mono font-bold">default-code</span>
+            <div class="prev_code_box w-full py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 relative bg-cover bg-center overflow-hidden">
+              <video id="modal_code_box_video" class="media-layer hidden" autoplay loop muted playsinline></video>
+              <span class="prev_code_label stroke-text font-medium relative z-10">Invite Code:</span>
+              <span class="prev_code_text stroke-text font-mono font-bold relative z-10">default-code</span>
             </div>
 
-            <div class="prev_bubble w-full py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 shadow-xl bg-cover bg-center overflow-hidden">
-              <span class="prev_bubble_icon_left stroke-text text-sm font-bold shrink-0">TXT</span>
-              <span class="prev_bubble_msg stroke-text text-xs sm:text-sm font-semibold tracking-wide text-center"></span>
-              <span class="prev_bubble_icon_right stroke-text text-sm font-bold shrink-0 hidden">TXT</span>
+            <div class="prev_bubble w-full py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 shadow-xl relative bg-cover bg-center overflow-hidden">
+              <video id="modal_bubble_video" class="media-layer hidden" autoplay loop muted playsinline></video>
+              <span class="prev_bubble_icon_left stroke-text text-sm font-bold shrink-0 relative z-10">TXT</span>
+              <span class="prev_bubble_msg stroke-text text-xs sm:text-sm font-semibold tracking-wide text-center relative z-10"></span>
+              <span class="prev_bubble_icon_right stroke-text text-sm font-bold shrink-0 hidden relative z-10">TXT</span>
             </div>
           </div>
         </div>
@@ -573,6 +590,32 @@
   <script>
     const localPreviews = { bg: null, btn: null, code_box: null, bubble: null };
     let renderScheduled = false;
+
+    function isVideo(path) {
+      return typeof path === 'string' && (path.endsWith('.mp4') || path.startsWith('data:video/mp4'));
+    }
+
+    function setLayerMedia(container, videoEl, sourcePath) {
+      if (!container || !videoEl) return;
+      if (isVideo(sourcePath)) {
+        container.style.backgroundImage = 'none';
+        if (videoEl.src !== sourcePath) {
+          videoEl.src = sourcePath;
+        }
+        videoEl.classList.remove('hidden');
+        videoEl.play().catch(() => {});
+      } else if (sourcePath) {
+        videoEl.classList.add('hidden');
+        videoEl.pause();
+        videoEl.removeAttribute('src');
+        container.style.backgroundImage = `url('${sourcePath}')`;
+      } else {
+        videoEl.classList.add('hidden');
+        videoEl.pause();
+        videoEl.removeAttribute('src');
+        container.style.backgroundImage = 'none';
+      }
+    }
 
     function hexToRgba(hex, opacityPercent) {
       if (!hex) return '';
@@ -662,15 +705,20 @@
       document.getElementById('glow_val').innerText = `${glowOp}%`;
 
       const rgbaGlow = hexToRgba(glowColor, glowOp);
-      const bgImg = localPreviews.bg ? `url('${localPreviews.bg}')` : 'none';
 
-      ['prev_stage', 'modal_stage'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.style.backgroundColor = bgColor;
-          el.style.backgroundImage = bgImg;
-        }
-      });
+      // Stage Backgrounds (Video / Static Media)
+      const bgSource = localPreviews.bg || (isVideo(document.getElementById('in_bg_image_name').value) ? document.getElementById('in_bg_image_name').value : null);
+      
+      const prevStage = document.getElementById('prev_stage');
+      const prevBgVid = document.getElementById('prev_bg_video');
+      const modalStage = document.getElementById('modal_stage');
+      const modalBgVid = document.getElementById('modal_bg_video');
+
+      if (prevStage) prevStage.style.backgroundColor = bgColor;
+      if (modalStage) modalStage.style.backgroundColor = bgColor;
+
+      setLayerMedia(prevStage, prevBgVid, bgSource);
+      setLayerMedia(modalStage, modalBgVid, bgSource);
 
       ['prev_glow', 'modal_glow'].forEach(id => {
         const container = document.getElementById(id);
@@ -679,7 +727,7 @@
         }
       });
 
-      // 1. Text Colors & Borders
+      // Text Colors & Borders
       const headingColor = document.getElementById('in_heading_color').value;
       const logoColor = document.getElementById('in_logo_color').value;
       const navColor = document.getElementById('in_nav_color').value;
@@ -700,19 +748,18 @@
 
       document.querySelectorAll('.prev_code_text').forEach(el => el.innerText = inviteCode);
 
-      // 2. Join Button (Color, Box border, Text & Discord Icon outline)
+      // Join Buttons
       const btnBg = document.getElementById('in_btn_color').value;
       const btnTextColor = document.getElementById('in_btn_text_color').value;
       const btnBorderColor = document.getElementById('in_btn_border_color').value;
       const btnBorderOp = document.getElementById('in_btn_border_opacity').value;
-      const btnImg = localPreviews.btn ? `url('${localPreviews.btn}')` : 'none';
+      const btnSource = localPreviews.btn || (isVideo(document.getElementById('in_btn_bg_image').value) ? document.getElementById('in_btn_bg_image').value : null);
 
       document.getElementById('btn_border_val').innerText = `${btnBorderOp}%`;
 
       document.querySelectorAll('.prev_btn').forEach(el => {
-        el.style.backgroundColor = btnImg !== 'none' ? 'transparent' : btnBg;
+        el.style.backgroundColor = btnSource ? 'transparent' : btnBg;
         el.style.color = btnTextColor;
-        el.style.backgroundImage = btnImg;
 
         if (parseInt(btnBorderOp, 10) > 0) {
           el.style.borderWidth = '1px';
@@ -724,32 +771,29 @@
         }
       });
 
+      setLayerMedia(document.querySelector('.prev_btn'), document.getElementById('prev_btn_video'), btnSource);
+      setLayerMedia(document.querySelectorAll('.prev_btn')[1], document.getElementById('modal_btn_video'), btnSource);
+
       const btnTextBorderColor = document.getElementById('in_btn_text_border').value;
       const btnTextBorderEnabled = document.getElementById('in_btn_text_border_enable').checked;
       applyTextStroke('.prev_btn_text', btnTextBorderColor, btnTextBorderEnabled, '2.5px');
       applySvgOutline(document.getElementById('prev_btn_icon'), btnTextBorderColor, btnTextBorderEnabled);
       applySvgOutline(document.getElementById('modal_btn_icon'), btnTextBorderColor, btnTextBorderEnabled);
 
-      // 3. Code Box
+      // Code Boxes
       const cbBg = document.getElementById('in_code_box_bg').value;
       const cbBgOp = document.getElementById('in_code_box_bg_opacity').value;
       const cbBorder = document.getElementById('in_code_box_border').value;
       const cbBorderOp = document.getElementById('in_code_box_border_opacity').value;
       const cbLabelColor = document.getElementById('in_code_box_label_color').value;
       const cbTextColor = document.getElementById('in_code_box_text_color').value;
-      const cbImg = localPreviews.code_box ? `url('${localPreviews.code_box}')` : 'none';
+      const cbSource = localPreviews.code_box || (isVideo(document.getElementById('in_code_box_bg_image').value) ? document.getElementById('in_code_box_bg_image').value : null);
 
       document.getElementById('code_box_bg_val').innerText = `${cbBgOp}%`;
       document.getElementById('code_box_border_val').innerText = `${cbBorderOp}%`;
 
       document.querySelectorAll('.prev_code_box').forEach(el => {
-        if (cbImg !== 'none') {
-          el.style.backgroundColor = 'transparent';
-          el.style.backgroundImage = cbImg;
-        } else {
-          el.style.backgroundColor = hexToRgba(cbBg, cbBgOp);
-          el.style.backgroundImage = 'none';
-        }
+        el.style.backgroundColor = cbSource ? 'transparent' : hexToRgba(cbBg, cbBgOp);
 
         if (parseInt(cbBorderOp, 10) > 0) {
           el.style.borderWidth = '1px';
@@ -761,13 +805,16 @@
         }
       });
 
+      setLayerMedia(document.querySelector('.prev_code_box'), document.getElementById('prev_code_box_video'), cbSource);
+      setLayerMedia(document.querySelectorAll('.prev_code_box')[1], document.getElementById('modal_code_box_video'), cbSource);
+
       document.querySelectorAll('.prev_code_label').forEach(el => el.style.color = cbLabelColor);
       applyTextStroke('.prev_code_label', document.getElementById('in_code_label_border').value, document.getElementById('in_code_label_border_enable').checked, '2px');
 
       document.querySelectorAll('.prev_code_text').forEach(el => el.style.color = cbTextColor);
       applyTextStroke('.prev_code_text', document.getElementById('in_code_text_border').value, document.getElementById('in_code_text_border_enable').checked, '2px');
 
-      // 4. Inviter Box
+      // Inviter Boxes
       const showBubble = document.getElementById('in_show_bubble').checked;
       const bBg = document.getElementById('in_bubble_bg').value;
       const bBorderColor = document.getElementById('in_bubble_border_color').value;
@@ -777,7 +824,7 @@
       const inviter = document.getElementById('in_invited_by').value || '@user';
       const iconText = Array.from(document.getElementById('in_bubble_icon').value || 'TXT').slice(0, 3).join('');
       const emojiPos = document.getElementById('in_emoji_pos').value;
-      const bubbleImg = localPreviews.bubble ? `url('${localPreviews.bubble}')` : 'none';
+      const bubbleSource = localPreviews.bubble || (isVideo(document.getElementById('in_bubble_bg_image').value) ? document.getElementById('in_bubble_bg_image').value : null);
 
       document.getElementById('bubble_border_val').innerText = `${bBorderOp}%`;
 
@@ -788,8 +835,7 @@
         } else {
           el.classList.remove('hidden');
           el.classList.add('flex');
-          el.style.backgroundColor = bubbleImg !== 'none' ? 'transparent' : bBg;
-          el.style.backgroundImage = bubbleImg;
+          el.style.backgroundColor = bubbleSource ? 'transparent' : bBg;
 
           if (parseInt(bBorderOp, 10) > 0) {
             el.style.borderWidth = '1px';
@@ -801,6 +847,9 @@
           }
         }
       });
+
+      setLayerMedia(document.querySelector('.prev_bubble'), document.getElementById('prev_bubble_video'), bubbleSource);
+      setLayerMedia(document.querySelectorAll('.prev_bubble')[1], document.getElementById('modal_bubble_video'), bubbleSource);
 
       document.querySelectorAll('.prev_bubble_msg').forEach(el => {
         el.innerText = `${inviter} has invited you`;
