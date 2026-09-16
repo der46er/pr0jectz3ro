@@ -1,0 +1,30 @@
+{
+  "base_url": "https://pr0jectz3ro.eu/discord",
+  "links": {
+    "default": {
+      "query": "",
+      "target_url": "https://discord.gg/GZ9fEuctZC",
+      "description": "Main Website link"
+    },
+    "yt": {
+      "query": "?yt",
+      "target_url": "https://discord.gg/QX4Fs2P4fr",
+      "description": "People from YouTube Bio"
+    },
+    "ig": {
+      "query": "?ig",
+      "target_url": "https://discord.gg/CWTdR8cwut",
+      "description": "People from Instagram Bio"
+    },
+    "tt": {
+      "query": "?tt",
+      "target_url": "https://discord.gg/K9fbF2T27X",
+      "description": "People from TikTok Bio"
+    },
+    "dc": {
+      "query": "?dc",
+      "target_url": "https://discord.gg/Pcsb32kj7g",
+      "description": "People from Discord"
+    }
+  }
+}
