@@ -39,6 +39,8 @@
     }
     .stroke-text {
       paint-order: stroke fill;
+      -webkit-text-stroke-linejoin: round;
+      -webkit-text-stroke-linecap: round;
     }
   </style>
 </head>
@@ -90,7 +92,7 @@
       <button 
         id="copyBtn"
         onclick="copyCode()"
-        class="w-full py-2.5 px-4 rounded-xl border transition text-xs flex items-center justify-center gap-2 touch-manipulation active:scale-[0.99] bg-cover bg-center overflow-hidden"
+        class="w-full py-2.5 px-4 rounded-xl transition text-xs flex items-center justify-center gap-2 touch-manipulation active:scale-[0.99] bg-cover bg-center overflow-hidden"
       >
         <span id="copyLabel" class="stroke-text">Invite Code:</span>
         <span id="codeText" class="stroke-text font-mono font-bold">default-code</span>
@@ -102,7 +104,7 @@
       <!-- 3. Inviter Box -->
       <div 
         id="inviteBubble" 
-        class="hidden w-full py-3 px-4 rounded-xl border items-center justify-center gap-2.5 bg-cover bg-center transition-all overflow-hidden"
+        class="hidden w-full py-3 px-4 rounded-xl items-center justify-center gap-2.5 bg-cover bg-center transition-all overflow-hidden"
       >
         <span id="bubbleIconLeft" class="stroke-text text-sm font-bold shrink-0">TXT</span>
         <span id="bubbleMessage" class="stroke-text text-xs sm:text-sm font-semibold tracking-wide text-center"></span>
@@ -111,15 +113,15 @@
     </div>
   </main>
 
-  <!-- Footer -->
+  <!-- Cleaned Footer without overlapping outline boxes -->
   <footer class="w-full pb-8 pt-4 text-center relative z-10 px-4 mt-auto">
     <div id="footerText" class="inline-flex flex-wrap justify-center items-center gap-1.5 text-xs">
-      <a href="https://pr0jectz3ro.eu/legal/" class="stroke-text footer-link transition underline-offset-4 hover:underline active:opacity-70 touch-target"[cite: 2]>
+      <a href="https://pr0jectz3ro.eu/legal/" class="stroke-text footer-link inline-block transition underline-offset-4 hover:underline active:opacity-70 touch-target"[cite: 2]>
         &copy; 2026 pr0jectz3ro
       </a>
-      <span>-</span>
-      <span>powered by</span>
-      <a href="https://thataustrianone.eu/" target="_blank" rel="noopener noreferrer" class="stroke-text footer-link transition underline-offset-4 hover:underline active:opacity-70 touch-target"[cite: 2]>
+      <span class="stroke-text footer-dash inline-block">-</span>
+      <span class="stroke-text footer-by inline-block">powered by</span>
+      <a href="https://thataustrianone.eu/" target="_blank" rel="noopener noreferrer" class="stroke-text footer-link inline-block transition underline-offset-4 hover:underline active:opacity-70 touch-target"[cite: 2]>
         thataustrianone.eu
       </a>
     </div>
@@ -140,12 +142,21 @@
       return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
 
-    function applyTextStroke(element, color, width = '1px') {
+    function applyTextStroke(element, color, width = '2.5px') {
       if (!element) return;
       if (color && color !== 'none' && color !== 'transparent') {
         element.style.webkitTextStroke = `${width} ${color}`;
       } else {
         element.style.webkitTextStroke = '0px transparent';
+      }
+    }
+
+    function applySvgOutline(svgElement, color) {
+      if (!svgElement) return;
+      if (color && color !== 'none' && color !== 'transparent') {
+        svgElement.style.filter = `drop-shadow(1.5px 0 0 ${color}) drop-shadow(-1.5px 0 0 ${color}) drop-shadow(0 1.5px 0 ${color}) drop-shadow(0 -1.5px 0 ${color})`;
+      } else {
+        svgElement.style.filter = 'none';
       }
     }
 
@@ -191,33 +202,33 @@
           glow.style.backgroundColor = hexToRgba(cfg.background_glow_color, opacity);
         }
 
-        // 3. Headings, Logo, Nav, Footer + Text Borders
+        // 3. Headings, Logo, Nav, Footer
         const heading = document.getElementById('mainHeading');
         if (heading) {
           if (cfg.heading_color) heading.style.color = cfg.heading_color;
-          applyTextStroke(heading, cfg.heading_border_color, '2px');
+          applyTextStroke(heading, cfg.heading_border_color, '3.5px');
         }
 
         const logo = document.getElementById('brandLogo');
         if (logo) {
           if (cfg.logo_color) logo.style.color = cfg.logo_color;
-          applyTextStroke(logo, cfg.logo_border_color, '1px');
+          applyTextStroke(logo, cfg.logo_border_color, '2.5px');
         }
 
         document.querySelectorAll('.nav-item').forEach(el => {
           if (cfg.navigation_link_color) el.style.color = cfg.navigation_link_color;
-          applyTextStroke(el, cfg.nav_border_color, '1px');
+          applyTextStroke(el, cfg.nav_border_color, '2.5px');
         });
 
         const footer = document.getElementById('footerText');
         if (footer) {
           if (cfg.footer_text_color) footer.style.color = cfg.footer_text_color;
-          document.querySelectorAll('.footer-link').forEach(el => {
-            applyTextStroke(el, cfg.footer_border_color, '1px');
+          footer.querySelectorAll('.stroke-text').forEach(el => {
+            applyTextStroke(el, cfg.footer_border_color, '2px');
           });
         }
 
-        // 4. Join Button
+        // 4. Join Button (Box fill, Box border, Text & SVG Icon)
         const joinBtnText = document.getElementById('joinBtnText');
         const joinBtnIcon = document.getElementById('joinBtnIcon');
         if (joinBtn) {
@@ -227,11 +238,19 @@
           } else if (cfg.button_color) {
             joinBtn.style.backgroundColor = cfg.button_color;
           }
+
+          if (cfg.button_border_color) {
+            const btnBorderOp = cfg.button_border_opacity || 0;
+            joinBtn.style.borderWidth = parseInt(btnBorderOp, 10) > 0 ? '1px' : '0px';
+            joinBtn.style.borderColor = hexToRgba(cfg.button_border_color, btnBorderOp);
+          }
+
           if (cfg.button_text_color) {
             joinBtn.style.color = cfg.button_text_color;
             if (joinBtnIcon) joinBtnIcon.style.color = cfg.button_text_color;
           }
-          applyTextStroke(joinBtnText, cfg.button_text_border_color, '1px');
+          applyTextStroke(joinBtnText, cfg.button_text_border_color, '2.5px');
+          applySvgOutline(joinBtnIcon, cfg.button_text_border_color);
         }
 
         // 5. Code Box
@@ -247,15 +266,15 @@
           }
 
           if (cfg.code_box_border) {
-            const borderOp = cfg.code_box_border_opacity || 100;
+            const borderOp = cfg.code_box_border_opacity !== undefined ? cfg.code_box_border_opacity : 100;
             copyBtn.style.borderWidth = parseInt(borderOp, 10) > 0 ? '1px' : '0px';
             copyBtn.style.borderColor = hexToRgba(cfg.code_box_border, borderOp);
           }
 
           if (cfg.code_box_label_color && copyLabel) copyLabel.style.color = cfg.code_box_label_color;
           if (cfg.code_box_text_color && codeText) codeText.style.color = cfg.code_box_text_color;
-          applyTextStroke(copyLabel, cfg.code_box_label_border_color, '1px');
-          applyTextStroke(codeText, cfg.code_box_text_border_color, '1px');
+          applyTextStroke(copyLabel, cfg.code_box_label_border_color, '2px');
+          applyTextStroke(codeText, cfg.code_box_text_border_color, '2px');
         }
 
         // 6. Inviter Box
@@ -277,7 +296,7 @@
 
             bubbleMessage.innerText = `${inviter} has invited you`;
             if (cfg.bubble_text_color) bubbleMessage.style.color = cfg.bubble_text_color;
-            applyTextStroke(bubbleMessage, cfg.bubble_text_border_color, '1px');
+            applyTextStroke(bubbleMessage, cfg.bubble_text_border_color, '2.5px');
 
             leftIcon.innerText = iconText;
             rightIcon.innerText = iconText;
@@ -285,8 +304,8 @@
               leftIcon.style.color = cfg.bubble_icon_color;
               rightIcon.style.color = cfg.bubble_icon_color;
             }
-            applyTextStroke(leftIcon, cfg.bubble_icon_border_color, '1px');
-            applyTextStroke(rightIcon, cfg.bubble_icon_border_color, '1px');
+            applyTextStroke(leftIcon, cfg.bubble_icon_border_color, '2.5px');
+            applyTextStroke(rightIcon, cfg.bubble_icon_border_color, '2.5px');
 
             if (pos === 'left') {
               leftIcon.classList.remove('hidden');
@@ -305,8 +324,6 @@
             if (cfg.bubble_background_image) {
               bubble.style.backgroundImage = `url('${cfg.bubble_background_image}')`;
               bubble.style.backgroundColor = 'transparent';
-              bubble.style.borderWidth = '0px';
-              bubble.style.borderColor = 'transparent';
             } else if (cfg.bubble_background_color) {
               const bBgOp = cfg.bubble_background_opacity || 100;
               bubble.style.backgroundColor = hexToRgba(cfg.bubble_background_color, bBgOp);
