@@ -42,9 +42,21 @@
       -webkit-text-stroke-linejoin: round;
       -webkit-text-stroke-linecap: round;
     }
+    .media-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      z-index: 0;
+    }
   </style>
 </head>
 <body id="pageBody" class="min-h-screen flex flex-col justify-between selection:bg-white/20 selection:text-white relative overflow-x-hidden">
+  <!-- Page background video container -->
+  <video id="pageBgVideo" class="media-layer fixed hidden" autoplay loop muted playsinline></video>
+
   <!-- Ambient glow -->
   <div class="fixed inset-0 pointer-events-none z-0">
     <div id="ambientGlow" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(600px,100vw)] h-[400px] blur-[140px] rounded-full"></div>
@@ -80,23 +92,25 @@
         href="https://discord.gg/default-code" 
         target="_blank" 
         rel="noopener noreferrer"
-        class="w-full py-3.5 sm:py-4 px-6 sm:px-8 rounded-2xl font-bold text-sm sm:text-base active:scale-[0.98] transition flex items-center justify-center gap-2.5 sm:gap-3 touch-manipulation bg-cover bg-center overflow-hidden"
+        class="w-full py-3.5 sm:py-4 px-6 sm:px-8 rounded-2xl font-bold text-sm sm:text-base active:scale-[0.98] transition flex items-center justify-center gap-2.5 sm:gap-3 touch-manipulation relative bg-cover bg-center overflow-hidden"
       >
-        <svg id="joinBtnIcon" class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
+        <video id="btnBgVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+        <svg id="joinBtnIcon" class="w-5 h-5 fill-current shrink-0 relative z-10" viewBox="0 0 24 24">
           <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
         </svg>
-        <span id="joinBtnText" class="stroke-text">Join Server</span>
+        <span id="joinBtnText" class="stroke-text relative z-10">Join Server</span>
       </a>
 
       <!-- 2. Code Box -->
       <button 
         id="copyBtn"
         onclick="copyCode()"
-        class="w-full py-2.5 px-4 rounded-xl transition text-xs flex items-center justify-center gap-2 touch-manipulation active:scale-[0.99] bg-cover bg-center overflow-hidden"
+        class="w-full py-2.5 px-4 rounded-xl transition text-xs flex items-center justify-center gap-2 touch-manipulation active:scale-[0.99] relative bg-cover bg-center overflow-hidden"
       >
-        <span id="copyLabel" class="stroke-text">Invite Code:</span>
-        <span id="codeText" class="stroke-text font-mono font-bold">default-code</span>
-        <svg id="copyIcon" class="w-3.5 h-3.5 ml-0.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <video id="codeBoxBgVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+        <span id="copyLabel" class="stroke-text relative z-10">Invite Code:</span>
+        <span id="codeText" class="stroke-text font-mono font-bold relative z-10">default-code</span>
+        <svg id="copyIcon" class="w-3.5 h-3.5 ml-0.5 opacity-60 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
         </svg>
       </button>
@@ -104,16 +118,17 @@
       <!-- 3. Inviter Box -->
       <div 
         id="inviteBubble" 
-        class="hidden w-full py-3 px-4 rounded-xl items-center justify-center gap-2.5 bg-cover bg-center transition-all overflow-hidden"
+        class="hidden w-full py-3 px-4 rounded-xl items-center justify-center gap-2.5 relative bg-cover bg-center transition-all overflow-hidden"
       >
-        <span id="bubbleIconLeft" class="stroke-text text-sm font-bold shrink-0">TXT</span>
-        <span id="bubbleMessage" class="stroke-text text-xs sm:text-sm font-semibold tracking-wide text-center"></span>
-        <span id="bubbleIconRight" class="stroke-text text-sm font-bold shrink-0 hidden">TXT</span>
+        <video id="bubbleBgVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+        <span id="bubbleIconLeft" class="stroke-text text-sm font-bold shrink-0 relative z-10">TXT</span>
+        <span id="bubbleMessage" class="stroke-text text-xs sm:text-sm font-semibold tracking-wide text-center relative z-10"></span>
+        <span id="bubbleIconRight" class="stroke-text text-sm font-bold shrink-0 hidden relative z-10">TXT</span>
       </div>
     </div>
   </main>
 
-  <!-- Cleaned Footer without overlapping outline boxes -->
+  <!-- Footer -->
   <footer class="w-full pb-8 pt-4 text-center relative z-10 px-4 mt-auto">
     <div id="footerText" class="inline-flex flex-wrap justify-center items-center gap-1.5 text-xs">
       <a href="https://pr0jectz3ro.eu/legal/" class="stroke-text footer-link inline-block transition underline-offset-4 hover:underline active:opacity-70 touch-target"[cite: 2]>
@@ -129,6 +144,30 @@
 
   <script>
     let activeCode = 'default-code';
+
+    function isVideo(path) {
+      return typeof path === 'string' && (path.endsWith('.mp4') || path.startsWith('data:video/mp4'));
+    }
+
+    function setLayerMedia(container, videoEl, sourcePath) {
+      if (!container || !videoEl) return;
+      if (isVideo(sourcePath)) {
+        container.style.backgroundImage = 'none';
+        videoEl.src = sourcePath;
+        videoEl.classList.remove('hidden');
+        videoEl.play().catch(() => {});
+      } else if (sourcePath) {
+        videoEl.classList.add('hidden');
+        videoEl.pause();
+        videoEl.removeAttribute('src');
+        container.style.backgroundImage = `url('${sourcePath}')`;
+      } else {
+        videoEl.classList.add('hidden');
+        videoEl.pause();
+        videoEl.removeAttribute('src');
+        container.style.backgroundImage = 'none';
+      }
+    }
 
     function hexToRgba(hex, opacityPercent) {
       if (!hex) return '';
@@ -189,12 +228,9 @@
 
         // 2. Background & Glow
         const body = document.getElementById('pageBody');
+        const pageBgVideo = document.getElementById('pageBgVideo');
         if (cfg.background_color) body.style.backgroundColor = cfg.background_color;
-        if (cfg.background_image) {
-          const img = new Image();
-          img.src = cfg.background_image;
-          img.onload = () => { body.style.backgroundImage = `url('${cfg.background_image}')`; };
-        }
+        setLayerMedia(body, pageBgVideo, cfg.background_image);
 
         const glow = document.getElementById('ambientGlow');
         if (cfg.background_glow_color && glow) {
@@ -228,12 +264,13 @@
           });
         }
 
-        // 4. Join Button (Box fill, Box border, Text & SVG Icon)
+        // 4. Join Button
         const joinBtnText = document.getElementById('joinBtnText');
         const joinBtnIcon = document.getElementById('joinBtnIcon');
+        const btnBgVideo = document.getElementById('btnBgVideo');
         if (joinBtn) {
+          setLayerMedia(joinBtn, btnBgVideo, cfg.button_background_image);
           if (cfg.button_background_image) {
-            joinBtn.style.backgroundImage = `url('${cfg.button_background_image}')`;
             joinBtn.style.backgroundColor = 'transparent';
           } else if (cfg.button_color) {
             joinBtn.style.backgroundColor = cfg.button_color;
@@ -256,9 +293,10 @@
         // 5. Code Box
         const copyBtn = document.getElementById('copyBtn');
         const copyLabel = document.getElementById('copyLabel');
+        const codeBoxBgVideo = document.getElementById('codeBoxBgVideo');
         if (copyBtn) {
+          setLayerMedia(copyBtn, codeBoxBgVideo, cfg.code_box_background_image);
           if (cfg.code_box_background_image) {
-            copyBtn.style.backgroundImage = `url('${cfg.code_box_background_image}')`;
             copyBtn.style.backgroundColor = 'transparent';
           } else if (cfg.code_box_background) {
             const bgOp = cfg.code_box_background_opacity || 15;
@@ -284,6 +322,7 @@
           const leftIcon = document.getElementById('bubbleIconLeft');
           const rightIcon = document.getElementById('bubbleIconRight');
           const bubbleMessage = document.getElementById('bubbleMessage');
+          const bubbleBgVideo = document.getElementById('bubbleBgVideo');
 
           if (bubble && bubbleMessage) {
             bubble.classList.remove('hidden');
@@ -321,8 +360,8 @@
               rightIcon.classList.add('hidden');
             }
 
+            setLayerMedia(bubble, bubbleBgVideo, cfg.bubble_background_image);
             if (cfg.bubble_background_image) {
-              bubble.style.backgroundImage = `url('${cfg.bubble_background_image}')`;
               bubble.style.backgroundColor = 'transparent';
             } else if (cfg.bubble_background_color) {
               const bBgOp = cfg.bubble_background_opacity || 100;
