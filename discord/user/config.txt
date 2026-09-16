@@ -5,21 +5,6 @@ discord_link = https://discord.gg/GZ9fEuctZC
 invite_code = GZ9fEuctZC
 
 # ==========================================
-# INVITE BADGE (TOP POPUP)
-# ==========================================
-show_invite_badge = yes
-invited_by = Nick
-badge_icon = ⚡
-
-badge_background_color = #111114
-badge_background_opacity = 100
-badge_background_image = 
-badge_text_color = #EDEDED
-badge_icon_color = #FFFFFF
-badge_border_color = #262626
-badge_border_opacity = 100
-
-# ==========================================
 # PAGE LOOK & FEEL
 # ==========================================
 background_color = #070707
@@ -32,22 +17,41 @@ heading_color = #FFFFFF
 navigation_link_color = #B3B3B3
 
 # ==========================================
-# JOIN BUTTON
+# JOIN BUTTON (384x56 px / 7:1)
 # ==========================================
 button_color = #FFFFFF
 button_text_color = #000000
+button_background_image = 
 
 # ==========================================
-# INVITE CODE BOX
+# INVITE CODE BOX (384x40 px / 10:1)
 # ==========================================
 code_box_background = #FFFFFF
 code_box_background_opacity = 2
-
 code_box_border = #FFFFFF
 code_box_border_opacity = 10
-
 code_box_label_color = #B3B3B3
 code_box_text_color = #FFFFFF
+code_box_background_image = 
+
+# ==========================================
+# INVITE BUBBLE (BELOW CODE BOX) (384x56 px / 7:1)
+# ==========================================
+show_invite_bubble = yes
+invited_by = Nick
+bubble_icon = ⚡
+
+# Bubble box styling
+bubble_background_color = #111114
+bubble_background_opacity = 100
+bubble_border_color = #262626
+bubble_border_opacity = 100
+bubble_background_image = 
+
+# Inside icon tile & text
+bubble_icon_tile_color = #FFFFFF
+bubble_icon_color = #FF7A00
+bubble_text_color = #EDEDED
 
 # ==========================================
 # FOOTER
