@@ -1,1 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>pr0jectz3ro — Features</title>
+  <link rel="icon" type="image/webp" href="https://raw.githubusercontent.com/der46er/pr0jectz3ro/main/assets/favicon.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @font-face {
+      font-family: 'Cossette Texte';
+      src: url('/assets/fonts/CossetteTexte-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Cossette Texte';
+      src: url('/assets/fonts/CossetteTexte-Bold.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    body {
+      font-family: 'Cossette Texte', sans-serif;
+      background-color: #070707;
+      color: #EDEDED;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .font-orbitron {
+      font-family: 'Orbitron', sans-serif;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .card-panel {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 1rem;
+    }
+    .role-node {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      border: 1px solid currentColor;
+      background: rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    }
+    .role-node:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .role-node:active {
+      transform: scale(0.97);
+    }
+    .cmd-pill {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #FFF;
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.375rem;
+      font-size: 0.78rem;
+    }
+    .role-detail {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .role-detail.expanded {
+      grid-template-rows: 1fr;
+    }
+    .role-detail > div {
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-white/20 selection:text-white relative overflow-x-hidden">
 
+  <!-- Ambient Glow -->
+  <div class="fixed inset-0 pointer-events-none z-0">
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(700px,100vw)] h-[400px] bg-white/[0.03] blur-[150px] rounded-full"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="w-full relative z-10 pt-safe">
+    <div class="w-full px-5 sm:px-8 h-16 sm:h-20 flex items-center justify-between">
+      <a href="/" class="font-orbitron font-bold tracking-wider text-base text-white hover:opacity-80 active:opacity-60 transition uppercase py-2">
+        pr0jectz3ro
+      </a>
+      <nav class="flex items-center gap-5 sm:gap-8">
+        <a 
+          href="/discord/features/" 
+          class="font-orbitron font-bold tracking-wider text-base text-white hover:text-white active:opacity-60 transition uppercase py-2 touch-manipulation"
+        >
+          Features
+        </a>
+        <a 
+          href="/discord/team/" 
+          class="font-orbitron font-bold tracking-wider text-base text-white/70 hover:text-white active:opacity-60 transition uppercase py-2 touch-manipulation"
+        >
+          Team
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-5xl mx-auto px-5 sm:px-8 py-12 sm:py-16 relative z-10 w-full flex-grow space-y-16">
+
+    <!-- Header Section -->
+    <section class="text-center space-y-4 max-w-2xl mx-auto">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/[0.03] text-xs font-mono text-white/70 uppercase tracking-widest">
+        <span>Server Guide &bull; v2.1</span>
+      </div>
+      <h1 class="font-orbitron text-3xl sm:text-5xl font-black tracking-wider uppercase text-white leading-tight">
+        How Everything Works
+      </h1>
+      <p class="text-white/60 text-sm sm:text-base leading-relaxed">
+        Everything you need to know about our Discord server: what our bots do, what roles exist and how to get them, and the basic rules everyone follows.
+      </p>
+    </section>
+
+    <!-- Custom Bots Section -->
+    <section class="space-y-6">
+      <div class="space-y-1 border-b border-white/10 pb-4">
+        <h2 class="font-orbitron text-xl sm:text-2xl font-bold uppercase tracking-wider text-white">
+          Our Custom Bots
+        </h2>
+        <p class="text-xs sm:text-sm text-white/50">We run three of our own bots so we don't need clunky public bots.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        <!-- Role Bot -->
+        <div class="card-panel p-5 sm:p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="role-node cursor-default" style="color: #FF9800;">@Role Bot</span>
+            <span class="text-[11px] font-mono text-white/40 uppercase">Verification & Roles</span>
+          </div>
+          <p class="text-xs sm:text-sm text-white/70 leading-relaxed">
+            Keeps out spam bots and lets you pick your own roles through simple commands[cite: 1].
+          </p>
+          <div class="space-y-2 pt-3 border-t border-white/5 text-xs text-white/80">
+            <div><span class="cmd-pill">/verify</span> Quick captcha to unlock the server (1-hour cooldown if you fail)[cite: 1]</div>
+            <div><span class="cmd-pill">/age</span> Pick your age group[cite: 1]</div>
+            <div><span class="cmd-pill">/game</span> Pick games you play to unlock channels[cite: 1]</div>
+            <div><span class="cmd-pill">/gender</span> Choose your gender identity[cite: 1]</div>
+            <div><span class="cmd-pill">/sexuality</span> Choose your sexuality[cite: 1]</div>
+            <div><span class="cmd-pill">/pronouns</span> Display your preferred pronouns[cite: 1]</div>
+            <div><span class="cmd-pill">/beta apply</span> Apply to test new updates early[cite: 1]</div>
+            <div><span class="cmd-pill">/beta leave</span> Leave the tester team at any time[cite: 1]</div>
+          </div>
+        </div>
+
+        <!-- Member Bot -->
+        <div class="card-panel p-5 sm:p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="role-node cursor-default" style="color: #FF9800;">@Member Bot</span>
+            <span class="text-[11px] font-mono text-white/40 uppercase">Activity & Updates</span>
+          </div>
+          <p class="text-xs sm:text-sm text-white/70 leading-relaxed">
+            Takes care of server maintenance, cleans up completely inactive members, and tracks invite links[cite: 1].
+          </p>
+          <div class="space-y-2 pt-3 border-t border-white/5 text-xs text-white/70">
+            <p><strong class="text-white">Inactive Cleanup:</strong> If you don't send a message for 4 months, your roles are cleared and you only see the <span class="text-white">#inactive</span> channel.</p>
+            <p><strong class="text-white">Getting Back:</strong> Just type <span class="cmd-pill">/reactivate</span> in that channel to get your normal access back.</p>
+            <p><strong class="text-white">Maintenance Mode:</strong> When we are working on updates, channels are locked and you can see updates in <span class="text-white">#update</span>[cite: 1].</p>
+            <p><strong class="text-white">Invite Links:</strong> Connects personal Discord invites directly to custom web pages[cite: 1].</p>
+          </div>
+        </div>
+
+        <!-- Birthday Bot -->
+        <div class="card-panel p-5 sm:p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="role-node cursor-default" style="color: #FF9800;">@Birthday Bot</span>
+            <span class="text-[11px] font-mono text-white/40 uppercase">Birthdays</span>
+          </div>
+          <p class="text-xs sm:text-sm text-white/70 leading-relaxed">
+            Remembers community birthdays so you don't have to search through chat history or pinned messages[cite: 1].
+          </p>
+          <div class="space-y-2 pt-3 border-t border-white/5 text-xs text-white/70">
+            <p><span class="cmd-pill">/birthday @user</span> Instantly see someone's birthday in chat[cite: 1].</p>
+            <p><strong class="text-white">Voluntary:</strong> Synced from our internal community list only if you chose to share it[cite: 1].</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Role Mindmap Section -->
+    <section class="space-y-6">
+      <div class="space-y-1 border-b border-white/10 pb-4">
+        <h2 class="font-orbitron text-xl sm:text-2xl font-bold uppercase tracking-wider text-white">
+          Roles & What They Do
+        </h2>
+        <p class="text-xs sm:text-sm text-white/50">Click on any role badge below to expand its details right inside the card.</p>
+      </div>
+
+      <div class="space-y-6">
+
+        <!-- 1: Server Staff & System -->
+        <div class="card-panel p-5 sm:p-6 space-y-4">
+          <div class="flex items-center gap-2 text-xs font-mono uppercase text-white/40">
+            <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+            <span>Server Staff & System</span>
+          </div>
+          <div class="flex flex-wrap gap-2.5 sm:gap-3">
+            <button class="role-node" style="color: #1D74F5;" onclick="toggleRoleDetail('c1', '@Owner', '#1D74F5', 'Server owner and developer. Runs the home server, websites, and bot fleet.')">
+              @Owner
+            </button>
+            <button class="role-node" style="color: #FACC15;" onclick="toggleRoleDetail('c1', '@Admin', '#FACC15', 'The staff team keeping chats clean, reviewing 18+ verifications, and handling moderation strikes. Their decisions are final.')">
+              @Admin
+            </button>
+            <button class="role-node" style="color: #FF9800;" onclick="toggleRoleDetail('c1', '@Bot', '#FF9800', 'Tag given to our three custom automated bots running on our server hardware.')">
+              @Bot
+            </button>
+          </div>
+          <div id="c1-detail" class="role-detail">
+            <div class="pt-3 border-t border-white/10 mt-3 space-y-2">
+              <div class="flex items-center gap-2.5">
+                <span id="c1-badge" class="role-node text-xs cursor-default"></span>
+                <span id="c1-hex" class="font-mono text-xs text-white/50 bg-white/5 px-2 py-0.5 rounded border border-white/10"></span>
+              </div>
+              <p id="c1-desc" class="text-xs sm:text-sm text-white/80 leading-relaxed"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2: Getting Started & Community -->
+        <div class="card-panel p-5 sm:p-6 space-y-4">
+          <div class="flex items-center gap-2 text-xs font-mono uppercase text-white/40">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span>Getting Started & Community</span>
+          </div>
+          <div class="flex flex-wrap gap-2.5 sm:gap-3">
+            <button class="role-node" style="color: #4EFA8A;" onclick="toggleRoleDetail('c2', '@Verified', '#4EFA8A', 'The standard role for every verified human member. Solve the simple captcha in #verify with /verify and you get full access to public text and voice chats.')">
+              @Verified
+            </button>
+            <button class="role-node" style="color: #00F0D0;" onclick="toggleRoleDetail('c2', '@OG', '#00F0D0', 'Reserved for long-time members who were here right from the very beginning and helped build the server vibes and lore.')">
+              @OG
+            </button>
+            <button class="role-node" style="color: #00C9FF;" onclick="toggleRoleDetail('c2', '@Pookies', '#00C9FF', 'A special badge for people who are close personal friends of the staff team and server owner.')">
+              @Pookies
+            </button>
+          </div>
+          <div id="c2-detail" class="role-detail">
+            <div class="pt-3 border-t border-white/10 mt-3 space-y-2">
+              <div class="flex items-center gap-2.5">
+                <span id="c2-badge" class="role-node text-xs cursor-default"></span>
+                <span id="c2-hex" class="font-mono text-xs text-white/50 bg-white/5 px-2 py-0.5 rounded border border-white/10"></span>
+              </div>
+              <p id="c2-desc" class="text-xs sm:text-sm text-white/80 leading-relaxed"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3: Testing & Creators -->
+        <div class="card-panel p-5 sm:p-6 space-y-4">
+          <div class="flex items-center gap-2 text-xs font-mono uppercase text-white/40">
+            <span class="w-2 h-2 rounded-full bg-orange-400"></span>
+            <span>Testing & Creators</span>
+          </div>
+          <div class="flex flex-wrap gap-2.5 sm:gap-3">
+            <button class="role-node" style="color: #C86A28;" onclick="toggleRoleDetail('c3', '@Beta Tester', '#C86A28', 'Members who help test website changes and server features before they go public. Requires being at least 14 years old and applying via /beta apply under an NDA agreement.')">
+              @Beta Tester
+            </button>
+            <button class="role-node" style="color: #FF5C00;" onclick="toggleRoleDetail('c3', '@Contributor', '#FF5C00', 'Awarded to Beta Testers who went above and beyond by giving major help, code, or testing during a big server update.')">
+              @Contributor
+            </button>
+            <button class="role-node" style="color: #D6381E;" onclick="toggleRoleDetail('c3', '@Content Creator', '#D6381E', 'Given to creators who share our server on their TikTok, YouTube, or socials and bring in new members using their custom link.')">
+              @Content Creator
+            </button>
+          </div>
+          <div id="c3-detail" class="role-detail">
+            <div class="pt-3 border-t border-white/10 mt-3 space-y-2">
+              <div class="flex items-center gap-2.5">
+                <span id="c3-badge" class="role-node text-xs cursor-default"></span>
+                <span id="c3-hex" class="font-mono text-xs text-white/50 bg-white/5 px-2 py-0.5 rounded border border-white/10"></span>
+              </div>
+              <p id="c3-desc" class="text-xs sm:text-sm text-white/80 leading-relaxed"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4: Supporters & Patrons -->
+        <div class="card-panel p-5 sm:p-6 space-y-4">
+          <div class="flex items-center gap-2 text-xs font-mono uppercase text-white/40">
+            <span class="w-2 h-2 rounded-full bg-fuchsia-400"></span>
+            <span>Supporters & Patrons</span>
+          </div>
+          <div class="flex flex-wrap gap-2.5 sm:gap-3">
+            <button class="role-node" style="color: #FF52A2;" onclick="toggleRoleDetail('c4', '@ServerBooster', '#FF52A2', 'Automatically given by Discord when you boost our server with Nitro.')">
+              @ServerBooster
+            </button>
+            <button class="role-node" style="color: #D946EF;" onclick="toggleRoleDetail('c4', '@Mega Supporter', '#D946EF', 'Our highest monthly Patreon tier for people who want to heavily support our server hosting and projects.')">
+              @Mega Supporter
+            </button>
+            <button class="role-node" style="color: #B545FF;" onclick="toggleRoleDetail('c4', '@Super Supporter', '#B545FF', 'Our middle monthly Patreon tier.')">
+              @Super Supporter
+            </button>
+            <button class="role-node" style="color: #8B5CF6;" onclick="toggleRoleDetail('c4', '@Supporter', '#8B5CF6', 'Our entry monthly Patreon subscription tier.')">
+              @Supporter
+            </button>
+            <button class="role-node" style="color: #6366F1;" onclick="toggleRoleDetail('c4', '@One time Supporter', '#6366F1', 'Given if you made a one-off donation to support our hosting costs.')">
+              @One time Supporter
+            </button>
+          </div>
+          <div id="c4-detail" class="role-detail">
+            <div class="pt-3 border-t border-white/10 mt-3 space-y-2">
+              <div class="flex items-center gap-2.5">
+                <span id="c4-badge" class="role-node text-xs cursor-default"></span>
+                <span id="c4-hex" class="font-mono text-xs text-white/50 bg-white/5 px-2 py-0.5 rounded border border-white/10"></span>
+              </div>
+              <p id="c4-desc" class="text-xs sm:text-sm text-white/80 leading-relaxed"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5: Private & Sensitive Areas -->
+        <div class="card-panel p-5 sm:p-6 space-y-4">
+          <div class="flex items-center gap-2 text-xs font-mono uppercase text-white/40">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+            <span>Private & Sensitive Areas</span>
+          </div>
+          <div class="flex flex-wrap gap-2.5 sm:gap-3">
+            <button class="role-node" style="color: #C69062;" onclick="toggleRoleDetail('c5', '@Approved', '#C69062', 'Adults-only 18+ verification. You only get this after an actual admin checks that you are 18 or older. Unlocks the hidden NSFW channels and NSFW VC.')">
+              @Approved
+            </button>
+            <button class="role-node" style="color: #FF3B30;" onclick="toggleRoleDetail('c5', '@Mentalhealth', '#FF3B30', 'Unlocks our mental health channels and private voice rooms. You self-select this by confirming you feel mentally stable enough to give or receive peer support.')">
+              @Mentalhealth
+            </button>
+          </div>
+          <div id="c5-detail" class="role-detail">
+            <div class="pt-3 border-t border-white/10 mt-3 space-y-2">
+              <div class="flex items-center gap-2.5">
+                <span id="c5-badge" class="role-node text-xs cursor-default"></span>
+                <span id="c5-hex" class="font-mono text-xs text-white/50 bg-white/5 px-2 py-0.5 rounded border border-white/10"></span>
+              </div>
+              <p id="c5-desc" class="text-xs sm:text-sm text-white/80 leading-relaxed"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6: Server Status & Inactivity -->
+        <div class="card-panel p-5 sm:p-6 space-y-4">
+          <div class="flex items-center gap-2 text-xs font-mono uppercase text-white/40">
+            <span class="w-2 h-2 rounded-full bg-zinc-500"></span>
+            <span>Server Status & Inactivity</span>
+          </div>
+          <div class="flex flex-wrap gap-2.5 sm:gap-3">
+            <button class="role-node" style="color: #808080;" onclick="toggleRoleDetail('c6', '@Just Arrived', '#808080', 'A temporary badge on your profile for your first 7 days on the server so people can welcome you.')">
+              @Just Arrived
+            </button>
+            <button class="role-node" style="color: #808080;" onclick="toggleRoleDetail('c6', '@Update', '#808080', 'Temporarily given to everyone while the server is locked down for an update, keeping chat focused in #update.')">
+              @Update
+            </button>
+            <button class="role-node" style="color: #334155;" onclick="toggleRoleDetail('c6', '@Inactive', '#334155', 'Given automatically if you have been silent for 4 months. Other channels are hidden until you type /reactivate in #inactive.')">
+              @Inactive
+            </button>
+          </div>
+          <div id="c6-detail" class="role-detail">
+            <div class="pt-3 border-t border-white/10 mt-3 space-y-2">
+              <div class="flex items-center gap-2.5">
+                <span id="c6-badge" class="role-node text-xs cursor-default"></span>
+                <span id="c6-hex" class="font-mono text-xs text-white/50 bg-white/5 px-2 py-0.5 rounded border border-white/10"></span>
+              </div>
+              <p id="c6-desc" class="text-xs sm:text-sm text-white/80 leading-relaxed"></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Channel Map -->
+    <section class="space-y-6">
+      <div class="space-y-1 border-b border-white/10 pb-4">
+        <h2 class="font-orbitron text-xl sm:text-2xl font-bold uppercase tracking-wider text-white">
+          Where People Hang Out
+        </h2>
+        <p class="text-xs sm:text-sm text-white/50">A quick overview of what channels we have.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 font-mono text-xs">
+        <!-- Text Chats -->
+        <div class="card-panel p-5 space-y-3">
+          <div class="text-white font-bold font-orbitron text-sm pb-2 border-b border-white/10 flex justify-between items-center">
+            <span>&lt; Text Chats &gt;</span>
+            <span class="text-white/40 text-xs uppercase">Open to All</span>
+          </div>
+          <p class="text-white/50 font-sans text-xs pb-1">Our main public hangouts for chatting, media, and food.</p>
+          <ul class="space-y-2 text-white/70">
+            <li class="flex items-center gap-2"><span>💬</span><span>#general</span></li>
+            <li class="flex items-center gap-2"><span>📷</span><span>#pictures</span> <span class="text-white/40 font-sans text-[11px]">(threads active)</span></li>
+            <li class="flex items-center gap-2"><span>📼</span><span>#videos</span></li>
+            <li class="flex items-center gap-2"><span>🐱</span><span>#bleb-chat</span></li>
+            <li class="flex items-center gap-2"><span>🇩🇪</span><span>#de-chat</span> <span class="text-white/40 font-sans text-[11px]">(German)</span></li>
+            <li class="flex items-center gap-2"><span>🇵🇱</span><span>#pl-chat</span> <span class="text-white/40 font-sans text-[11px]">(Polish)</span></li>
+            <li class="flex items-center gap-2"><span>🎵</span><span>#music</span></li>
+            <li class="flex items-center gap-2"><span>🍜</span><span>#food</span></li>
+            <li class="flex items-center gap-2"><span>🎨</span><span>#art</span></li>
+            <li class="flex items-center gap-2"><span>📝</span><span>#quotes</span></li>
+            <li class="flex items-center gap-2"><span>🤳</span><span>#social-media</span></li>
+          </ul>
+        </div>
+
+        <!-- Mental Health Space -->
+        <div class="card-panel p-5 space-y-3">
+          <div class="text-white font-bold font-orbitron text-sm pb-2 border-b border-white/10 flex justify-between items-center">
+            <span>&lt; Mental Health &gt;</span>
+            <span class="role-node text-[10px] cursor-default" style="color: #FF3B30;">@Mentalhealth</span>
+          </div>
+          <p class="text-white/50 font-sans text-xs pb-1">A quiet, supportive space for venting and personal thoughts.</p>
+          <ul class="space-y-2 text-white/70">
+            <li class="flex items-center gap-2"><span>💊</span><span>#support</span></li>
+            <li class="flex items-center gap-2"><span>💭</span><span>#thoughts</span></li>
+            <li class="flex items-center gap-2"><span>📖</span><span>#resources</span></li>
+            <li class="flex items-center gap-2"><span>🎧</span><span>Priv VC 1 (2 people max)</span></li>
+            <li class="flex items-center gap-2"><span>🎧</span><span>Priv VC 2 (2 people max)</span></li>
+            <li class="flex items-center gap-2"><span>🎧</span><span>Priv VC 3 (3 people max)</span></li>
+            <li class="flex items-center gap-2"><span>🎧</span><span>Priv VC (4 people max)</span></li>
+          </ul>
+        </div>
+
+        <!-- NSFW Area -->
+        <div class="card-panel p-5 space-y-3">
+          <div class="text-white font-bold font-orbitron text-sm pb-2 border-b border-white/10 flex justify-between items-center">
+            <span>&lt; NSFW &gt;</span>
+            <span class="role-node text-[10px] cursor-default" style="color: #C69062;">@Approved 18+</span>
+          </div>
+          <p class="text-white/50 font-sans text-xs pb-1">Hidden adult category. Completely invisible without manual ID review.</p>
+          <ul class="space-y-2 text-white/70">
+            <li class="flex items-center gap-2"><span>🔞</span><span>#nsfw-rules</span></li>
+            <li class="flex items-center gap-2"><span>💬</span><span>#main-chat</span></li>
+            <li class="flex items-center gap-2"><span>🏳️‍🌈</span><span>#gay-chat</span></li>
+            <li class="flex items-center gap-2"><span>📸</span><span>#nsfw-media</span></li>
+            <li class="flex items-center gap-2"><span>💭</span><span>#confessions</span></li>
+            <li class="flex items-center gap-2"><span>🔗</span><span>#nsfw-links</span></li>
+            <li class="flex items-center gap-2"><span>🎨</span><span>#nsfw-art</span></li>
+            <li class="flex items-center gap-2"><span>🔇</span><span>NSFW VC</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Clear Human Rules -->
+    <section class="space-y-6">
+      <div class="space-y-1 border-b border-white/10 pb-4">
+        <h2 class="font-orbitron text-xl sm:text-2xl font-bold uppercase tracking-wider text-white">
+          Simple Server Rules
+        </h2>
+        <p class="text-xs sm:text-sm text-white/50">No giant legal wall of text—just plain common sense.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        <div class="card-panel p-5 sm:p-6 space-y-2.5">
+          <h3 class="text-white font-bold text-sm sm:text-base">Don't Be a Jerk</h3>
+          <p class="text-xs sm:text-sm text-white/70 leading-relaxed">
+            Talk trash and banter all you want, but leave identity out of it. Racism, forcing religion down people's throats, homophobia, and political agenda pushing will get you banned immediately.
+          </p>
+        </div>
+
+        <div class="card-panel p-5 sm:p-6 space-y-2.5">
+          <h3 class="text-white font-bold text-sm sm:text-base">No Random Advertising</h3>
+          <p class="text-xs sm:text-sm text-white/70 leading-relaxed">
+            Put your stream links, TikToks, and projects in <span class="font-mono text-white">#advertisement</span>. If you drop promo links in regular chats, they get deleted on the spot[cite: 1].
+          </p>
+        </div>
+
+        <div class="card-panel p-5 sm:p-6 space-y-2.5">
+          <h3 class="text-white font-bold text-sm sm:text-base">3 Strikes and You're Out</h3>
+          <p class="text-xs sm:text-sm text-white/70 leading-relaxed">
+            Break the rules and you get a strike. Once you hit 3 strikes, you are banned. Admin calls are final. If you see a message starting with an asterisk (<span class="font-mono text-white/50">*</span>), it means it's unverified rumors[cite: 1].
+          </p>
+        </div>
+
+        <div class="card-panel p-5 sm:p-6 space-y-2.5">
+          <h3 class="text-white font-bold text-sm sm:text-base">Keep Voice Chats Chill</h3>
+          <p class="text-xs sm:text-sm text-white/70 leading-relaxed">
+            Yelling or screaming when you get jump-scared in a game is totally fine. Ear-raping your mic, spamming soundboards, and intentionally ruining games for other people is not.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section class="card-panel p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 border-white/15">
+      <div class="space-y-2 text-center sm:text-left">
+        <span class="text-[11px] font-mono text-white/50 uppercase tracking-widest">Coming Next</span>
+        <h3 class="font-orbitron text-xl sm:text-2xl font-bold uppercase text-white">Pr0jectz3ro v2.2</h3>
+        <p class="text-xs sm:text-sm text-white/70 max-w-md">
+          We're currently building more custom bot commands, adding channels for new games you play, and planning community game nights.
+        </p>
+      </div>
+      <a 
+        href="/discord/" 
+        class="w-full sm:w-auto py-3 px-6 rounded-xl bg-white text-black font-bold text-sm hover:bg-neutral-200 active:scale-[0.98] transition flex items-center justify-center shrink-0 shadow-[0_0_25px_rgba(255,255,255,0.12)] touch-manipulation"
+      >
+        Join the Discord
+      </a>
+    </section>
+
+  </main>
+
+  <!-- Clean Bottom Footer -->
+  <footer class="w-full pb-8 pt-4 text-center relative z-10 px-4">
+    <div class="inline-flex flex-wrap justify-center items-center gap-1.5 text-xs text-white/40">
+      <a href="https://pr0jectzero.eu/legal/" class="hover:text-white transition underline-offset-4 hover:underline active:opacity-70">
+        &copy; 2026 pr0jectz3ro
+      </a>
+      <span>-</span>
+      <span>powered by</span>
+      <a href="https://thataustrianone.eu/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition underline-offset-4 hover:underline active:opacity-70">
+        thataustrianone.eu
+      </a>
+    </div>
+  </footer>
+
+  <!-- Inline Expansion Handler -->
+  <script>
+    const activeRoles = {};
+
+    function toggleRoleDetail(clusterId, name, hex, description) {
+      const container = document.getElementById(`${clusterId}-detail`);
+      const badge = document.getElementById(`${clusterId}-badge`);
+      const hexEl = document.getElementById(`${clusterId}-hex`);
+      const descEl = document.getElementById(`${clusterId}-desc`);
+
+      if (activeRoles[clusterId] === name && container.classList.contains('expanded')) {
+        container.classList.remove('expanded');
+        activeRoles[clusterId] = null;
+        return;
+      }
+
+      badge.innerText = name;
+      badge.style.color = hex;
+      hexEl.innerText = hex;
+      descEl.innerText = description;
+
+      activeRoles[clusterId] = name;
+      container.classList.add('expanded');
+    }
+  </script>
+
+</body>
+</html>
