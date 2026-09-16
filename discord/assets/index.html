@@ -534,7 +534,7 @@
           <div class="w-full max-w-sm flex flex-col items-center gap-4">
             <div class="prev_btn w-full py-3.5 sm:py-4 px-6 sm:px-8 rounded-2xl font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 sm:gap-3 shadow-[0_0_35px_rgba(255,255,255,0.18)] bg-cover bg-center overflow-hidden">
               <svg id="modal_btn_icon" class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24">
-                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.078.078 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
               </svg>
               <span class="prev_btn_text stroke-text">Join Server</span>
             </div>
@@ -862,82 +862,102 @@
     }
 
     function downloadConfig() {
-      const showBubble = document.getElementById('in_show_bubble').checked ? 'yes' : 'no';
-      const fileContent = `# ==========================================
+      try {
+        const val = (id, fallback = '') => {
+          const el = document.getElementById(id);
+          return el ? el.value : fallback;
+        };
+        const checked = (id) => {
+          const el = document.getElementById(id);
+          return el ? el.checked : false;
+        };
+
+        const showBubble = checked('in_show_bubble') ? 'yes' : 'no';
+
+        const fileContent = `# ==========================================
 # DISCORD SETTINGS
 # ==========================================
-discord_link = ${document.getElementById('in_discord_link').value}
-invite_code = ${document.getElementById('in_invite_code').value}
+discord_link = ${val('in_discord_link', 'https://discord.gg/default-code')}
+invite_code = ${val('in_invite_code', 'default-code')}
 
 # ==========================================
 # PAGE LOOK & FEEL
 # ==========================================
-background_color = ${document.getElementById('in_bg_color').value}
-background_image = ${document.getElementById('in_bg_image_name').value}
+background_color = ${val('in_bg_color', '#070707')}
+background_image = ${val('in_bg_image_name', 'background.webp')}
 
-background_glow_color = ${document.getElementById('in_glow_color').value}
-background_glow_opacity = ${document.getElementById('in_glow_opacity').value}
+background_glow_color = ${val('in_glow_color', '#ffffff')}
+background_glow_opacity = ${val('in_glow_opacity', '0')}
 
-heading_color = ${document.getElementById('in_heading_color').value}
-heading_border_color = ${document.getElementById('in_heading_border_enable').checked ? document.getElementById('in_heading_border').value : 'none'}
+heading_color = ${val('in_heading_color', '#ffffff')}
+heading_border_color = ${checked('in_heading_border_enable') ? val('in_heading_border', '#000000') : 'none'}
 
-logo_color = ${document.getElementById('in_logo_color').value}
-logo_border_color = ${document.getElementById('in_logo_border_enable').checked ? document.getElementById('in_logo_border').value : 'none'}
+logo_color = ${val('in_logo_color', '#ffffff')}
+logo_border_color = ${checked('in_logo_border_enable') ? val('in_logo_border', '#000000') : 'none'}
 
-navigation_link_color = ${document.getElementById('in_nav_color').value}
-nav_border_color = ${document.getElementById('in_nav_border_enable').checked ? document.getElementById('in_nav_border').value : 'none'}
+navigation_link_color = ${val('in_nav_color', '#ffffff')}
+nav_border_color = ${checked('in_nav_border_enable') ? val('in_nav_border', '#000000') : 'none'}
 
-footer_text_color = ${document.getElementById('in_footer_color').value}
-footer_border_color = ${document.getElementById('in_footer_border_enable').checked ? document.getElementById('in_footer_border').value : 'none'}
+footer_text_color = ${val('in_footer_color', '#ffffff')}
+footer_border_color = ${checked('in_footer_border_enable') ? val('in_footer_border', '#000000') : 'none'}
 
 # ==========================================
 # JOIN BUTTON (768x112 px / 7:1)
 # ==========================================
-button_color = ${document.getElementById('in_btn_color').value}
-button_border_color = ${document.getElementById('in_btn_border_color').value}
-button_border_opacity = ${document.getElementById('in_btn_border_opacity').value}
-button_text_color = ${document.getElementById('in_btn_text_color').value}
-button_text_border_color = ${document.getElementById('in_btn_text_border_enable').checked ? document.getElementById('in_btn_text_border').value : 'none'}
-button_background_image = ${document.getElementById('in_btn_bg_image').value}
+button_color = ${val('in_btn_color', '#ffffff')}
+button_border_color = ${val('in_btn_border_color', '#ffffff')}
+button_border_opacity = ${val('in_btn_border_opacity', '0')}
+button_text_color = ${val('in_btn_text_color', '#000000')}
+button_text_border_color = ${checked('in_btn_text_border_enable') ? val('in_btn_text_border', '#ffffff') : 'none'}
+button_background_image = ${val('in_btn_bg_image', '')}
 
 # ==========================================
 # INVITE CODE BOX (768x80 px / 10:1)
 # ==========================================
-code_box_background = ${document.getElementById('in_code_box_bg').value}
-code_box_background_opacity = ${document.getElementById('in_code_box_bg_opacity').value}
-code_box_border = ${document.getElementById('in_code_box_border').value}
-code_box_border_opacity = ${document.getElementById('in_code_box_border_opacity').value}
-code_box_label_color = ${document.getElementById('in_code_box_label_color').value}
-code_box_label_border_color = ${document.getElementById('in_code_label_border_enable').checked ? document.getElementById('in_code_label_border').value : 'none'}
-code_box_text_color = ${document.getElementById('in_code_box_text_color').value}
-code_box_text_border_color = ${document.getElementById('in_code_text_border_enable').checked ? document.getElementById('in_code_text_border').value : 'none'}
-code_box_background_image = ${document.getElementById('in_code_box_bg_image').value}
+code_box_background = ${val('in_code_box_bg', '#ffffff')}
+code_box_background_opacity = ${val('in_code_box_bg_opacity', '15')}
+code_box_border = ${val('in_code_box_border', '#ffffff')}
+code_box_border_opacity = ${val('in_code_box_border_opacity', '100')}
+code_box_label_color = ${val('in_code_box_label_color', '#ffffff')}
+code_box_label_border_color = ${checked('in_code_label_border_enable') ? val('in_code_label_border', '#000000') : 'none'}
+code_box_text_color = ${val('in_code_box_text_color', '#ffffff')}
+code_box_text_border_color = ${checked('in_code_text_border_enable') ? val('in_code_text_border', '#000000') : 'none'}
+code_box_background_image = ${val('in_code_box_bg_image', '')}
 
 # ==========================================
 # INVITE BOX (BELOW CODE BOX) (768x112 px / 7:1)
 # ==========================================
 show_invite_bubble = ${showBubble}
-invited_by = ${document.getElementById('in_invited_by').value}
-bubble_icon = ${document.getElementById('in_bubble_icon').value}
-emoji_position = ${document.getElementById('in_emoji_pos').value}
+invited_by = ${val('in_invited_by', '@user')}
+bubble_icon = ${val('in_bubble_icon', 'TXT')}
+emoji_position = ${val('in_emoji_pos', 'left')}
 
-bubble_background_color = ${document.getElementById('in_bubble_bg').value}
+bubble_background_color = ${val('in_bubble_bg', '#ffffff')}
 bubble_background_opacity = 100
-bubble_border_color = ${document.getElementById('in_bubble_border_color').value}
-bubble_border_opacity = ${document.getElementById('in_bubble_border_opacity').value}
-bubble_background_image = ${document.getElementById('in_bubble_bg_image').value}
+bubble_border_color = ${val('in_bubble_border_color', '#262626')}
+bubble_border_opacity = ${val('in_bubble_border_opacity', '0')}
+bubble_background_image = ${val('in_bubble_bg_image', '')}
 
-bubble_icon_color = ${document.getElementById('in_bubble_icon_color').value}
-bubble_icon_border_color = ${document.getElementById('in_bubble_icon_border_enable').checked ? document.getElementById('in_bubble_icon_border').value : 'none'}
-bubble_text_color = ${document.getElementById('in_bubble_text_color').value}
-bubble_text_border_color = ${document.getElementById('in_bubble_text_border_enable').checked ? document.getElementById('in_bubble_text_border').value : 'none'}
+bubble_icon_color = ${val('in_bubble_icon_color', '#000000')}
+bubble_icon_border_color = ${checked('in_bubble_icon_border_enable') ? val('in_bubble_icon_border', '#ffffff') : 'none'}
+bubble_text_color = ${val('in_bubble_text_color', '#000000')}
+bubble_text_border_color = ${checked('in_bubble_text_border_enable') ? val('in_bubble_text_border', '#ffffff') : 'none'}
 `;
 
-      const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'config.txt';
-      link.click();
+        const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'config.txt';
+        document.body.appendChild(link);
+        link.click();
+        setTimeout(() => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 150);
+      } catch (err) {
+        console.error('Failed to export config.txt:', err);
+      }
     }
 
     schedulePreviewUpdate();
