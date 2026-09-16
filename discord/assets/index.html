@@ -105,19 +105,19 @@
             <span class="text-[11px] font-mono text-white/50 mt-1">1920 × 1080 px (16:9)</span>
           </button>
           
+          <button onclick="downloadPng(768, 280, 'unified-box-bg.png')" class="p-3.5 sm:p-3 rounded-xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.08] active:scale-[0.98] transition text-left flex flex-col justify-between touch-target">
+            <span class="text-xs font-bold text-white">Consistent Stack Master</span>
+            <span class="text-[11px] font-mono text-white/50 mt-1">768 × 280 px (Full Stack)</span>
+          </button>
+
           <button onclick="downloadPng(768, 112, 'button-bg.png')" class="p-3.5 sm:p-3 rounded-xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.08] active:scale-[0.98] transition text-left flex flex-col justify-between touch-target">
-            <span class="text-xs font-bold text-white">Join Button</span>
+            <span class="text-xs font-bold text-white">Individual Join Button</span>
             <span class="text-[11px] font-mono text-white/50 mt-1">768 × 112 px (~7:1)</span>
           </button>
 
           <button onclick="downloadPng(768, 80, 'code-box-bg.png')" class="p-3.5 sm:p-3 rounded-xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.08] active:scale-[0.98] transition text-left flex flex-col justify-between touch-target">
-            <span class="text-xs font-bold text-white">Invite Code Box</span>
+            <span class="text-xs font-bold text-white">Individual Code Box</span>
             <span class="text-[11px] font-mono text-white/50 mt-1">768 × 80 px (~10:1)</span>
-          </button>
-
-          <button onclick="downloadPng(768, 112, 'bubble-bg.png')" class="p-3.5 sm:p-3 rounded-xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.08] active:scale-[0.98] transition text-left flex flex-col justify-between touch-target">
-            <span class="text-xs font-bold text-white">Invite Box</span>
-            <span class="text-[11px] font-mono text-white/50 mt-1">768 × 112 px (~7:1)</span>
           </button>
         </div>
       </div>
@@ -142,6 +142,30 @@
             <div>
               <label class="text-[11px] text-white/70 block mb-1">Invite Code</label>
               <input id="in_invite_code" type="text" value="default-code" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
+            </div>
+          </div>
+        </div>
+
+        <!-- Consistent Stack Image Feature Box -->
+        <div class="p-4 rounded-xl border border-white/10 bg-white/[0.02] space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-white block">One Consistent Image for All Boxes</span>
+              <p class="text-[11px] text-white/50 mt-0.5">Stretches a single seamless graphic across all buttons without repetitions.</p>
+            </div>
+            <label class="inline-flex items-center gap-2 cursor-pointer text-xs p-1 touch-target">
+              <input id="in_unified_box_enable" type="checkbox" class="w-4 h-4 accent-white">
+              <span>Enable</span>
+            </label>
+          </div>
+          <div>
+            <label class="text-[11px] text-white/70 block mb-1">Consistent Master Media (768×280 px .webp / .gif / .mp4)</label>
+            <div class="flex items-center gap-2">
+              <input id="in_unified_box_media" type="text" placeholder="unified-box-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
+              <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
+                <span>Upload</span>
+                <input id="upload_unified" type="file" accept="image/webp,image/gif,image/png,image/jpeg,video/mp4" class="hidden">
+              </label>
             </div>
           </div>
         </div>
@@ -254,7 +278,7 @@
             <input id="in_btn_border_opacity" type="range" min="0" max="100" value="0" class="w-full accent-white py-2">
           </div>
           <div>
-            <label class="text-[11px] text-white/70 block mb-1">Button Background Media (768×112 px .webp / .gif / .mp4)</label>
+            <label class="text-[11px] text-white/70 block mb-1">Custom Background Media (ignored if consistent mode is on)</label>
             <div class="flex items-center gap-2">
               <input id="in_btn_bg_image" type="text" placeholder="button-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
@@ -317,7 +341,7 @@
             </div>
           </div>
           <div>
-            <label class="text-[11px] text-white/70 block mb-1">Code Box Background Media (768×80 px .webp / .gif / .mp4)</label>
+            <label class="text-[11px] text-white/70 block mb-1">Custom Background Media (ignored if consistent mode is on)</label>
             <div class="flex items-center gap-2">
               <input id="in_code_box_bg_image" type="text" placeholder="code-box-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
@@ -400,7 +424,7 @@
           </div>
 
           <div>
-            <label class="text-[11px] text-white/70 block mb-1">Box Background Media (768×112 px .webp / .gif / .mp4)</label>
+            <label class="text-[11px] text-white/70 block mb-1">Custom Background Media (ignored if consistent mode is on)</label>
             <div class="flex items-center gap-2">
               <input id="in_bubble_bg_image" type="text" placeholder="bubble-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
@@ -457,8 +481,12 @@
               Join the Discord
             </h1>
 
-            <div class="w-full max-w-[280px] flex flex-col gap-2.5">
-              <div class="prev_btn w-full py-3 px-4 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg relative bg-cover bg-center overflow-hidden">
+            <div id="prev_stack" class="w-full max-w-[280px] flex flex-col gap-2.5 relative">
+              <div id="prev_unified_wrapper" class="absolute inset-0 rounded-2xl pointer-events-none overflow-hidden hidden">
+                <video id="prev_unified_video" class="media-layer hidden" autoplay loop muted playsinline></video>
+              </div>
+
+              <div class="prev_btn w-full py-3 px-4 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg relative bg-cover bg-center overflow-hidden z-10">
                 <video id="prev_btn_video" class="media-layer hidden" autoplay loop muted playsinline></video>
                 <svg id="prev_btn_icon" class="w-4 h-4 fill-current shrink-0 relative z-10" viewBox="0 0 24 24">
                   <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.078.078 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
@@ -466,13 +494,13 @@
                 <span class="prev_btn_text stroke-text relative z-10">Join Server</span>
               </div>
 
-              <div class="prev_code_box w-full py-2 px-3 rounded-xl text-[11px] flex items-center justify-center gap-1.5 relative bg-cover bg-center overflow-hidden">
+              <div class="prev_code_box w-full py-2 px-3 rounded-xl text-[11px] flex items-center justify-center gap-1.5 relative bg-cover bg-center overflow-hidden z-10">
                 <video id="prev_code_box_video" class="media-layer hidden" autoplay loop muted playsinline></video>
                 <span class="prev_code_label stroke-text font-medium relative z-10">Invite Code:</span>
                 <span class="prev_code_text stroke-text font-mono font-bold relative z-10">default-code</span>
               </div>
 
-              <div class="prev_bubble w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 shadow-lg relative bg-cover bg-center overflow-hidden">
+              <div class="prev_bubble w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 shadow-lg relative bg-cover bg-center overflow-hidden z-10">
                 <video id="prev_bubble_video" class="media-layer hidden" autoplay loop muted playsinline></video>
                 <span class="prev_bubble_icon_left stroke-text text-xs font-bold shrink-0 relative z-10">TXT</span>
                 <span class="prev_bubble_msg stroke-text text-[11px] font-semibold tracking-wide text-center relative z-10"></span>
@@ -545,8 +573,12 @@
             Join the Discord
           </h1>
 
-          <div class="w-full max-w-sm flex flex-col items-center gap-4">
-            <div class="prev_btn w-full py-3.5 sm:py-4 px-6 sm:px-8 rounded-2xl font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 sm:gap-3 shadow-[0_0_35px_rgba(255,255,255,0.18)] relative bg-cover bg-center overflow-hidden">
+          <div id="modal_stack" class="w-full max-w-sm flex flex-col items-center gap-4 relative">
+            <div id="modal_unified_wrapper" class="absolute inset-0 rounded-2xl pointer-events-none overflow-hidden hidden">
+              <video id="modal_unified_video" class="media-layer hidden" autoplay loop muted playsinline></video>
+            </div>
+
+            <div class="prev_btn w-full py-3.5 sm:py-4 px-6 sm:px-8 rounded-2xl font-bold text-sm sm:text-base flex items-center justify-center gap-2.5 sm:gap-3 shadow-[0_0_35px_rgba(255,255,255,0.18)] relative bg-cover bg-center overflow-hidden z-10">
               <video id="modal_btn_video" class="media-layer hidden" autoplay loop muted playsinline></video>
               <svg id="modal_btn_icon" class="w-5 h-5 fill-current shrink-0 relative z-10" viewBox="0 0 24 24">
                 <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
@@ -554,13 +586,13 @@
               <span class="prev_btn_text stroke-text relative z-10">Join Server</span>
             </div>
 
-            <div class="prev_code_box w-full py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 relative bg-cover bg-center overflow-hidden">
+            <div class="prev_code_box w-full py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 relative bg-cover bg-center overflow-hidden z-10">
               <video id="modal_code_box_video" class="media-layer hidden" autoplay loop muted playsinline></video>
               <span class="prev_code_label stroke-text font-medium relative z-10">Invite Code:</span>
               <span class="prev_code_text stroke-text font-mono font-bold relative z-10">default-code</span>
             </div>
 
-            <div class="prev_bubble w-full py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 shadow-xl relative bg-cover bg-center overflow-hidden">
+            <div class="prev_bubble w-full py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 shadow-xl relative bg-cover bg-center overflow-hidden z-10">
               <video id="modal_bubble_video" class="media-layer hidden" autoplay loop muted playsinline></video>
               <span class="prev_bubble_icon_left stroke-text text-sm font-bold shrink-0 relative z-10">TXT</span>
               <span class="prev_bubble_msg stroke-text text-xs sm:text-sm font-semibold tracking-wide text-center relative z-10"></span>
@@ -588,7 +620,7 @@
   <canvas id="exportCanvas" class="hidden"></canvas>
 
   <script>
-    const localPreviews = { bg: null, btn: null, code_box: null, bubble: null };
+    const localPreviews = { bg: null, btn: null, code_box: null, bubble: null, unified: null };
     let renderScheduled = false;
 
     function isVideo(path) {
@@ -599,9 +631,7 @@
       if (!container || !videoEl) return;
       if (isVideo(sourcePath)) {
         container.style.backgroundImage = 'none';
-        if (videoEl.src !== sourcePath) {
-          videoEl.src = sourcePath;
-        }
+        if (videoEl.src !== sourcePath) videoEl.src = sourcePath;
         videoEl.classList.remove('hidden');
         videoEl.play().catch(() => {});
       } else if (sourcePath) {
@@ -617,6 +647,18 @@
       }
     }
 
+    function applyUnifiedSlice(el, stackEl, imgUrl) {
+      if (!el || !stackEl || !imgUrl) return;
+      const stackRect = stackEl.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      const offsetY = elRect.top - stackRect.top;
+      
+      el.style.backgroundImage = `url('${imgUrl}')`;
+      el.style.backgroundSize = `${stackRect.width}px ${stackRect.height}px`;
+      el.style.backgroundPosition = `0px -${offsetY}px`;
+      el.style.backgroundRepeat = 'no-repeat';
+    }
+
     function hexToRgba(hex, opacityPercent) {
       if (!hex) return '';
       let c = hex.replace('#', '').trim();
@@ -626,7 +668,7 @@
       const g = parseInt(c.substring(2, 4), 16);
       const b = parseInt(c.substring(4, 6), 16);
       const a = (parseFloat(opacityPercent) ?? 100) / 100;
-      return `rgba(${r}, ${g}, ${b}, ${a})`;
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
 
     function applyTextStroke(selector, color, isEnabled, width = '2.5px') {
@@ -659,6 +701,7 @@
         modal.classList.remove('flex');
         document.body.style.overflow = '';
       }
+      schedulePreviewUpdate();
     }
 
     window.addEventListener('keydown', (e) => {
@@ -685,6 +728,7 @@
     }
 
     setupFileUploader('upload_bg', 'in_bg_image_name', 'bg');
+    setupFileUploader('upload_unified', 'in_unified_box_media', 'unified');
     setupFileUploader('upload_btn', 'in_btn_bg_image', 'btn');
     setupFileUploader('upload_code_box', 'in_code_box_bg_image', 'code_box');
     setupFileUploader('upload_bubble', 'in_bubble_bg_image', 'bubble');
@@ -706,7 +750,7 @@
 
       const rgbaGlow = hexToRgba(glowColor, glowOp);
 
-      // Stage Backgrounds (Video / Static Media)
+      // Stage Backgrounds
       const bgSource = localPreviews.bg || (isVideo(document.getElementById('in_bg_image_name').value) ? document.getElementById('in_bg_image_name').value : null);
       
       const prevStage = document.getElementById('prev_stage');
@@ -748,6 +792,29 @@
 
       document.querySelectorAll('.prev_code_text').forEach(el => el.innerText = inviteCode);
 
+      // Consistent Box Mode Check
+      const isUnified = document.getElementById('in_unified_box_enable').checked;
+      const unifiedSource = localPreviews.unified || document.getElementById('in_unified_box_media').value;
+      const isUnifiedVideo = isVideo(unifiedSource);
+
+      const prevStack = document.getElementById('prev_stack');
+      const prevUniWrap = document.getElementById('prev_unified_wrapper');
+      const prevUniVid = document.getElementById('prev_unified_video');
+      
+      const modalStack = document.getElementById('modal_stack');
+      const modalUniWrap = document.getElementById('modal_unified_wrapper');
+      const modalUniVid = document.getElementById('modal_unified_video');
+
+      if (isUnified && unifiedSource && isUnifiedVideo) {
+        if (prevUniWrap) prevUniWrap.classList.remove('hidden');
+        if (modalUniWrap) modalUniWrap.classList.remove('hidden');
+        setLayerMedia(prevUniWrap, prevUniVid, unifiedSource);
+        setLayerMedia(modalUniWrap, modalUniVid, unifiedSource);
+      } else {
+        if (prevUniWrap) prevUniWrap.classList.add('hidden');
+        if (modalUniWrap) modalUniWrap.classList.add('hidden');
+      }
+
       // Join Buttons
       const btnBg = document.getElementById('in_btn_color').value;
       const btnTextColor = document.getElementById('in_btn_text_color').value;
@@ -757,8 +824,17 @@
 
       document.getElementById('btn_border_val').innerText = `${btnBorderOp}%`;
 
-      document.querySelectorAll('.prev_btn').forEach(el => {
-        el.style.backgroundColor = btnSource ? 'transparent' : btnBg;
+      document.querySelectorAll('.prev_btn').forEach((el, idx) => {
+        const parentStack = idx === 0 ? prevStack : modalStack;
+        if (isUnified && unifiedSource && !isUnifiedVideo) {
+          applyUnifiedSlice(el, parentStack, unifiedSource);
+        } else if (!isUnified) {
+          setLayerMedia(el, idx === 0 ? document.getElementById('prev_btn_video') : document.getElementById('modal_btn_video'), btnSource);
+        } else {
+          el.style.backgroundColor = 'transparent';
+          el.style.backgroundImage = 'none';
+        }
+
         el.style.color = btnTextColor;
 
         if (parseInt(btnBorderOp, 10) > 0) {
@@ -770,9 +846,6 @@
           el.style.borderColor = 'transparent';
         }
       });
-
-      setLayerMedia(document.querySelector('.prev_btn'), document.getElementById('prev_btn_video'), btnSource);
-      setLayerMedia(document.querySelectorAll('.prev_btn')[1], document.getElementById('modal_btn_video'), btnSource);
 
       const btnTextBorderColor = document.getElementById('in_btn_text_border').value;
       const btnTextBorderEnabled = document.getElementById('in_btn_text_border_enable').checked;
@@ -792,8 +865,17 @@
       document.getElementById('code_box_bg_val').innerText = `${cbBgOp}%`;
       document.getElementById('code_box_border_val').innerText = `${cbBorderOp}%`;
 
-      document.querySelectorAll('.prev_code_box').forEach(el => {
-        el.style.backgroundColor = cbSource ? 'transparent' : hexToRgba(cbBg, cbBgOp);
+      document.querySelectorAll('.prev_code_box').forEach((el, idx) => {
+        const parentStack = idx === 0 ? prevStack : modalStack;
+        if (isUnified && unifiedSource && !isUnifiedVideo) {
+          applyUnifiedSlice(el, parentStack, unifiedSource);
+        } else if (!isUnified) {
+          setLayerMedia(el, idx === 0 ? document.getElementById('prev_code_box_video') : document.getElementById('modal_code_box_video'), cbSource);
+          if (!cbSource) el.style.backgroundColor = hexToRgba(cbBg, cbBgOp);
+        } else {
+          el.style.backgroundColor = 'transparent';
+          el.style.backgroundImage = 'none';
+        }
 
         if (parseInt(cbBorderOp, 10) > 0) {
           el.style.borderWidth = '1px';
@@ -804,9 +886,6 @@
           el.style.borderColor = 'transparent';
         }
       });
-
-      setLayerMedia(document.querySelector('.prev_code_box'), document.getElementById('prev_code_box_video'), cbSource);
-      setLayerMedia(document.querySelectorAll('.prev_code_box')[1], document.getElementById('modal_code_box_video'), cbSource);
 
       document.querySelectorAll('.prev_code_label').forEach(el => el.style.color = cbLabelColor);
       applyTextStroke('.prev_code_label', document.getElementById('in_code_label_border').value, document.getElementById('in_code_label_border_enable').checked, '2px');
@@ -828,14 +907,24 @@
 
       document.getElementById('bubble_border_val').innerText = `${bBorderOp}%`;
 
-      document.querySelectorAll('.prev_bubble').forEach(el => {
+      document.querySelectorAll('.prev_bubble').forEach((el, idx) => {
         if (!showBubble) {
           el.classList.add('hidden');
           el.classList.remove('flex');
         } else {
           el.classList.remove('hidden');
           el.classList.add('flex');
-          el.style.backgroundColor = bubbleSource ? 'transparent' : bBg;
+          const parentStack = idx === 0 ? prevStack : modalStack;
+
+          if (isUnified && unifiedSource && !isUnifiedVideo) {
+            applyUnifiedSlice(el, parentStack, unifiedSource);
+          } else if (!isUnified) {
+            setLayerMedia(el, idx === 0 ? document.getElementById('prev_bubble_video') : document.getElementById('modal_bubble_video'), bubbleSource);
+            if (!bubbleSource) el.style.backgroundColor = bBg;
+          } else {
+            el.style.backgroundColor = 'transparent';
+            el.style.backgroundImage = 'none';
+          }
 
           if (parseInt(bBorderOp, 10) > 0) {
             el.style.borderWidth = '1px';
@@ -847,9 +936,6 @@
           }
         }
       });
-
-      setLayerMedia(document.querySelector('.prev_bubble'), document.getElementById('prev_bubble_video'), bubbleSource);
-      setLayerMedia(document.querySelectorAll('.prev_bubble')[1], document.getElementById('modal_bubble_video'), bubbleSource);
 
       document.querySelectorAll('.prev_bubble_msg').forEach(el => {
         el.innerText = `${inviter} has invited you`;
@@ -922,6 +1008,7 @@
         };
 
         const showBubble = checked('in_show_bubble') ? 'yes' : 'no';
+        const isUnified = checked('in_unified_box_enable') ? 'yes' : 'no';
 
         const fileContent = `# ==========================================
 # DISCORD SETTINGS
@@ -949,6 +1036,12 @@ nav_border_color = ${checked('in_nav_border_enable') ? val('in_nav_border', '#00
 
 footer_text_color = ${val('in_footer_color', '#ffffff')}
 footer_border_color = ${checked('in_footer_border_enable') ? val('in_footer_border', '#000000') : 'none'}
+
+# ==========================================
+# CONSISTENT BOX MASTER (768x280 px)
+# ==========================================
+unified_box_image = ${isUnified}
+box_media = ${val('in_unified_box_media', '')}
 
 # ==========================================
 # JOIN BUTTON (768x112 px / 7:1)
@@ -1009,6 +1102,7 @@ bubble_text_border_color = ${checked('in_bubble_text_border_enable') ? val('in_b
       }
     }
 
+    window.addEventListener('resize', schedulePreviewUpdate);
     schedulePreviewUpdate();
   </script>
 </body>
