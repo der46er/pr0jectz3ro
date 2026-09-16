@@ -34,9 +34,9 @@ code_box_label_color = #B3B3B3
 code_box_text_color = #FFFFFF
 code_box_background_image = 
 
-# ==========================================
+# ====================================================
 # INVITE BUBBLE (BELOW CODE BOX) (384x56 px / 7:1)
-# ==========================================
+# ====================================================
 show_invite_bubble = yes
 invited_by = Nick
 bubble_icon = ⚡
