@@ -1,0 +1,55 @@
+# ==========================================
+# DISCORD SETTINGS
+# ==========================================
+discord_link = https://discord.gg/GZ9fEuctZC
+invite_code = GZ9fEuctZC
+
+# ==========================================
+# INVITE BADGE (TOP POPUP)
+# ==========================================
+show_invite_badge = yes
+invited_by = Nick
+badge_icon = ⚡
+
+badge_background_color = #111114
+badge_background_opacity = 100
+badge_background_image = 
+badge_text_color = #EDEDED
+badge_icon_color = #FFFFFF
+badge_border_color = #262626
+badge_border_opacity = 100
+
+# ==========================================
+# PAGE LOOK & FEEL
+# ==========================================
+background_color = #070707
+background_image = background.webp
+
+background_glow_color = #FFFFFF
+background_glow_opacity = 4
+
+heading_color = #FFFFFF
+navigation_link_color = #B3B3B3
+
+# ==========================================
+# JOIN BUTTON
+# ==========================================
+button_color = #FFFFFF
+button_text_color = #000000
+
+# ==========================================
+# INVITE CODE BOX
+# ==========================================
+code_box_background = #FFFFFF
+code_box_background_opacity = 2
+
+code_box_border = #FFFFFF
+code_box_border_opacity = 10
+
+code_box_label_color = #B3B3B3
+code_box_text_color = #FFFFFF
+
+# ==========================================
+# FOOTER
+# ==========================================
+footer_text_color = #666666
