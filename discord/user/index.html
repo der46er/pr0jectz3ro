@@ -54,7 +54,6 @@
   </style>
 </head>
 <body id="pageBody" class="min-h-screen flex flex-col justify-between selection:bg-white/20 selection:text-white relative overflow-x-hidden">
-  <!-- Page background video container -->
   <video id="pageBgVideo" class="media-layer fixed hidden" autoplay loop muted playsinline></video>
 
   <!-- Ambient glow -->
@@ -85,14 +84,21 @@
       Join the Discord
     </h1>
 
-    <div class="w-full flex flex-col items-center gap-3.5 sm:gap-4 max-w-sm">
+    <!-- Action Stack Container -->
+    <div id="actionStack" class="w-full flex flex-col items-center gap-3.5 sm:gap-4 max-w-sm relative">
+      
+      <!-- Shared background media layer when unified mode is active -->
+      <div id="unifiedMediaWrapper" class="absolute inset-0 rounded-2xl pointer-events-none overflow-hidden hidden">
+        <video id="unifiedBgVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+      </div>
+
       <!-- 1. Join Button -->
       <a 
         id="joinBtn"
         href="https://discord.gg/default-code" 
         target="_blank" 
         rel="noopener noreferrer"
-        class="w-full py-3.5 sm:py-4 px-6 sm:px-8 rounded-2xl font-bold text-sm sm:text-base active:scale-[0.98] transition flex items-center justify-center gap-2.5 sm:gap-3 touch-manipulation relative bg-cover bg-center overflow-hidden"
+        class="w-full py-3.5 sm:py-4 px-6 sm:px-8 rounded-2xl font-bold text-sm sm:text-base active:scale-[0.98] transition flex items-center justify-center gap-2.5 sm:gap-3 touch-manipulation relative bg-cover bg-center overflow-hidden z-10"
       >
         <video id="btnBgVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
         <svg id="joinBtnIcon" class="w-5 h-5 fill-current shrink-0 relative z-10" viewBox="0 0 24 24">
@@ -105,7 +111,7 @@
       <button 
         id="copyBtn"
         onclick="copyCode()"
-        class="w-full py-2.5 px-4 rounded-xl transition text-xs flex items-center justify-center gap-2 touch-manipulation active:scale-[0.99] relative bg-cover bg-center overflow-hidden"
+        class="w-full py-2.5 px-4 rounded-xl transition text-xs flex items-center justify-center gap-2 touch-manipulation active:scale-[0.99] relative bg-cover bg-center overflow-hidden z-10"
       >
         <video id="codeBoxBgVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
         <span id="copyLabel" class="stroke-text relative z-10">Invite Code:</span>
@@ -118,7 +124,7 @@
       <!-- 3. Inviter Box -->
       <div 
         id="inviteBubble" 
-        class="hidden w-full py-3 px-4 rounded-xl items-center justify-center gap-2.5 relative bg-cover bg-center transition-all overflow-hidden"
+        class="hidden w-full py-3 px-4 rounded-xl items-center justify-center gap-2.5 relative bg-cover bg-center transition-all overflow-hidden z-10"
       >
         <video id="bubbleBgVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
         <span id="bubbleIconLeft" class="stroke-text text-sm font-bold shrink-0 relative z-10">TXT</span>
@@ -153,7 +159,7 @@
       if (!container || !videoEl) return;
       if (isVideo(sourcePath)) {
         container.style.backgroundImage = 'none';
-        videoEl.src = sourcePath;
+        if (videoEl.src !== sourcePath) videoEl.src = sourcePath;
         videoEl.classList.remove('hidden');
         videoEl.play().catch(() => {});
       } else if (sourcePath) {
@@ -167,6 +173,18 @@
         videoEl.removeAttribute('src');
         container.style.backgroundImage = 'none';
       }
+    }
+
+    function applyUnifiedSlice(el, stackEl, imgUrl) {
+      if (!el || !stackEl || !imgUrl) return;
+      const stackRect = stackEl.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      const offsetY = elRect.top - stackRect.top;
+      
+      el.style.backgroundImage = `url('${imgUrl}')`;
+      el.style.backgroundSize = `${stackRect.width}px ${stackRect.height}px`;
+      el.style.backgroundPosition = `0px -${offsetY}px`;
+      el.style.backgroundRepeat = 'no-repeat';
     }
 
     function hexToRgba(hex, opacityPercent) {
@@ -264,16 +282,35 @@
           });
         }
 
+        // Check if Unified Box Image mode is on
+        const isUnified = ['yes', 'true', '1'].includes((cfg.unified_box_image || '').toLowerCase());
+        const unifiedMedia = cfg.box_media || '';
+        const actionStack = document.getElementById('actionStack');
+        const unifiedWrapper = document.getElementById('unifiedMediaWrapper');
+        const unifiedBgVideo = document.getElementById('unifiedBgVideo');
+
+        if (isUnified && unifiedMedia) {
+          if (isVideo(unifiedMedia)) {
+            unifiedWrapper.classList.remove('hidden');
+            setLayerMedia(unifiedWrapper, unifiedBgVideo, unifiedMedia);
+          } else {
+            unifiedWrapper.classList.add('hidden');
+          }
+        } else {
+          unifiedWrapper.classList.add('hidden');
+        }
+
         // 4. Join Button
         const joinBtnText = document.getElementById('joinBtnText');
         const joinBtnIcon = document.getElementById('joinBtnIcon');
         const btnBgVideo = document.getElementById('btnBgVideo');
         if (joinBtn) {
-          setLayerMedia(joinBtn, btnBgVideo, cfg.button_background_image);
-          if (cfg.button_background_image) {
+          if (isUnified && unifiedMedia && !isVideo(unifiedMedia)) {
+            applyUnifiedSlice(joinBtn, actionStack, unifiedMedia);
+          } else if (!isUnified) {
+            setLayerMedia(joinBtn, btnBgVideo, cfg.button_background_image);
+          } else {
             joinBtn.style.backgroundColor = 'transparent';
-          } else if (cfg.button_color) {
-            joinBtn.style.backgroundColor = cfg.button_color;
           }
 
           if (cfg.button_border_color) {
@@ -295,12 +332,12 @@
         const copyLabel = document.getElementById('copyLabel');
         const codeBoxBgVideo = document.getElementById('codeBoxBgVideo');
         if (copyBtn) {
-          setLayerMedia(copyBtn, codeBoxBgVideo, cfg.code_box_background_image);
-          if (cfg.code_box_background_image) {
+          if (isUnified && unifiedMedia && !isVideo(unifiedMedia)) {
+            applyUnifiedSlice(copyBtn, actionStack, unifiedMedia);
+          } else if (!isUnified) {
+            setLayerMedia(copyBtn, codeBoxBgVideo, cfg.code_box_background_image);
+          } else {
             copyBtn.style.backgroundColor = 'transparent';
-          } else if (cfg.code_box_background) {
-            const bgOp = cfg.code_box_background_opacity || 15;
-            copyBtn.style.backgroundColor = hexToRgba(cfg.code_box_background, bgOp);
           }
 
           if (cfg.code_box_border) {
@@ -360,12 +397,12 @@
               rightIcon.classList.add('hidden');
             }
 
-            setLayerMedia(bubble, bubbleBgVideo, cfg.bubble_background_image);
-            if (cfg.bubble_background_image) {
+            if (isUnified && unifiedMedia && !isVideo(unifiedMedia)) {
+              applyUnifiedSlice(bubble, actionStack, unifiedMedia);
+            } else if (!isUnified) {
+              setLayerMedia(bubble, bubbleBgVideo, cfg.bubble_background_image);
+            } else {
               bubble.style.backgroundColor = 'transparent';
-            } else if (cfg.bubble_background_color) {
-              const bBgOp = cfg.bubble_background_opacity || 100;
-              bubble.style.backgroundColor = hexToRgba(cfg.bubble_background_color, bBgOp);
             }
 
             if (cfg.bubble_border_color) {
@@ -389,6 +426,7 @@
       setTimeout(() => text.innerText = original, 1200);
     }
 
+    window.addEventListener('resize', loadConfig);
     loadConfig();
   </script>
 </body>
