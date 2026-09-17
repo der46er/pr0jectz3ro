@@ -151,7 +151,7 @@
           <div class="flex items-center justify-between">
             <div>
               <span class="text-xs font-bold uppercase tracking-wider text-white block">One Consistent Image for All Boxes</span>
-              <p class="text-[11px] text-white/50 mt-0.5">Stretches a single seamless graphic across all buttons without repetitions.</p>
+              <p class="text-[11px] text-white/50 mt-0.5">Stretches a single seamless graphic across all buttons without distortion or repeating.</p>
             </div>
             <label class="inline-flex items-center gap-2 cursor-pointer text-xs p-1 touch-target">
               <input id="in_unified_box_enable" type="checkbox" class="w-4 h-4 accent-white">
@@ -525,12 +525,12 @@
   <!-- Imprint & Site Footer -->
   <footer class="w-full pb-8 pt-4 text-center relative z-10 px-4 mt-auto">
     <div class="inline-flex flex-wrap justify-center items-center gap-1.5 text-xs text-white/40">
-      <a href="https://pr0jectz3ro.eu/legal/" class="hover:text-white transition underline-offset-4 hover:underline active:opacity-70 touch-target"[cite: 2]>
+      <a href="https://pr0jectz3ro.eu/legal/" class="hover:text-white transition underline-offset-4 hover:underline active:opacity-70 touch-target">
         &copy; 2026 pr0jectz3ro
       </a>
       <span>-</span>
       <span>powered by</span>
-      <a href="https://thataustrianone.eu/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition underline-offset-4 hover:underline active:opacity-70 touch-target"[cite: 2]>
+      <a href="https://thataustrianone.eu/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition underline-offset-4 hover:underline active:opacity-70 touch-target">
         thataustrianone.eu
       </a>
     </div>
@@ -603,12 +603,12 @@
 
         <!-- Footer -->
         <footer class="prev_footer w-full pb-6 pt-3 text-center relative z-10 text-xs flex flex-wrap justify-center items-center gap-1.5 px-4">
-          <a href="https://pr0jectz3ro.eu/legal/" class="stroke-text footer-seg inline-block underline-offset-4 hover:underline active:opacity-70 transition touch-target"[cite: 2]>
+          <a href="https://pr0jectz3ro.eu/legal/" class="stroke-text footer-seg inline-block underline-offset-4 hover:underline active:opacity-70 transition touch-target">
             &copy; 2026 pr0jectz3ro
           </a>
           <span class="stroke-text footer-seg inline-block">-</span>
           <span class="stroke-text footer-seg inline-block">powered by</span>
-          <a href="https://thataustrianone.eu/" target="_blank" rel="noopener noreferrer" class="stroke-text footer-seg inline-block underline-offset-4 hover:underline active:opacity-70 transition touch-target"[cite: 2]>
+          <a href="https://thataustrianone.eu/" target="_blank" rel="noopener noreferrer" class="stroke-text footer-seg inline-block underline-offset-4 hover:underline active:opacity-70 transition touch-target">
             thataustrianone.eu
           </a>
         </footer>
@@ -621,10 +621,21 @@
 
   <script>
     const localPreviews = { bg: null, btn: null, code_box: null, bubble: null, unified: null };
+    const imageSizeCache = {};
     let renderScheduled = false;
 
     function isVideo(path) {
       return typeof path === 'string' && (path.endsWith('.mp4') || path.startsWith('data:video/mp4'));
+    }
+
+    function resolveMediaSource(localPreviewKey, inputId) {
+      if (localPreviews[localPreviewKey]) return localPreviews[localPreviewKey];
+      const rawText = document.getElementById(inputId).value.trim();
+      if (!rawText) return null;
+      if (rawText.startsWith('http://') || rawText.startsWith('https://') || rawText.startsWith('data:')) {
+        return rawText;
+      }
+      return null;
     }
 
     function setLayerMedia(container, videoEl, sourcePath) {
@@ -651,30 +662,49 @@
       }
     }
 
-    function applyUnifiedSlice(el, stackEl, imgUrl) {
+    // Proportional Cover Calculation: guarantees horizontal coverage across buttons without distortion
+    function applyCoverSlice(el, stackEl, imgUrl) {
       if (!el || !stackEl || !imgUrl) return;
       const stackRect = stackEl.getBoundingClientRect();
       const elRect = el.getBoundingClientRect();
-
-      // If container is currently hidden (e.g. inside closed modal), do not zero out styling
       if (stackRect.width === 0 || stackRect.height === 0) return;
 
-      const offsetY = elRect.top - stackRect.top;
-      el.style.backgroundImage = `url('${imgUrl}')`;
-      el.style.backgroundSize = `${stackRect.width}px ${stackRect.height}px`;
-      el.style.backgroundPosition = `0px -${offsetY}px`;
-      el.style.backgroundRepeat = 'no-repeat';
+      const apply = (naturalW, naturalH) => {
+        const scale = Math.max(stackRect.width / naturalW, stackRect.height / naturalH);
+        const renderedW = naturalW * scale;
+        const renderedH = naturalH * scale;
+
+        const leftOffset = (stackRect.width - renderedW) / 2;
+        const topOffset = (stackRect.height - renderedH) / 2;
+        const elementOffsetY = elRect.top - stackRect.top;
+
+        el.style.backgroundImage = `url('${imgUrl}')`;
+        el.style.backgroundRepeat = 'no-repeat';
+        el.style.backgroundSize = `${renderedW}px ${renderedH}px`;
+        el.style.backgroundPosition = `${leftOffset}px ${topOffset - elementOffsetY}px`;
+      };
+
+      if (imageSizeCache[imgUrl]) {
+        apply(imageSizeCache[imgUrl].w, imageSizeCache[imgUrl].h);
+      } else {
+        const img = new Image();
+        img.src = imgUrl;
+        img.onload = () => {
+          imageSizeCache[imgUrl] = { w: img.naturalWidth, h: img.naturalHeight };
+          apply(img.naturalWidth, img.naturalHeight);
+        };
+      }
     }
 
     function hexToRgba(hex, opacityPercent) {
       if (!hex) return '';
-      let c = hex.replace('#', '').trim();
-      if (c.length === 3) c = c.split('').map(x => x + x).join('');
-      if (c.length !== 6) return hex;
-      const r = parseInt(c.substring(0, 2), 16);
-      const g = parseInt(c.substring(2, 4), 16);
-      const b = parseInt(c.substring(4, 6), 16);
-      const a = (parseFloat(opacityPercent) ?? 100) / 100;
+      let cleanHex = hex.replace('#', '').trim();
+      if (cleanHex.length === 3) cleanHex = cleanHex.split('').map(x => x + x).join('');
+      if (cleanHex.length !== 6) return hex;
+      const r = parseInt(cleanHex.substring(0, 2), 16);
+      const g = parseInt(cleanHex.substring(2, 4), 16);
+      const b = parseInt(cleanHex.substring(4, 6), 16);
+      const alpha = (parseFloat(opacityPercent) ?? 100) / 100;
       return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
 
@@ -757,8 +787,8 @@
 
       const rgbaGlow = hexToRgba(glowColor, glowOp);
 
-      // Stage Backgrounds (reads uploaded file OR filename text directly)
-      const bgSource = localPreviews.bg || document.getElementById('in_bg_image_name').value.trim() || null;
+      // 1. Stage Background
+      const bgSource = resolveMediaSource('bg', 'in_bg_image_name');
       
       const prevStage = document.getElementById('prev_stage');
       const prevBgVid = document.getElementById('prev_bg_video');
@@ -778,7 +808,7 @@
         }
       });
 
-      // Text Colors & Borders
+      // 2. Headings & Typography
       const headingColor = document.getElementById('in_heading_color').value;
       const logoColor = document.getElementById('in_logo_color').value;
       const navColor = document.getElementById('in_nav_color').value;
@@ -799,9 +829,9 @@
 
       document.querySelectorAll('.prev_code_text').forEach(el => el.innerText = inviteCode);
 
-      // Consistent Box Mode Check
+      // 3. Unified Stack Check
       const isUnified = document.getElementById('in_unified_box_enable').checked;
-      const unifiedSource = localPreviews.unified || document.getElementById('in_unified_box_media').value.trim() || null;
+      const unifiedSource = resolveMediaSource('unified', 'in_unified_box_media');
       const isUnifiedVideo = isVideo(unifiedSource);
 
       const prevStack = document.getElementById('prev_stack');
@@ -822,24 +852,23 @@
         if (modalUniWrap) modalUniWrap.classList.add('hidden');
       }
 
-      // Join Buttons
+      // 4. Join Button
       const btnBg = document.getElementById('in_btn_color').value;
       const btnTextColor = document.getElementById('in_btn_text_color').value;
       const btnBorderColor = document.getElementById('in_btn_border_color').value;
       const btnBorderOp = document.getElementById('in_btn_border_opacity').value;
-      const btnSource = localPreviews.btn || document.getElementById('in_btn_bg_image').value.trim() || null;
+      const btnSource = resolveMediaSource('btn', 'in_btn_bg_image');
 
       document.getElementById('btn_border_val').innerText = `${btnBorderOp}%`;
 
       document.querySelectorAll('.prev_btn').forEach((el, idx) => {
         const parentStack = idx === 0 ? prevStack : modalStack;
         if (isUnified && unifiedSource && !isUnifiedVideo) {
-          applyUnifiedSlice(el, parentStack, unifiedSource);
-        } else if (!isUnified) {
+          applyCoverSlice(el, parentStack, unifiedSource);
+        } else if (!isUnified && btnSource) {
           setLayerMedia(el, idx === 0 ? document.getElementById('prev_btn_video') : document.getElementById('modal_btn_video'), btnSource);
-          if (!btnSource) el.style.backgroundColor = btnBg;
         } else {
-          el.style.backgroundColor = 'transparent';
+          el.style.backgroundColor = (isUnified && isUnifiedVideo) ? 'transparent' : btnBg;
           el.style.backgroundImage = 'none';
         }
 
@@ -861,14 +890,14 @@
       applySvgOutline(document.getElementById('prev_btn_icon'), btnTextBorderColor, btnTextBorderEnabled);
       applySvgOutline(document.getElementById('modal_btn_icon'), btnTextBorderColor, btnTextBorderEnabled);
 
-      // Code Boxes
+      // 5. Code Box
       const cbBg = document.getElementById('in_code_box_bg').value;
       const cbBgOp = document.getElementById('in_code_box_bg_opacity').value;
       const cbBorder = document.getElementById('in_code_box_border').value;
       const cbBorderOp = document.getElementById('in_code_box_border_opacity').value;
       const cbLabelColor = document.getElementById('in_code_box_label_color').value;
       const cbTextColor = document.getElementById('in_code_box_text_color').value;
-      const cbSource = localPreviews.code_box || document.getElementById('in_code_box_bg_image').value.trim() || null;
+      const cbSource = resolveMediaSource('code_box', 'in_code_box_bg_image');
 
       document.getElementById('code_box_bg_val').innerText = `${cbBgOp}%`;
       document.getElementById('code_box_border_val').innerText = `${cbBorderOp}%`;
@@ -876,12 +905,11 @@
       document.querySelectorAll('.prev_code_box').forEach((el, idx) => {
         const parentStack = idx === 0 ? prevStack : modalStack;
         if (isUnified && unifiedSource && !isUnifiedVideo) {
-          applyUnifiedSlice(el, parentStack, unifiedSource);
-        } else if (!isUnified) {
+          applyCoverSlice(el, parentStack, unifiedSource);
+        } else if (!isUnified && cbSource) {
           setLayerMedia(el, idx === 0 ? document.getElementById('prev_code_box_video') : document.getElementById('modal_code_box_video'), cbSource);
-          if (!cbSource) el.style.backgroundColor = hexToRgba(cbBg, cbBgOp);
         } else {
-          el.style.backgroundColor = 'transparent';
+          el.style.backgroundColor = (isUnified && isUnifiedVideo) ? 'transparent' : hexToRgba(cbBg, cbBgOp);
           el.style.backgroundImage = 'none';
         }
 
@@ -901,7 +929,7 @@
       document.querySelectorAll('.prev_code_text').forEach(el => el.style.color = cbTextColor);
       applyTextStroke('.prev_code_text', document.getElementById('in_code_text_border').value, document.getElementById('in_code_text_border_enable').checked, '2px');
 
-      // Inviter Boxes
+      // 6. Inviter Box
       const showBubble = document.getElementById('in_show_bubble').checked;
       const bBg = document.getElementById('in_bubble_bg').value;
       const bBorderColor = document.getElementById('in_bubble_border_color').value;
@@ -911,7 +939,7 @@
       const inviter = document.getElementById('in_invited_by').value || '@user';
       const iconText = Array.from(document.getElementById('in_bubble_icon').value || 'TXT').slice(0, 3).join('');
       const emojiPos = document.getElementById('in_emoji_pos').value;
-      const bubbleSource = localPreviews.bubble || document.getElementById('in_bubble_bg_image').value.trim() || null;
+      const bubbleSource = resolveMediaSource('bubble', 'in_bubble_bg_image');
 
       document.getElementById('bubble_border_val').innerText = `${bBorderOp}%`;
 
@@ -925,12 +953,11 @@
           const parentStack = idx === 0 ? prevStack : modalStack;
 
           if (isUnified && unifiedSource && !isUnifiedVideo) {
-            applyUnifiedSlice(el, parentStack, unifiedSource);
-          } else if (!isUnified) {
+            applyCoverSlice(el, parentStack, unifiedSource);
+          } else if (!isUnified && bubbleSource) {
             setLayerMedia(el, idx === 0 ? document.getElementById('prev_bubble_video') : document.getElementById('modal_bubble_video'), bubbleSource);
-            if (!bubbleSource) el.style.backgroundColor = bBg;
           } else {
-            el.style.backgroundColor = 'transparent';
+            el.style.backgroundColor = (isUnified && isUnifiedVideo) ? 'transparent' : bBg;
             el.style.backgroundImage = 'none';
           }
 
@@ -1110,6 +1137,7 @@ bubble_text_border_color = ${checked('in_bubble_text_border_enable') ? val('in_b
       }
     }
 
+    window.addEventListener('resize', schedulePreviewUpdate);
     schedulePreviewUpdate();
   </script>
 </body>
