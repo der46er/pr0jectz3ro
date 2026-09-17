@@ -125,7 +125,7 @@
       <!-- Config Form -->
       <div class="p-5 sm:p-6 rounded-2xl bg-neutral-900/60 border border-white/10 backdrop-blur-sm flex flex-col gap-6">
         <h2 class="font-orbitron text-base font-bold uppercase tracking-wider text-white">
-          2. Visual Settings & Local Test Uploads
+          2. Visual Settings & Media Inputs
         </h2>
 
         <!-- Discord Target Info -->
@@ -159,9 +159,9 @@
             </label>
           </div>
           <div>
-            <label class="text-[11px] text-white/70 block mb-1">Consistent Master Media (768×280 px .webp / .gif / .mp4)</label>
+            <label class="text-[11px] text-white/70 block mb-1">Consistent Master Media (768×280 px file, Direct Image/Video URL, or local upload)</label>
             <div class="flex items-center gap-2">
-              <input id="in_unified_box_media" type="text" placeholder="unified-box-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
+              <input id="in_unified_box_media" type="text" placeholder="https://example.com/art.jpg or unified-box-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
                 <span>Upload</span>
                 <input id="upload_unified" type="file" accept="image/webp,image/gif,image/png,image/jpeg,video/mp4" class="hidden">
@@ -235,9 +235,9 @@
             <input id="in_glow_opacity" type="range" min="0" max="100" value="0" class="w-full accent-white py-2">
           </div>
           <div class="pt-1">
-            <label class="text-[11px] text-white/70 block mb-1">Page Background Media (1920×1080 px .webp / .gif / .mp4)</label>
+            <label class="text-[11px] text-white/70 block mb-1">Page Background Media (1920×1080 px file, Direct URL, or local upload)</label>
             <div class="flex items-center gap-2">
-              <input id="in_bg_image_name" type="text" value="background.webp" placeholder="background.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
+              <input id="in_bg_image_name" type="text" value="background.webp" placeholder="https://example.com/bg.jpg or background.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
                 <span>Upload</span>
                 <input id="upload_bg" type="file" accept="image/webp,image/gif,image/png,image/jpeg,video/mp4" class="hidden">
@@ -278,9 +278,9 @@
             <input id="in_btn_border_opacity" type="range" min="0" max="100" value="0" class="w-full accent-white py-2">
           </div>
           <div>
-            <label class="text-[11px] text-white/70 block mb-1">Custom Background Media (ignored if consistent mode is on)</label>
+            <label class="text-[11px] text-white/70 block mb-1">Custom Background Media (Direct URL, file, or upload)</label>
             <div class="flex items-center gap-2">
-              <input id="in_btn_bg_image" type="text" placeholder="button-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
+              <input id="in_btn_bg_image" type="text" placeholder="https://example.com/btn.jpg or button-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
                 <span>Upload</span>
                 <input id="upload_btn" type="file" accept="image/webp,image/gif,image/png,image/jpeg,video/mp4" class="hidden">
@@ -341,9 +341,9 @@
             </div>
           </div>
           <div>
-            <label class="text-[11px] text-white/70 block mb-1">Custom Background Media (ignored if consistent mode is on)</label>
+            <label class="text-[11px] text-white/70 block mb-1">Custom Background Media (Direct URL, file, or upload)</label>
             <div class="flex items-center gap-2">
-              <input id="in_code_box_bg_image" type="text" placeholder="code-box-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
+              <input id="in_code_box_bg_image" type="text" placeholder="https://example.com/box.jpg or code-box-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
                 <span>Upload</span>
                 <input id="upload_code_box" type="file" accept="image/webp,image/gif,image/png,image/jpeg,video/mp4" class="hidden">
@@ -424,9 +424,9 @@
           </div>
 
           <div>
-            <label class="text-[11px] text-white/70 block mb-1">Custom Background Media (ignored if consistent mode is on)</label>
+            <label class="text-[11px] text-white/70 block mb-1">Custom Background Media (Direct URL, file, or upload)</label>
             <div class="flex items-center gap-2">
-              <input id="in_bubble_bg_image" type="text" placeholder="bubble-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
+              <input id="in_bubble_bg_image" type="text" placeholder="https://example.com/bubble.jpg or bubble-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
                 <span>Upload</span>
                 <input id="upload_bubble" type="file" accept="image/webp,image/gif,image/png,image/jpeg,video/mp4" class="hidden">
@@ -435,11 +435,79 @@
           </div>
         </div>
 
-        <button onclick="downloadConfig()" class="w-full py-4 px-6 rounded-xl bg-white text-black font-bold text-sm tracking-wide hover:bg-neutral-200 active:scale-[0.98] transition flex items-center justify-center gap-2 touch-target shadow-lg">
+        <!-- 3. Austrian-Law Compliant Copyright & License Declaration -->
+        <div class="p-4 rounded-xl border border-red-500/30 bg-red-950/20 space-y-4">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <span class="text-xs font-bold uppercase tracking-wider text-red-300">
+              Copyright Notice &amp; Terms of Service (Austrian Law / UrhG)
+            </span>
+          </div>
+
+          <!-- Plain-Language Explainer -->
+          <div class="space-y-2 text-xs text-white/90 leading-relaxed">
+            <p>
+              To keep our community safe and compliant with the Austrian Copyright Act (<em>Urheberrechtsgesetz - UrhG</em>), you must ensure that you are legally allowed to use all artwork, photos, videos, and music you provide:
+            </p>
+            <ul class="list-disc list-inside space-y-1 text-white/80 pl-1">
+              <li><strong>Your own creation:</strong> You created it yourself. You must sign the declaration below with your real name and Discord handle (<code>@username</code>).</li>
+              <li><strong>Licensed copyrighted work:</strong> You bought or received permission to use it. You must upload your official license confirmation sheet below.</li>
+              <li><strong>Copyright-free (Public Domain / CC0):</strong> The media is explicitly royalty-free and free for public use.</li>
+            </ul>
+          </div>
+
+          <!-- Accountability Warning -->
+          <div class="p-3 rounded-lg bg-black/40 border border-amber-500/30 text-[11px] text-amber-200/90 leading-relaxed space-y-1">
+            <p class="font-bold text-amber-300">Liability &amp; Indemnity Notice (§§ 86ff UrhG, § 1295 ABGB):</p>
+            <p>
+              If any copyright claims, legal warnings (<em>Abmahnungen</em>), or fines are filed regarding the media you provide, you are held 100% personally accountable. You agree to take full legal and financial responsibility and to indemnify and hold harmless pr0jectz3ro and thataustrianone.eu from all costs, attorney fees, and statutory penalty payments.
+            </p>
+          </div>
+
+          <!-- Royalty-Free Recommendation -->
+          <p class="text-xs text-white/70 leading-relaxed">
+            Need high-quality free media without copyright worries? Please source your graphics and clips from verified platforms such as 
+            <a href="https://pixabay.com" target="_blank" rel="noopener noreferrer" class="text-white underline hover:text-white/80 font-bold">https://pixabay.com</a>.
+          </p>
+
+          <!-- Upload License Sheet / Proof -->
+          <div class="pt-1">
+            <label class="text-[11px] text-white/80 block mb-1">
+              Proof of License / Permission Document (PDF, TXT, or Image — required if using licensed material):
+            </label>
+            <div class="flex items-center gap-2">
+              <input id="in_license_file_name" type="text" readonly placeholder="No license document selected" class="flex-grow min-w-0 px-3 py-2 rounded-xl bg-black border border-white/10 text-xs text-white/60">
+              <label class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
+                <span>Upload Proof</span>
+                <input id="upload_license_doc" type="file" accept=".pdf,.txt,.png,.jpg,.jpeg,.webp" class="hidden">
+              </label>
+            </div>
+          </div>
+
+          <!-- Signature input for original authors -->
+          <div class="pt-1">
+            <label class="text-[11px] text-white/80 block mb-1">
+              If this is your own original artwork, sign here with your Full Name and @Handle:
+            </label>
+            <input id="in_author_signature" type="text" placeholder="e.g. John Doe (@johndoe)" class="w-full px-3.5 py-2 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
+          </div>
+
+          <!-- Mandatory Checkbox -->
+          <label class="flex items-start gap-2.5 pt-2 cursor-pointer touch-target border-t border-white/10">
+            <input id="agree_terms" type="checkbox" class="w-4 h-4 mt-0.5 accent-white shrink-0">
+            <span class="text-xs text-white font-medium">
+              I certify that my assets comply with Austrian copyright law, accept full financial liability for any claims, and authorize the download of <code>terms-of-use.txt</code>.
+            </span>
+          </label>
+        </div>
+
+        <button id="downloadBtn" onclick="downloadConfig()" class="w-full py-4 px-6 rounded-xl bg-white text-black font-bold text-sm tracking-wide hover:bg-neutral-200 active:scale-[0.98] transition flex items-center justify-center gap-2 touch-target shadow-lg">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
           </svg>
-          Download config.txt
+          Download config.txt &amp; terms-of-use.txt
         </button>
 
       </div>
@@ -622,6 +690,7 @@
   <script>
     const localPreviews = { bg: null, btn: null, code_box: null, bubble: null, unified: null };
     const imageSizeCache = {};
+    let licenseProofFile = null;
     let renderScheduled = false;
 
     function isVideo(path) {
@@ -662,7 +731,6 @@
       }
     }
 
-    // Proportional Cover Calculation: guarantees horizontal coverage across buttons without distortion
     function applyCoverSlice(el, stackEl, imgUrl) {
       if (!el || !stackEl || !imgUrl) return;
       const stackRect = stackEl.getBoundingClientRect();
@@ -688,6 +756,7 @@
         apply(imageSizeCache[imgUrl].w, imageSizeCache[imgUrl].h);
       } else {
         const img = new Image();
+        img.crossOrigin = 'anonymous';
         img.src = imgUrl;
         img.onload = () => {
           imageSizeCache[imgUrl] = { w: img.naturalWidth, h: img.naturalHeight };
@@ -769,6 +838,15 @@
     setupFileUploader('upload_btn', 'in_btn_bg_image', 'btn');
     setupFileUploader('upload_code_box', 'in_code_box_bg_image', 'code_box');
     setupFileUploader('upload_bubble', 'in_bubble_bg_image', 'bubble');
+
+    // Listener for the copyright license document proof
+    document.getElementById('upload_license_doc').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        licenseProofFile = file.name;
+        document.getElementById('in_license_file_name').value = file.name;
+      }
+    });
 
     function schedulePreviewUpdate() {
       if (renderScheduled) return;
@@ -1031,8 +1109,28 @@
       link.click();
     }
 
+    function triggerFileDownload(content, filename) {
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(() => {
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }, 150);
+    }
+
     function downloadConfig() {
       try {
+        const agreed = document.getElementById('agree_terms').checked;
+        if (!agreed) {
+          alert('You must review and accept the Copyright Terms & Austrian Law Compliance Agreement before downloading.');
+          return;
+        }
+
         const val = (id, fallback = '') => {
           const el = document.getElementById(id);
           return el ? el.value : fallback;
@@ -1044,8 +1142,10 @@
 
         const showBubble = checked('in_show_bubble') ? 'yes' : 'no';
         const isUnified = checked('in_unified_box_enable') ? 'yes' : 'no';
+        const authorSignature = val('in_author_signature', 'Not provided / Using Licensed or CC0 media');
+        const licenseDoc = licenseProofFile || 'None uploaded / Declared public domain or self-authored';
 
-        const fileContent = `# ==========================================
+        const configContent = `# ==========================================
 # DISCORD SETTINGS
 # ==========================================
 discord_link = ${val('in_discord_link', 'https://discord.gg/default-code')}
@@ -1119,21 +1219,70 @@ bubble_icon_color = ${val('in_bubble_icon_color', '#000000')}
 bubble_icon_border_color = ${checked('in_bubble_icon_border_enable') ? val('in_bubble_icon_border', '#ffffff') : 'none'}
 bubble_text_color = ${val('in_bubble_text_color', '#000000')}
 bubble_text_border_color = ${checked('in_bubble_text_border_enable') ? val('in_bubble_text_border', '#ffffff') : 'none'}
+
+# ==========================================
+# LEGAL & COPYRIGHT VERIFICATION (AUSTRIAN URHG)
+# ==========================================
+terms_agreed = yes
+author_signature = ${authorSignature}
+license_proof_file = ${licenseDoc}
 `;
 
-        const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'config.txt';
-        document.body.appendChild(link);
-        link.click();
+        const termsContent = `================================================================================
+TERMS OF SERVICE & COPYRIGHT ACCOUNTABILITY AGREEMENT
+Governed by the Laws of the Republic of Austria (UrhG & ABGB)
+Platform: pr0jectz3ro (thataustrianone.eu)
+================================================================================
+
+1. EASY-TO-UNDERSTAND OVERVIEW (WHAT YOU ARE AGREEING TO):
+You are about to use custom pictures, videos, or artwork for your landing page. 
+Copyright law in Austria is strict. To keep everyone safe, you must be 100% 
+honest about where your pictures come from.
+
+By using this builder and downloading your files, you confirm that:
+  - You created the artwork yourself, OR
+  - You bought a license or have written permission from the artist, OR
+  - The artwork is completely free of copyright (CC0 or Public Domain).
+
+2. RULES FOR USING ARTWORK:
+  a) IF IT IS YOUR OWN ARTWORK:
+     You confirm you created it. You have provided your real name and Discord handle 
+     (@username) below as an electronic signature.
+  b) IF IT IS LICENSED ARTWORK:
+     You confirm you possess a valid license sheet, commercial invoice, or permission 
+     grant, and that you have uploaded or archived proof of this license.
+  c) IF YOU NEED FREE ARTWORK:
+     If you are unsure whether an image is copyrighted, do NOT risk it. Only use 
+     safe, royalty-free libraries such as: https://pixabay.com
+
+3. PERSONAL LIABILITY & FINES (AUSTRIAN LAW §§ 86ff UrhG, § 1295 ABGB):
+In the event that any copyright holder, lawyer, or third party files a copyright 
+infringement claim, warning letter (Abmahnung), or demand for damages regarding 
+the materials you provided:
+  - You are SOLELY and PERSONALLY responsible for the violation.
+  - You agree to pay all resulting fines, legal fees, court costs, and statutory 
+    compensation (Schadenersatz und angemessenes Entgelt nach § 86 UrhG).
+  - You agree to fully indemnify and hold harmless pr0jectz3ro, its team, and 
+    the domain thataustrianone.eu from any liability.
+
+4. USER VERIFICATION RECORD:
+  - Target Discord Invite Code: ${val('in_invite_code', 'default-code')}
+  - Author Signature (Name & @): ${authorSignature}
+  - License Proof Document:    ${licenseDoc}
+  - Agreed & Generated on:     ${new Date().toISOString()}
+
+Jurisdiction: Linz / Vienna, Republic of Austria.
+================================================================================
+`;
+
+        triggerFileDownload(configContent, 'config.txt');
+
         setTimeout(() => {
-          document.body.removeChild(link);
-          URL.revokeObjectURL(url);
-        }, 150);
+          triggerFileDownload(termsContent, 'terms-of-use.txt');
+        }, 250);
+
       } catch (err) {
-        console.error('Failed to export config.txt:', err);
+        console.error('Failed to export configuration:', err);
       }
     }
 
