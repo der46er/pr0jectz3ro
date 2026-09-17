@@ -137,12 +137,12 @@
   <!-- Footer -->
   <footer class="w-full pb-8 pt-4 text-center relative z-10 px-4 mt-auto">
     <div id="footerText" class="inline-flex flex-wrap justify-center items-center gap-1.5 text-xs">
-      <a href="https://pr0jectz3ro.eu/legal/" class="stroke-text footer-link inline-block transition underline-offset-4 hover:underline active:opacity-70 touch-target"[cite: 2]>
+      <a href="https://pr0jectz3ro.eu/legal/" class="stroke-text footer-link inline-block transition underline-offset-4 hover:underline active:opacity-70 touch-target">
         &copy; 2026 pr0jectz3ro
       </a>
       <span class="stroke-text footer-dash inline-block">-</span>
       <span class="stroke-text footer-by inline-block">powered by</span>
-      <a href="https://thataustrianone.eu/" target="_blank" rel="noopener noreferrer" class="stroke-text footer-link inline-block transition underline-offset-4 hover:underline active:opacity-70 touch-target"[cite: 2]>
+      <a href="https://thataustrianone.eu/" target="_blank" rel="noopener noreferrer" class="stroke-text footer-link inline-block transition underline-offset-4 hover:underline active:opacity-70 touch-target">
         thataustrianone.eu
       </a>
     </div>
@@ -150,41 +150,67 @@
 
   <script>
     let activeCode = 'default-code';
+    const imageSizeCache = {};
 
     function isVideo(path) {
       return typeof path === 'string' && (path.endsWith('.mp4') || path.startsWith('data:video/mp4'));
     }
 
     function setLayerMedia(container, videoEl, sourcePath) {
-      if (!container || !videoEl) return;
-      if (isVideo(sourcePath)) {
+      if (!container) return;
+      if (videoEl && isVideo(sourcePath)) {
         container.style.backgroundImage = 'none';
         if (videoEl.src !== sourcePath) videoEl.src = sourcePath;
         videoEl.classList.remove('hidden');
         videoEl.play().catch(() => {});
       } else if (sourcePath) {
-        videoEl.classList.add('hidden');
-        videoEl.pause();
-        videoEl.removeAttribute('src');
+        if (videoEl) {
+          videoEl.classList.add('hidden');
+          videoEl.pause();
+          videoEl.removeAttribute('src');
+        }
         container.style.backgroundImage = `url('${sourcePath}')`;
       } else {
-        videoEl.classList.add('hidden');
-        videoEl.pause();
-        videoEl.removeAttribute('src');
+        if (videoEl) {
+          videoEl.classList.add('hidden');
+          videoEl.pause();
+          videoEl.removeAttribute('src');
+        }
         container.style.backgroundImage = 'none';
       }
     }
 
-    function applyUnifiedSlice(el, stackEl, imgUrl) {
+    function applyCoverSlice(el, stackEl, imgUrl) {
       if (!el || !stackEl || !imgUrl) return;
       const stackRect = stackEl.getBoundingClientRect();
       const elRect = el.getBoundingClientRect();
-      const offsetY = elRect.top - stackRect.top;
-      
-      el.style.backgroundImage = `url('${imgUrl}')`;
-      el.style.backgroundSize = `${stackRect.width}px ${stackRect.height}px`;
-      el.style.backgroundPosition = `0px -${offsetY}px`;
-      el.style.backgroundRepeat = 'no-repeat';
+      if (stackRect.width === 0 || stackRect.height === 0) return;
+
+      const apply = (naturalW, naturalH) => {
+        const scale = Math.max(stackRect.width / naturalW, stackRect.height / naturalH);
+        const renderedW = naturalW * scale;
+        const renderedH = naturalH * scale;
+
+        const leftOffset = (stackRect.width - renderedW) / 2;
+        const topOffset = (stackRect.height - renderedH) / 2;
+        const elementOffsetY = elRect.top - stackRect.top;
+
+        el.style.backgroundImage = `url('${imgUrl}')`;
+        el.style.backgroundRepeat = 'no-repeat';
+        el.style.backgroundSize = `${renderedW}px ${renderedH}px`;
+        el.style.backgroundPosition = `${leftOffset}px ${topOffset - elementOffsetY}px`;
+      };
+
+      if (imageSizeCache[imgUrl]) {
+        apply(imageSizeCache[imgUrl].w, imageSizeCache[imgUrl].h);
+      } else {
+        const img = new Image();
+        img.src = imgUrl;
+        img.onload = () => {
+          imageSizeCache[imgUrl] = { w: img.naturalWidth, h: img.naturalHeight };
+          apply(img.naturalWidth, img.naturalHeight);
+        };
+      }
     }
 
     function hexToRgba(hex, opacityPercent) {
@@ -282,20 +308,16 @@
           });
         }
 
-        // Check if Unified Box Image mode is on
+        // Consistent Box Mode
         const isUnified = ['yes', 'true', '1'].includes((cfg.unified_box_image || '').toLowerCase());
         const unifiedMedia = cfg.box_media || '';
         const actionStack = document.getElementById('actionStack');
         const unifiedWrapper = document.getElementById('unifiedMediaWrapper');
         const unifiedBgVideo = document.getElementById('unifiedBgVideo');
 
-        if (isUnified && unifiedMedia) {
-          if (isVideo(unifiedMedia)) {
-            unifiedWrapper.classList.remove('hidden');
-            setLayerMedia(unifiedWrapper, unifiedBgVideo, unifiedMedia);
-          } else {
-            unifiedWrapper.classList.add('hidden');
-          }
+        if (isUnified && unifiedMedia && isVideo(unifiedMedia)) {
+          unifiedWrapper.classList.remove('hidden');
+          setLayerMedia(unifiedWrapper, unifiedBgVideo, unifiedMedia);
         } else {
           unifiedWrapper.classList.add('hidden');
         }
@@ -306,11 +328,12 @@
         const btnBgVideo = document.getElementById('btnBgVideo');
         if (joinBtn) {
           if (isUnified && unifiedMedia && !isVideo(unifiedMedia)) {
-            applyUnifiedSlice(joinBtn, actionStack, unifiedMedia);
-          } else if (!isUnified) {
+            applyCoverSlice(joinBtn, actionStack, unifiedMedia);
+          } else if (!isUnified && cfg.button_background_image) {
             setLayerMedia(joinBtn, btnBgVideo, cfg.button_background_image);
           } else {
-            joinBtn.style.backgroundColor = 'transparent';
+            joinBtn.style.backgroundColor = isUnified ? 'transparent' : (cfg.button_color || '#ffffff');
+            joinBtn.style.backgroundImage = 'none';
           }
 
           if (cfg.button_border_color) {
@@ -333,11 +356,13 @@
         const codeBoxBgVideo = document.getElementById('codeBoxBgVideo');
         if (copyBtn) {
           if (isUnified && unifiedMedia && !isVideo(unifiedMedia)) {
-            applyUnifiedSlice(copyBtn, actionStack, unifiedMedia);
-          } else if (!isUnified) {
+            applyCoverSlice(copyBtn, actionStack, unifiedMedia);
+          } else if (!isUnified && cfg.code_box_background_image) {
             setLayerMedia(copyBtn, codeBoxBgVideo, cfg.code_box_background_image);
           } else {
-            copyBtn.style.backgroundColor = 'transparent';
+            const bgOp = cfg.code_box_background_opacity || 15;
+            copyBtn.style.backgroundColor = isUnified ? 'transparent' : hexToRgba(cfg.code_box_background || '#ffffff', bgOp);
+            copyBtn.style.backgroundImage = 'none';
           }
 
           if (cfg.code_box_border) {
@@ -398,11 +423,13 @@
             }
 
             if (isUnified && unifiedMedia && !isVideo(unifiedMedia)) {
-              applyUnifiedSlice(bubble, actionStack, unifiedMedia);
-            } else if (!isUnified) {
+              applyCoverSlice(bubble, actionStack, unifiedMedia);
+            } else if (!isUnified && cfg.bubble_background_image) {
               setLayerMedia(bubble, bubbleBgVideo, cfg.bubble_background_image);
             } else {
-              bubble.style.backgroundColor = 'transparent';
+              const bBgOp = cfg.bubble_background_opacity || 100;
+              bubble.style.backgroundColor = isUnified ? 'transparent' : hexToRgba(cfg.bubble_background_color || '#ffffff', bBgOp);
+              bubble.style.backgroundImage = 'none';
             }
 
             if (cfg.bubble_border_color) {
