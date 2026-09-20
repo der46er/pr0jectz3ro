@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pr0jectz3ro | Easy Page Builder</title>
+  <link rel="icon" type="image/webp" href="https://raw.githubusercontent.com/der46er/pr0jectz3ro/main/assets/favicon.webp">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0a0a; --bg-card: #121212; --border: rgba(255,255,255,0.1);
+      --text: #fff; --text2: rgba(255,255,255,0.7); --text3: rgba(255,255,255,0.5);
+      --accent: #8b5cf6; --success: #10b981;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:var(--bg-dark);color:var(--text);min-height:100vh;overflow-x:hidden}
+    .font-orbitron{font-family:'Orbitron',sans-serif}
+    .container{width:100%;max-width:1200px;margin:0 auto;padding:0 1rem}
+    .card{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:1.25rem;margin-bottom:1rem}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.875rem 1.5rem;border-radius:12px;font-size:.9375rem;font-weight:600;cursor:pointer;transition:all .2s;border:none;touch-action:manipulation}
+    .btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:#7c3aed}
+    .btn-secondary{background:rgba(255,255,255,0.05);color:var(--text);border:1px solid var(--border)}
+    .btn-secondary:hover{background:rgba(255,255,255,0.1)}
+    .btn-full{width:100%}
+    .input-field{width:100%;padding:.875rem 1rem;background:#000;border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:.9375rem}
+    .input-field:focus{outline:none;border-color:var(--accent)}
+    input[type=color]{-webkit-appearance:none;appearance:none;width:44px;height:44px;border:none;border-radius:10px;cursor:pointer;background:none;border:1px solid var(--border)}
+    input[type=range]{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:rgba(255,255,255,0.1);border-radius:3px;outline:none;opacity:.9}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;background:var(--accent);border-radius:50%;cursor:pointer}
+    .toggle{position:relative;display:inline-block;width:48px;height:26px}
+    .toggle input{opacity:0;width:0;height:0}
+    .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.1);border:1px solid var(--border);border-radius:13px;transition:background .3s}
+    .toggle-slider:before{position:absolute;content:"";height:18px;width:18px;left:4px;bottom:4px;background:var(--text3);border-radius:50%;transition:transform .3s}
+    .toggle input:checked+.toggle-slider{background:var(--accent);border-color:var(--accent)}
+    .toggle input:checked+.toggle-slider:before{transform:translateX(22px);background:#fff}
+    .step-indicator{display:flex;align-items:center;gap:.5rem;margin-bottom:1.5rem}
+    .step-number{display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--accent);border-radius:50%;font-size:.875rem;font-weight:700;color:#fff}
+    .step-title{font-size:1.125rem;font-weight:600;color:var(--text)}
+    .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+    .section-title{font-size:1rem;font-weight:600;color:var(--text)}
+    .section-subtitle{font-size:.8125rem;color:var(--text2);margin-top:.25rem}
+    .color-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem}
+    .color-option{display:flex;flex-direction:column;gap:.5rem;padding:.75rem;background:#000;border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s}
+    .color-option:hover{border-color:var(--accent)}
+    .color-preview{width:100%;height:60px;border-radius:6px;display:flex;align-items:center;justify-content:center}
+    .color-name{font-size:.75rem;font-weight:500;color:var(--text2);text-align:center}
+    .upload-zone{border:2px dashed var(--border);border-radius:12px;padding:2rem;text-align:center;cursor:pointer;transition:all .2s;background:rgba(255,255,255,0.02)}
+    .upload-zone:hover{border-color:var(--accent);background:rgba(139,92,246,0.05)}
+    .upload-zone.dragover{border-color:var(--accent);background:rgba(139,92,246,0.1)}
+    .preview-container{background:#000;border:1px solid var(--border);border-radius:16px;overflow:hidden;position:relative}
+    .preview-header{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1rem;background:rgba(0,0,0,0.5);border-bottom:1px solid var(--border)}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,0.95);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem;overflow-y:auto}
+    .modal.active{display:flex}
+    .modal-content{width:100%;max-width:600px;max-height:90vh;background:var(--bg-card);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+    .modal-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;background:rgba(0,0,0,0.3);border-bottom:1px solid var(--border)}
+    .modal-body{padding:1.5rem;overflow-y:auto}
+    .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--success);color:#fff;padding:1rem 1.5rem;border-radius:12px;font-weight:500;font-size:.9375rem;box-shadow:0 10px 40px rgba(0,0,0,0.3);opacity:0;transition:all .3s;z-index:2000}
+    .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+    .theme-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:.75rem}
+    .theme-option{aspect-ratio:1;border-radius:12px;cursor:pointer;border:2px solid transparent;transition:all .2s;position:relative;overflow:hidden}
+    .theme-option:hover{transform:scale(1.05);border-color:var(--text3)}
+    .theme-option.selected{border-color:var(--accent);box-shadow:0 0 0 2px rgba(139,92,246,0.3)}
+    .theme-label{position:absolute;bottom:0;left:0;right:0;padding:.5rem;background:linear-gradient(transparent,rgba(0,0,0,0.8));font-size:.75rem;font-weight:500;text-align:center;color:#fff}
+    .media-layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;z-index:0}
+    .stroke-text{paint-order:stroke fill;-webkit-text-stroke-linejoin:round;-webkit-text-stroke-linecap:round}
+    .hidden{display:none!important}
+    @media(min-width:768px){.container{padding:0 1.5rem}.card{padding:1.5rem}.main-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}.left-column{grid-column:1}.right-column{grid-column:2}.preview-container{position:sticky;top:2rem}}
+    @media(min-width:1024px){.main-layout{grid-template-columns:2fr 1.5fr}}
+  </style>
+</head>
+<body>
+<header class="py-4 sticky top-0 z-50 bg-black/80 backdrop-blur-lg border-b border-white/10">
+  <div class="container flex items-center justify-between">
+    <a href="/" class="font-orbitron font-bold text-xl tracking-wider uppercase text-white hover:opacity-80">pr0jectz3ro</a>
+    <span class="text-sm text-white/60 font-medium">Page Builder</span>
+  </div>
+</header>
+
+<main class="container py-6">
+  <div class="main-layout">
+    <div class="left-column space-y-4">
+      <div class="card">
+        <div class="step-indicator"><span class="step-number">1</span><span class="step-title">Discord Invite</span></div>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-white/90 mb-2">Invite Link <span class="text-red-400">*</span></label>
+            <input id="discordLink" type="text" value="https://discord.gg/default-code" placeholder="https://discord.gg/your-invite" class="input-field">
+            <p class="text-xs text-white/50 mt-1">Get this from a server admin</p>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-white/90 mb-2">Invite Code <span class="text-red-400">*</span></label>
+            <input id="inviteCode" type="text" value="default-code" placeholder="e.g., ABC123XYZ" class="input-field">
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="step-indicator"><span class="step-number">2</span><span class="step-title">Quick Theme</span></div>
+        <p class="section-subtitle mb-4">Pick a pre-made theme to get started fast</p>
+        <div class="theme-grid mb-4">
+          <div class="theme-option" data-theme="dark" style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a)" onclick="applyTheme('dark')"><div class="theme-label">Dark</div></div>
+          <div class="theme-option" data-theme="purple" style="background:linear-gradient(135deg,#1a0a2a,#4a1a6a)" onclick="applyTheme('purple')"><div class="theme-label">Purple</div></div>
+          <div class="theme-option" data-theme="cyber" style="background:linear-gradient(135deg,#0a1a1a,#0a4a4a)" onclick="applyTheme('cyber')"><div class="theme-label">Cyber</div></div>
+          <div class="theme-option" data-theme="pastel" style="background:linear-gradient(135deg,#2a1a2a,#6a4a6a)" onclick="applyTheme('pastel')"><div class="theme-label">Pastel</div></div>
+          <div class="theme-option" data-theme="gold" style="background:linear-gradient(135deg,#2a2a1a,#6a6a4a)" onclick="applyTheme('gold')"><div class="theme-label">Gold</div></div>
+        </div>
+        <button class="btn btn-secondary btn-full" onclick="resetTheme()">Customize Manually</button>
+      </div>
+
+      <div class="card">
+        <div class="step-indicator"><span class="step-number">3</span><span class="step-title">Customize Colors</span></div>
+        <div class="space-y-6 pt-4">
+          <div>
+            <div class="section-header"><span class="section-title">Page Background</span></div>
+            <div class="grid grid-cols-2 gap-3">
+              <div><label class="block text-xs text-white/60 mb-1">Color</label><input id="bgColor" type="color" value="#070707"></div>
+              <div><label class="block text-xs text-white/60 mb-1">Glow</label><input id="glowColor" type="color" value="#ffffff"></div>
+            </div>
+            <div class="mt-3">
+              <div class="flex justify-between text-xs text-white/60 mb-1"><span>Glow Strength</span><span id="glowVal">0%</span></div>
+              <input id="glowOpacity" type="range" min="0" max="100" value="0" class="w-full">
+            </div>
+            <div class="mt-4">
+              <label class="block text-sm font-medium text-white/90 mb-2">Background Image (Optional)</label>
+              <div class="upload-zone" onclick="document.getElementById('bgUpload').click()">
+                <svg class="w-12 h-12 mx-auto mb-2 text-white/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <input id="bgUpload" type="file" accept="image/*,video/mp4" style="display:none" onchange="handleUpload('bg',this)">
+              </div>
+              <input id="bgImageName" type="text" placeholder="Enter image URL" class="input-field mt-3">
+            </div>
+          </div>
+
+          <div>
+            <div class="section-header"><span class="section-title">Text Colors</span></div>
+            <div class="grid grid-cols-2 gap-3">
+              <div><label class="block text-xs text-white/60 mb-1">Heading</label><input id="headingColor" type="color" value="#ffffff"></div>
+              <div><label class="block text-xs text-white/60 mb-1">Logo</label><input id="logoColor" type="color" value="#ffffff"></div>
+              <div><label class="block text-xs text-white/60 mb-1">Navigation</label><input id="navColor" type="color" value="#ffffff"></div>
+              <div><label class="block text-xs text-white/60 mb-1">Footer</label><input id="footerColor" type="color" value="#ffffff"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-header"><span class="section-title">Join Button</span></div>
+            <div class="grid grid-cols-2 gap-3">
+              <div><label class="block text-xs text-white/60 mb-1">Button</label><input id="btnColor" type="color" value="#ffffff"></div>
+              <div><label class="block text-xs text-white/60 mb-1">Text</label><input id="btnTextColor" type="color" value="#000000"></div>
+            </div>
+            <div class="mt-4">
+              <label class="block text-sm font-medium text-white/90 mb-2">Button Background (Optional)</label>
+              <div class="upload-zone" onclick="document.getElementById('btnUpload').click()">
+                <svg class="w-12 h-12 mx-auto mb-2 text-white/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <input id="btnUpload" type="file" accept="image/*,video/mp4" style="display:none" onchange="handleUpload('btn',this)">
+              </div>
+              <input id="btnImageName" type="text" placeholder="Enter image URL" class="input-field mt-3">
+            </div>
+          </div>
+
+          <div>
+            <div class="section-header"><span class="section-title">Code Box</span></div>
+            <div class="grid grid-cols-2 gap-3">
+              <div><label class="block text-xs text-white/60 mb-1">Box</label><input id="codeBoxBg" type="color" value="#ffffff"></div>
+              <div><label class="block text-xs text-white/60 mb-1">Border</label><input id="codeBoxBorder" type="color" value="#ffffff"></div>
+              <div><label class="block text-xs text-white/60 mb-1">Label</label><input id="codeBoxLabelColor" type="color" value="#ffffff"></div>
+              <div><label class="block text-xs text-white/60 mb-1">Code</label><input id="codeBoxTextColor" type="color" value="#ffffff"></div>
+            </div>
+            <div class="mt-4">
+              <label class="block text-sm font-medium text-white/90 mb-2">Code Box Background (Optional)</label>
+              <div class="upload-zone" onclick="document.getElementById('codeBoxUpload').click()">
+                <svg class="w-12 h-12 mx-auto mb-2 text-white/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <input id="codeBoxUpload" type="file" accept="image/*,video/mp4" style="display:none" onchange="handleUpload('codeBox',this)">
+              </div>
+              <input id="codeBoxImageName" type="text" placeholder="Enter image URL" class="input-field mt-3">
+            </div>
+          </div>
+
+          <div>
+            <div class="section-header">
+              <span class="section-title">Inviter Box</span>
+              <label class="toggle"><input id="showBubble" type="checkbox" checked><span class="toggle-slider"></span></label>
+            </div>
+            <div id="bubbleSettings" class="space-y-4">
+              <div class="grid grid-cols-2 gap-3">
+                <div><label class="block text-xs text-white/60 mb-1">Your Name</label><input id="invitedBy" type="text" value="@user" placeholder="@yourname" class="input-field"></div>
+                <div><label class="block text-xs text-white/60 mb-1">Icon (3 chars)</label><input id="bubbleIcon" type="text" maxlength="3" value="TXT" class="input-field"></div>
+              </div>
+              <div><label class="block text-xs text-white/60 mb-1">Icon Position</label>
+                <select id="emojiPos" class="input-field"><option value="left">Left</option><option value="right">Right</option><option value="both">Both</option><option value="none">None</option></select>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <div><label class="block text-xs text-white/60 mb-1">Box Color</label><input id="bubbleBg" type="color" value="#ffffff"></div>
+                <div><label class="block text-xs text-white/60 mb-1">Text Color</label><input id="bubbleTextColor" type="color" value="#000000"></div>
+              </div>
+              <div class="mt-4">
+                <label class="block text-sm font-medium text-white/90 mb-2">Inviter Background (Optional)</label>
+                <div class="upload-zone" onclick="document.getElementById('bubbleUpload').click()">
+                  <svg class="w-12 h-12 mx-auto mb-2 text-white/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                  </svg>
+                  <input id="bubbleUpload" type="file" accept="image/*,video/mp4" style="display:none" onchange="handleUpload('bubble',this)">
+                </div>
+                <input id="bubbleImageName" type="text" placeholder="Enter image URL" class="input-field mt-3">
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="section-header">
+              <span class="section-title">Unified Background</span>
+              <label class="toggle"><input id="unifiedBoxEnable" type="checkbox"><span class="toggle-slider"></span></label>
+            </div>
+            <p class="section-subtitle">Use one image across all buttons</p>
+            <div id="unifiedSettings" class="hidden space-y-4">
+              <div class="upload-zone" onclick="document.getElementById('unifiedUpload').click()">
+                <svg class="w-12 h-12 mx-auto mb-2 text-white/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <input id="unifiedUpload" type="file" accept="image/*,video/mp4" style="display:none" onchange="handleUpload('unified',this)">
+              </div>
+              <input id="unifiedImageName" type="text" placeholder="Enter image URL" class="input-field">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="step-indicator"><span class="step-number">4</span><span class="step-title">Legal & Download</span></div>
+        <div class="p-4 bg-red-900/20 border border-red-500/30 rounded-xl mb-4">
+          <div class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            <div>
+              <p class="text-sm font-semibold text-white mb-1">Important: Copyright Law</p>
+              <p class="text-xs text-white/70 leading-relaxed">Only upload images/videos you created yourself or have permission to use. You're responsible for any copyright issues.</p>
+              <p class="text-xs text-white/70 mt-2">Need free images? Try <a href="https://pixabay.com" target="_blank" class="text-accent underline">pixabay.com</a></p>
+            </div>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <label class="flex items-start gap-2.5 cursor-pointer">
+            <input id="agreeTerms" type="checkbox" class="w-4 h-4 mt-0.5 accent-white flex-shrink-0">
+            <span class="text-sm text-white/90">I confirm I have the right to use all uploaded images/videos and accept responsibility.</span>
+          </label>
+          <button id="downloadBtn" onclick="downloadConfig()" class="btn btn-primary btn-full" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download Configuration Files
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="step-indicator"><span class="step-number">5</span><span class="step-title">Template Downloads</span></div>
+        <p class="section-subtitle mb-4">Need blank templates for your designs?</p>
+        <div class="grid grid-cols-2 gap-3">
+          <button onclick="downloadPng(1920,1080,'background.png')" class="btn btn-secondary text-left flex flex-col items-start"><span class="font-medium">Page BG</span><span class="text-xs text-white/60 mt-1">1920x1080</span></button>
+          <button onclick="downloadPng(768,280,'unified-stack.png')" class="btn btn-secondary text-left flex flex-col items-start"><span class="font-medium">Unified</span><span class="text-xs text-white/60 mt-1">768x280</span></button>
+          <button onclick="downloadPng(768,112,'button.png')" class="btn btn-secondary text-left flex flex-col items-start"><span class="font-medium">Button</span><span class="text-xs text-white/60 mt-1">768x112</span></button>
+          <button onclick="downloadPng(768,80,'code-box.png')" class="btn btn-secondary text-left flex flex-col items-start"><span class="font-medium">Code Box</span><span class="text-xs text-white/60 mt-1">768x80</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-column">
+      <div class="card preview-container">
+        <div class="preview-header">
+          <span class="text-sm font-medium text-white/70">Live Preview</span>
+          <button onclick="toggleFullView()" class="btn btn-secondary text-xs px-3 py-1.5">Full View</button>
+        </div>
+        <div id="previewStage" class="min-h-[400px] md:min-h-[600px] relative bg-cover bg-center">
+          <video id="previewBgVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+          <div id="previewGlow" class="absolute inset-0 pointer-events-none flex items-center justify-center"><div class="w-[200px] h-[200px] blur-[60px] rounded-full"></div></div>
+          <div class="absolute top-0 left-0 right-0 px-4 py-3 flex items-center justify-between z-10">
+            <span class="font-orbitron font-bold text-sm uppercase stroke-text">pr0jectz3ro</span>
+            <div class="flex items-center gap-2"><span class="font-orbitron text-xs uppercase stroke-text">Features</span><span class="font-orbitron text-xs uppercase stroke-text">Team</span></div>
+          </div>
+          <div class="absolute inset-0 flex flex-col items-center justify-center px-4 z-10">
+            <h1 class="font-orbitron text-2xl md:text-3xl font-black uppercase tracking-wider mb-4 stroke-text">Join the Discord</h1>
+            <div id="previewStack" class="w-full max-w-[280px] flex flex-col gap-2 relative">
+              <div id="previewUnifiedWrapper" class="absolute inset-0 rounded-2xl pointer-events-none overflow-hidden hidden"><video id="previewUnifiedVideo" class="media-layer hidden" autoplay loop muted playsinline></video></div>
+              <div class="w-full py-3 px-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg relative bg-cover bg-center overflow-hidden z-10">
+                <video id="previewBtnVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+                <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.078.078 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                <span>Join Server</span>
+              </div>
+              <div class="w-full py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-2 relative bg-cover bg-center overflow-hidden z-10">
+                <video id="previewCodeBoxVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+                <span class="font-medium">Invite Code:</span><span class="font-mono font-bold">default-code</span>
+              </div>
+              <div class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 shadow-lg relative bg-cover bg-center overflow-hidden z-10">
+                <video id="previewBubbleVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+                <span class="text-xs font-bold">TXT</span><span class="text-xs font-semibold tracking-wide"></span><span class="text-xs font-bold hidden">TXT</span>
+              </div>
+            </div>
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 px-4 py-3 text-center z-10">
+            <div class="inline-flex flex-wrap justify-center items-center gap-1 text-[10px]">
+              <span>&copy; 2026 pr0jectz3ro</span><span>-</span><span>powered by</span><span>thataustrianone.eu</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="fullViewModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="font-medium text-white">Full Page Preview</span>
+      <button onclick="toggleFullView()" class="text-white/60 hover:text-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body p-0 overflow-hidden">
+      <div id="modalStage" class="min-h-[500px] relative bg-cover bg-center">
+        <video id="modalBgVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+        <div id="modalGlow" class="absolute inset-0 pointer-events-none flex items-center justify-center"><div class="w-[300px] h-[200px] blur-[80px] rounded-full"></div></div>
+        <div class="absolute top-0 left-0 right-0 px-5 py-4 flex items-center justify-between z-10">
+          <span class="font-orbitron font-bold text-base uppercase stroke-text">pr0jectz3ro</span>
+          <div class="flex items-center gap-3"><span class="font-orbitron text-xs uppercase stroke-text cursor-pointer">Features</span><span class="font-orbitron text-xs uppercase stroke-text cursor-pointer">Team</span></div>
+        </div>
+        <div class="absolute inset-0 flex flex-col items-center justify-center px-5 z-10">
+          <h1 class="font-orbitron text-3xl md:text-4xl font-black uppercase tracking-wider mb-6 stroke-text">Join the Discord</h1>
+          <div id="modalStack" class="w-full max-w-sm flex flex-col gap-3 relative">
+            <div id="modalUnifiedWrapper" class="absolute inset-0 rounded-2xl pointer-events-none overflow-hidden hidden"><video id="modalUnifiedVideo" class="media-layer hidden" autoplay loop muted playsinline></video></div>
+            <div class="w-full py-3.5 px-6 rounded-2xl font-bold text-sm flex items-center justify-center gap-2.5 shadow-xl relative bg-cover bg-center overflow-hidden z-10">
+              <video id="modalBtnVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+              <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.078.078 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+              <span>Join Server</span>
+            </div>
+            <div class="w-full py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 relative bg-cover bg-center overflow-hidden z-10">
+              <video id="modalCodeBoxVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+              <span class="font-medium">Invite Code:</span><span class="font-mono font-bold">default-code</span>
+            </div>
+            <div class="w-full py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 shadow-xl relative bg-cover bg-center overflow-hidden z-10">
+              <video id="modalBubbleVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+              <span class="text-sm font-bold">TXT</span><span class="text-xs sm:text-sm font-semibold tracking-wide"></span><span class="text-sm font-bold hidden">TXT</span>
+            </div>
+          </div>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 px-4 py-3 text-center z-10">
+          <div class="inline-flex flex-wrap justify-center items-center gap-1 text-[10px]">
+            <a href="https://pr0jectz3ro.eu/legal/" class="underline-offset-4 hover:underline cursor-pointer">&copy; 2026 pr0jectz3ro</a><span>-</span><span>powered by</span><a href="https://thataustrianone.eu/" target="_blank" class="underline-offset-4 hover:underline cursor-pointer">thataustrianone.eu</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<canvas id="exportCanvas" class="hidden"></canvas>
+
+<script>
+const L = {}; // Local previews
+const C = {}; // Cache
+let R = false; // Render scheduled
+
+// Get DOM elements
+function G(id) { return document.getElementById(id); }
+
+// Initialize
+function init() {
+  setupEvents();
+  loadTheme();
+  schedulePreview();
+  updateBubbleVis();
+  updateUnifiedVis();
+  updateDownloadBtn();
+}
+
+// Setup event listeners
+function setupEvents() {
+  // Color inputs
+  ['bgColor','glowColor','headingColor','logoColor','navColor','footerColor','btnColor','btnTextColor','codeBoxBg','codeBoxBorder','codeBoxLabelColor','codeBoxTextColor','bubbleBg','bubbleTextColor'].forEach(id => {
+    G(id).addEventListener('input', () => { schedulePreview(); saveTheme(); });
+  });
+
+  // Text inputs
+  ['discordLink','inviteCode','invitedBy','bubbleIcon','emojiPos','bgImageName','btnImageName','codeBoxImageName','bubbleImageName','unifiedImageName'].forEach(id => {
+    G(id).addEventListener('input', () => { schedulePreview(); saveTheme(); });
+  });
+
+  // Range
+  G('glowOpacity').addEventListener('input', () => {
+    G('glowVal').textContent = `${G('glowOpacity').value}%`;
+    schedulePreview(); saveTheme();
+  });
+
+  // Toggles
+  G('showBubble').addEventListener('change', () => { updateBubbleVis(); schedulePreview(); saveTheme(); });
+  G('unifiedBoxEnable').addEventListener('change', () => { updateUnifiedVis(); schedulePreview(); saveTheme(); });
+  G('agreeTerms').addEventListener('change', updateDownloadBtn);
+
+  // Upload zones - drag and drop
+  ['bg','btn','codeBox','bubble','unified'].forEach(k => {
+    const zone = G(`${k}UploadZone`);
+    if (zone) {
+      zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('dragover'); });
+      zone.addEventListener('dragleave', () => { zone.classList.remove('dragover'); });
+      zone.addEventListener('drop', (e) => { e.preventDefault(); zone.classList.remove('dragover'); G(`${k}Upload`).files = e.dataTransfer.files; handleUpload(k, G(`${k}Upload`)); });
+    }
+  });
+
+  // Keyboard
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') { G('fullViewModal').classList.remove('active'); document.body.style.overflow = ''; } });
+
+  // Auto-save
+  document.querySelectorAll('input,select').forEach(i => { i.addEventListener('change', saveTheme); i.addEventListener('input', saveTheme); });
+}
+
+// Update visibility
+function updateBubbleVis() { G('bubbleSettings').style.display = G('showBubble').checked ? 'block' : 'none'; }
+function updateUnifiedVis() { G('unifiedSettings').style.display = G('unifiedBoxEnable').checked ? 'block' : 'none'; }
+function updateDownloadBtn() {
+  const valid = G('discordLink').value.trim() !== '' && G('inviteCode').value.trim() !== '' && G('agreeTerms').checked;
+  G('downloadBtn').disabled = !valid;
+}
+
+// Handle uploads
+function handleUpload(key, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const textInput = G(`${key}ImageName`);
+  if (textInput) textInput.value = file.name;
+  const reader = new FileReader();
+  reader.onload = (e) => { L[key] = e.target.result; schedulePreview(); saveTheme(); };
+  reader.readAsDataURL(file);
+}
+
+// Resolve media source
+function resolveMedia(key, inputId) {
+  if (L[key]) return L[key];
+  const text = G(inputId).value.trim();
+  if (!text) return null;
+  if (text.startsWith('http://') || text.startsWith('https://') || text.startsWith('data:')) return text;
+  return null;
+}
+
+// Check if video
+function isVideo(path) { return typeof path === 'string' && (path.endsWith('.mp4') || path.startsWith('data:video/mp4')); }
+
+// Set layer media
+function setLayerMedia(container, videoEl, source) {
+  if (!container) return;
+  if (videoEl && isVideo(source)) {
+    container.style.backgroundImage = 'none';
+    if (videoEl.src !== source) videoEl.src = source;
+    videoEl.classList.remove('hidden');
+    videoEl.play().catch(() => {});
+  } else if (source) {
+    if (videoEl) { videoEl.classList.add('hidden'); videoEl.pause(); videoEl.removeAttribute('src'); }
+    container.style.backgroundImage = `url('${source}')`;
+  } else {
+    if (videoEl) { videoEl.classList.add('hidden'); videoEl.pause(); videoEl.removeAttribute('src'); }
+    container.style.backgroundImage = 'none';
+  }
+}
+
+// Apply cover slice
+function applyCoverSlice(el, stackEl, imgUrl) {
+  if (!el || !stackEl || !imgUrl) return;
+  const stackRect = stackEl.getBoundingClientRect();
+  const elRect = el.getBoundingClientRect();
+  if (stackRect.width === 0 || stackRect.height === 0) return;
+
+  const apply = (w, h) => {
+    const scale = Math.max(stackRect.width / w, stackRect.height / h);
+    const rw = w * scale; const rh = h * scale;
+    const lo = (stackRect.width - rw) / 2; const to = (stackRect.height - rh) / 2;
+    const ey = elRect.top - stackRect.top;
+    el.style.backgroundImage = `url('${imgUrl}')`; el.style.backgroundRepeat = 'no-repeat';
+    el.style.backgroundSize = `${rw}px ${rh}px`; el.style.backgroundPosition = `${lo}px ${to - ey}px`;
+  };
+
+  if (C[imgUrl]) { apply(C[imgUrl].w, C[imgUrl].h); }
+  else {
+    const img = new Image(); img.crossOrigin = 'anonymous'; img.src = imgUrl;
+    img.onload = () => { C[imgUrl] = { w: img.naturalWidth, h: img.naturalHeight }; apply(img.naturalWidth, img.naturalHeight); };
+  }
+}
+
+// Hex to rgba
+function hexToRgba(hex, opacity) {
+  if (!hex) return '';
+  let h = hex.replace('#', '').trim();
+  if (h.length === 3) h = h.split('').map(c => c + c).join('');
+  if (h.length !== 6) return hex;
+  const r = parseInt(h.substring(0, 2), 16); const g = parseInt(h.substring(2, 4), 16); const b = parseInt(h.substring(4, 6), 16);
+  const a = (parseFloat(opacity) ?? 100) / 100;
+  return `rgba(${r}, ${g}, ${b}, ${a})`;
+}
+
+// Schedule preview
+function schedulePreview() {
+  if (R) return; R = true;
+  requestAnimationFrame(() => { executePreview(); R = false; });
+}
+
+// Execute preview update
+function executePreview() {
+  const bgColor = G('bgColor').value;
+  const glowColor = G('glowColor').value;
+  const glowOp = G('glowOpacity').value;
+  G('glowVal').textContent = `${glowOp}%`;
+  const rgbaGlow = hexToRgba(glowColor, glowOp);
+
+  // Background
+  const bgSource = resolveMedia('bg', 'bgImageName');
+  const previewStage = G('previewStage'); const modalStage = G('modalStage');
+  if (previewStage) previewStage.style.backgroundColor = bgColor;
+  if (modalStage) modalStage.style.backgroundColor = bgColor;
+  setLayerMedia(previewStage, G('previewBgVideo'), bgSource);
+  setLayerMedia(modalStage, G('modalBgVideo'), bgSource);
+  ['previewGlow','modalGlow'].forEach(id => { const c = G(id); if (c && c.firstElementChild) c.firstElementChild.style.backgroundColor = rgbaGlow; });
+
+  // Text colors
+  const headingColor = G('headingColor').value; const logoColor = G('logoColor').value;
+  const navColor = G('navColor').value; const footerColor = G('footerColor').value;
+  const inviteCode = G('inviteCode').value || 'default-code';
+  document.querySelectorAll('.font-orbitron').forEach(el => el.style.color = headingColor);
+  document.querySelectorAll('.stroke-text').forEach(el => el.style.webkitTextStroke = '0px transparent');
+  document.querySelectorAll('span[class*="text-"]').forEach(el => el.style.color = footerColor);
+  document.querySelectorAll('.prev-code-text').forEach(el => el.innerText = inviteCode);
+
+  // Unified
+  const isUnified = G('unifiedBoxEnable').checked;
+  const unifiedSource = resolveMedia('unified', 'unifiedImageName');
+  const isUnifiedVideo = isVideo(unifiedSource);
+  const previewStack = G('previewStack'); const modalStack = G('modalStack');
+  if (isUnified && unifiedSource && isUnifiedVideo) {
+    G('previewUnifiedWrapper').classList.remove('hidden'); G('modalUnifiedWrapper').classList.remove('hidden');
+    setLayerMedia(G('previewUnifiedWrapper'), G('previewUnifiedVideo'), unifiedSource);
+    setLayerMedia(G('modalUnifiedWrapper'), G('modalUnifiedVideo'), unifiedSource);
+  } else {
+    G('previewUnifiedWrapper').classList.add('hidden'); G('modalUnifiedWrapper').classList.add('hidden');
+  }
+
+  // Button
+  const btnBg = G('btnColor').value; const btnTextColor = G('btnTextColor').value;
+  const btnSource = resolveMedia('btn', 'btnImageName');
+  document.querySelectorAll('.prev-btn').forEach((el, idx) => {
+    const parentStack = idx === 0 ? previewStack : modalStack;
+    if (isUnified && unifiedSource && !isUnifiedVideo) { applyCoverSlice(el, parentStack, unifiedSource); }
+    else if (!isUnified && btnSource) { setLayerMedia(el, idx === 0 ? G('previewBtnVideo') : G('modalBtnVideo'), btnSource); }
+    else { el.style.backgroundColor = (isUnified && isUnifiedVideo) ? 'transparent' : btnBg; el.style.backgroundImage = 'none'; }
+    el.style.color = btnTextColor;
+  });
+
+  // Code Box
+  const cbBg = G('codeBoxBg').value; const cbBorder = G('codeBoxBorder').value;
+  const cbLabelColor = G('codeBoxLabelColor').value; const cbTextColor = G('codeBoxTextColor').value;
+  const cbSource = resolveMedia('codeBox', 'codeBoxImageName');
+  document.querySelectorAll('.prev-code-box').forEach((el, idx) => {
+    const parentStack = idx === 0 ? previewStack : modalStack;
+    if (isUnified && unifiedSource && !isUnifiedVideo) { applyCoverSlice(el, parentStack, unifiedSource); }
+    else if (!isUnified && cbSource) { setLayerMedia(el, idx === 0 ? G('previewCodeBoxVideo') : G('modalCodeBoxVideo'), cbSource); }
+    else { el.style.backgroundColor = (isUnified && isUnifiedVideo) ? 'transparent' : cbBg; el.style.backgroundImage = 'none'; el.style.border = `1px solid ${cbBorder}`; }
+    const labelEl = el.querySelector('span:first-of-type'); const textEl = el.querySelector('span:last-of-type');
+    if (labelEl) labelEl.style.color = cbLabelColor; if (textEl) textEl.style.color = cbTextColor;
+  });
+
+  // Bubble
+  const showBubble = G('showBubble').checked; const inviter = G('invitedBy').value || '@user';
+  const iconText = (G('bubbleIcon').value || 'TXT').slice(0, 3); const pos = (G('emojiPos').value || 'left').toLowerCase();
+  const bubbleBg = G('bubbleBg').value; const bubbleTextColor = G('bubbleTextColor').value;
+  const bubbleSource = resolveMedia('bubble', 'bubbleImageName');
+  document.querySelectorAll('.prev-bubble').forEach((el, idx) => {
+    if (showBubble) {
+      el.classList.remove('hidden'); el.classList.add('flex');
+      const msgEl = el.querySelector('span:nth-of-type(2)'); if (msgEl) msgEl.textContent = `${inviter} invited you`;
+      const icons = el.querySelectorAll('span:not(:nth-of-type(2))');
+      icons.forEach(icon => icon.textContent = iconText);
+      if (pos === 'left') { icons[0].classList.remove('hidden'); icons[1].classList.add('hidden'); }
+      else if (pos === 'right') { icons[0].classList.add('hidden'); icons[1].classList.remove('hidden'); }
+      else if (pos === 'both') { icons[0].classList.remove('hidden'); icons[1].classList.remove('hidden'); }
+      else { icons[0].classList.add('hidden'); icons[1].classList.add('hidden'); }
+      const parentStack = idx === 0 ? previewStack : modalStack;
+      if (isUnified && unifiedSource && !isUnifiedVideo) { applyCoverSlice(el, parentStack, unifiedSource); }
+      else if (!isUnified && bubbleSource) { setLayerMedia(el, idx === 0 ? G('previewBubbleVideo') : G('modalBubbleVideo'), bubbleSource); }
+      else { el.style.backgroundColor = (isUnified && isUnifiedVideo) ? 'transparent' : bubbleBg; el.style.backgroundImage = 'none'; }
+      el.style.color = bubbleTextColor;
+    } else { el.classList.add('hidden'); el.classList.remove('flex'); }
+  });
+}
+
+// Toggle full view
+function toggleFullView() {
+  const modal = G('fullViewModal');
+  modal.classList.toggle('active');
+  document.body.style.overflow = modal.classList.contains('active') ? 'hidden' : '';
+  if (modal.classList.contains('active')) schedulePreview();
+}
+
+// Show toast
+function showToast(msg, duration = 3000) {
+  const toast = G('toast'); toast.textContent = msg; toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), duration);
+}
+
+// Download PNG
+function downloadPng(w, h, filename) {
+  const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext('2d'); ctx.clearRect(0, 0, w, h);
+  const link = document.createElement('a'); link.download = filename; link.href = canvas.toDataURL('image/png'); link.click();
+  showToast(`Downloaded ${filename}!`);
+}
+
+// Download config
+function downloadConfig() {
+  if (!G('agreeTerms').checked) { showToast('Please accept the terms first!', 5000); return; }
+  const discordLink = G('discordLink').value.trim(); const inviteCode = G('inviteCode').value.trim();
+  if (!discordLink || !inviteCode) { showToast('Please fill in Discord Link and Invite Code!', 5000); return; }
+
+  let config = `# DISCORD SETTINGS\n`;
+  config += `discord_link = ${discordLink}\n`;
+  config += `invite_code = ${inviteCode}\n\n`;
+  config += `# PAGE LOOK & FEEL\n`;
+  config += `background_color = ${G('bgColor').value}\n`;
+  const bgImage = G('bgImageName').value.trim();
+  if (bgImage) config += `background_image = ${bgImage}\n`;
+  else if (L.bg) config += `background_image = user-upload-bg.png\n`;
+  config += `background_glow_color = ${G('glowColor').value}\n`;
+  config += `background_glow_opacity = ${G('glowOpacity').value}\n\n`;
+  config += `heading_color = ${G('headingColor').value}\nheading_border_color = #000000\n`;
+  config += `logo_color = ${G('logoColor').value}\nlogo_border_color = #000000\n`;
+  config += `navigation_link_color = ${G('navColor').value}\nnav_border_color = #000000\n`;
+  config += `footer_text_color = ${G('footerColor').value}\nfooter_border_color = #000000\n\n`;
+  config += `# JOIN BUTTON\n`;
+  config += `button_color = ${G('btnColor').value}\nbutton_border_color = #000000\nbutton_border_opacity = 0\n`;
+  config += `button_text_color = ${G('btnTextColor').value}\nbutton_text_border_color = none\n`;
+  const btnImage = G('btnImageName').value.trim();
+  if (btnImage) config += `button_background_image = ${btnImage}\n`;
+  else if (L.btn) config += `button_background_image = user-upload-btn.png\n`;
+  config += `\n# CODE BOX\n`;
+  config += `code_box_background = ${G('codeBoxBg').value}\ncode_box_background_opacity = 100\n`;
+  config += `code_box_border = ${G('codeBoxBorder').value}\ncode_box_border_opacity = 100\n`;
+  config += `code_box_label_color = ${G('codeBoxLabelColor').value}\ncode_box_label_border_color = none\n`;
+  config += `code_box_text_color = ${G('codeBoxTextColor').value}\ncode_box_text_border_color = none\n`;
+  const codeBoxImage = G('codeBoxImageName').value.trim();
+  if (codeBoxImage) config += `code_box_background_image = ${codeBoxImage}\n`;
+  else if (L.codeBox) config += `code_box_background_image = user-upload-codebox.png\n`;
+  config += `\n# INVITE BOX\n`;
+  config += `show_invite_bubble = ${G('showBubble').checked ? 'yes' : 'no'}\n`;
+  config += `invited_by = ${G('invitedBy').value}\nbubble_icon = ${G('bubbleIcon').value}\nemoji_position = ${G('emojiPos').value}\n\n`;
+  config += `bubble_background_color = ${G('bubbleBg').value}\nbubble_background_opacity = 100\n`;
+  config += `bubble_border_color = #262626\nbubble_border_opacity = 0\n`;
+  const bubbleImage = G('bubbleImageName').value.trim();
+  if (bubbleImage) config += `bubble_background_image = ${bubbleImage}\n`;
+  else if (L.bubble) config += `bubble_background_image = user-upload-bubble.png\n`;
+  config += `bubble_icon_color = ${G('bubbleTextColor').value}\nbubble_icon_border_color = none\n`;
+  config += `bubble_text_color = ${G('bubbleTextColor').value}\nbubble_text_border_color = none\n`;
+  if (G('unifiedBoxEnable').checked) {
+    config += `\n# UNIFIED\nunified_box_image = yes\n`;
+    const unifiedImage = G('unifiedImageName').value.trim();
+    if (unifiedImage) config += `box_media = ${unifiedImage}\n`;
+    else if (L.unified) config += `box_media = user-upload-unified.png\n`;
+  }
+
+  const blob = new Blob([config], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a'); link.href = url; link.download = 'config.txt'; link.click(); URL.revokeObjectURL(url);
+
+  const terms = `# pr0jectz3ro Discord Invite Page
+# Terms of Use
+
+I, ${G('invitedBy').value || '@user'}, confirm:
+1. All media used are either created by me or properly licensed.
+2. I accept full responsibility for any copyright issues.
+
+Generated: ${new Date().toLocaleDateString()}
+User: ${G('invitedBy').value || '@user'}
+Invite: ${inviteCode}`;
+  const termsBlob = new Blob([terms], { type: 'text/plain' });
+  const termsUrl = URL.createObjectURL(termsBlob);
+  const termsLink = document.createElement('a'); termsLink.href = termsUrl; termsLink.download = 'terms-of-use.txt'; termsLink.click(); URL.revokeObjectURL(termsUrl);
+  showToast('Config files downloaded!');
+}
+
+// Themes
+function applyTheme(themeName) {
+  const themes = {
+    dark: { bgColor: '#0a0a0a', glowColor: '#000000', glowOpacity: '0', headingColor: '#ffffff', logoColor: '#ffffff', navColor: '#ffffff', footerColor: '#ffffff', btnColor: '#ffffff', btnTextColor: '#000000', codeBoxBg: '#ffffff', codeBoxBorder: '#000000', codeBoxLabelColor: '#000000', codeBoxTextColor: '#000000', bubbleBg: '#ffffff', bubbleTextColor: '#000000' },
+    purple: { bgColor: '#0a0a1a', glowColor: '#8b5cf6', glowOpacity: '30', headingColor: '#ffffff', logoColor: '#c4b5fd', navColor: '#c4b5fd', footerColor: '#9333ea', btnColor: '#8b5cf6', btnTextColor: '#ffffff', codeBoxBg: '#1f2937', codeBoxBorder: '#8b
