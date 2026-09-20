@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>pr0jectz3ro — Page Customizer</title>
+  <title>pr0jectz3ro — Invite Page Customizer</title>
   <link rel="icon" type="image/webp" href="https://raw.githubusercontent.com/der46er/pr0jectz3ro/main/assets/favicon.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,399 +35,635 @@
     input[type="color"] {
       -webkit-appearance: none;
       border: none;
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border-radius: 8px;
       cursor: pointer;
       background: none;
     }
     input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
     input[type="color"]::-webkit-color-swatch {
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       border-radius: 8px;
     }
-    .card-panel {
-      background: rgba(18, 18, 18, 0.7);
+    .panel {
+      background: rgba(18, 18, 18, 0.75);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 1rem;
       backdrop-filter: blur(12px);
+    }
+    .subpanel {
+      background: rgba(10, 10, 10, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 0.75rem;
+    }
+    .upload-box {
+      border: 1px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 0.75rem;
+      transition: all 0.2s ease;
+    }
+    .upload-box:hover, .upload-box.dragover {
+      border-color: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #18181b;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: all 0.25s ease;
+    }
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
     }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-white/20 selection:text-white relative overflow-x-hidden">
 
-  <!-- Top Navigation -->
-  <header class="w-full bg-black/60 border-b border-white/10 backdrop-blur-md sticky top-0 z-40">
+  <!-- Header -->
+  <header class="w-full bg-black/70 border-b border-white/10 backdrop-blur-md sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-8 h-16 sm:h-20 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <a href="/" class="font-orbitron font-bold text-lg text-white uppercase tracking-wider hover:opacity-80 transition">
           pr0jectz3ro
         </a>
-        <span class="text-[11px] font-mono uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full">
-          Page Customizer
+        <span class="text-[10px] font-mono uppercase tracking-wider text-white/70 bg-white/5 border border-white/10 px-2.5 py-1 rounded-full">
+          Invite Page Architect
         </span>
       </div>
 
-      <!-- Mobile View Toggle & Action Links -->
       <div class="flex items-center gap-2 sm:gap-3">
-        <button id="mobileViewToggle" onclick="toggleMobileTab()" class="lg:hidden px-3.5 py-2 rounded-xl bg-white/10 border border-white/15 text-xs font-semibold text-white flex items-center gap-1.5 active:scale-95 transition">
-          <span id="mobileTabLabel">Show Preview</span>
+        <button id="mobileViewToggle" onclick="toggleMobileTab()" class="lg:hidden px-3.5 py-2 rounded-xl bg-white/10 border border-white/15 text-xs font-semibold text-white flex items-center gap-2 active:scale-95 transition">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          <span id="mobileTabLabel">Preview</span>
         </button>
-        <button onclick="toggleModal(true)" class="hidden sm:inline-flex items-center gap-1.5 text-xs text-white/80 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 px-3.5 py-2 rounded-xl transition">
+        <button onclick="toggleModal(true)" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-white/80 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 px-3.5 py-2 rounded-xl transition">
+          <svg class="w-4 h-4 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
           <span>Full Preview</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Work Area -->
+  <!-- Main View Grid -->
   <main class="max-w-7xl mx-auto px-4 sm:px-8 py-6 sm:py-10 w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
     
-    <!-- LEFT: Customizer Flow -->
+    <!-- LEFT: Customizer Form -->
     <div id="editorPanel" class="lg:col-span-7 flex flex-col gap-6">
 
-      <!-- Welcoming Hero Note for 14-25 age range -->
-      <div class="card-panel p-5 sm:p-6 bg-gradient-to-r from-neutral-900/90 to-neutral-900/50 border-white/10">
-        <div class="flex items-start gap-4">
-          <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-xl shrink-0">
-            🎨
-          </div>
-          <div>
-            <h1 class="font-orbitron text-lg sm:text-xl font-bold text-white tracking-wide">
-              Create Your Discord Landing Page
-            </h1>
-            <p class="text-xs sm:text-sm text-white/60 mt-1 leading-relaxed">
-              Customize how your personal invite page looks! Pick a color vibe, add your artwork or videos, and download your files to give to an @admin on the server.
-            </p>
-          </div>
-        </div>
+      <!-- Intro Card -->
+      <div class="panel p-5 sm:p-6 bg-gradient-to-r from-neutral-900/90 to-neutral-900/50 border-white/10">
+        <h1 class="font-orbitron text-lg sm:text-xl font-bold text-white tracking-wide uppercase">
+          Discord Invite Page Customizer
+        </h1>
+        <p class="text-xs sm:text-sm text-white/60 mt-1 leading-relaxed">
+          Design your custom landing page with full control over background visuals, animations behind buttons, text colors, and outline strokes.
+        </p>
       </div>
 
-      <!-- STEP 1: Discord Invite Link -->
-      <div class="card-panel p-5 sm:p-6 space-y-4">
+      <!-- Quick Starting Themes (No Emojis) -->
+      <div class="panel p-5 sm:p-6 space-y-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <span class="w-6 h-6 rounded-full bg-white text-black font-bold text-xs flex items-center justify-center">1</span>
             <h2 class="font-orbitron text-sm sm:text-base font-bold uppercase tracking-wider text-white">
-              Your Discord Invite
+              Starting Themes
             </h2>
           </div>
-          <span class="text-[11px] text-white/50">Provided by an @admin</span>
+          <span class="text-[11px] text-white/40 uppercase tracking-wider font-mono">1-Click Presets</span>
+        </div>
+        <p class="text-xs text-white/60">Select an initial palette or customize every element individually below:</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="presetGrid"></div>
+      </div>
+
+      <!-- Discord Connection -->
+      <div class="panel p-5 sm:p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-white text-black font-bold text-xs flex items-center justify-center">2</span>
+            <h2 class="font-orbitron text-sm sm:text-base font-bold uppercase tracking-wider text-white">
+              Discord Connection
+            </h2>
+          </div>
+          <span class="text-[11px] text-white/50">Server Invite</span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="text-xs font-medium text-white/70 block mb-1.5">Invite Link</label>
-            <input id="in_discord_link" type="text" value="https://discord.gg/default-code" placeholder="https://discord.gg/your-code" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
+            <input id="discordLink" type="text" value="https://discord.gg/default-code" placeholder="https://discord.gg/your-code" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
           </div>
           <div>
             <label class="text-xs font-medium text-white/70 block mb-1.5">Invite Code</label>
-            <input id="in_invite_code" type="text" value="default-code" placeholder="your-code" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs font-mono text-white focus:outline-none focus:border-white/40">
+            <input id="inviteCode" type="text" value="default-code" placeholder="your-code" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs font-mono text-white focus:outline-none focus:border-white/40">
           </div>
         </div>
       </div>
 
-      <!-- STEP 2: Pick an Aesthetic Vibe (1-Click Presets) -->
-      <div class="card-panel p-5 sm:p-6 space-y-4">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2.5">
-            <span class="w-6 h-6 rounded-full bg-white text-black font-bold text-xs flex items-center justify-center">2</span>
-            <h2 class="font-orbitron text-sm sm:text-base font-bold uppercase tracking-wider text-white">
-              Pick Your Vibe
-            </h2>
-          </div>
-          <span class="text-[11px] text-white/50">1-click instant themes</span>
-        </div>
-
-        <p class="text-xs text-white/60">Tap any vibe to instantly style your page:</p>
-
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5" id="presetGrid">
-          <!-- Preset buttons populated dynamically via JS -->
-        </div>
-      </div>
-
-      <!-- STEP 3: Artwork & Media -->
-      <div class="card-panel p-5 sm:p-6 space-y-5">
+      <!-- Page Background & Glow -->
+      <div class="panel p-5 sm:p-6 space-y-5">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <span class="w-6 h-6 rounded-full bg-white text-black font-bold text-xs flex items-center justify-center">3</span>
             <h2 class="font-orbitron text-sm sm:text-base font-bold uppercase tracking-wider text-white">
-              Artwork & Background
+              Page Background & Glow
             </h2>
           </div>
-          <span class="text-[11px] text-white/50">Images or MP4 Videos</span>
+          <span class="text-[11px] text-white/50">Full Canvas</span>
         </div>
 
-        <!-- Background Image Upload -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="p-3 rounded-xl bg-black/50 border border-white/10 flex items-center justify-between">
+            <span class="text-xs text-white/80 font-medium">Background Color</span>
+            <input id="bgColor" type="color" value="#070707">
+          </div>
+          <div class="p-3 rounded-xl bg-black/50 border border-white/10 flex items-center justify-between">
+            <span class="text-xs text-white/80 font-medium">Glow Color</span>
+            <input id="glowColor" type="color" value="#ffffff">
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-white/70 font-medium">Ambient Glow Strength</span>
+            <span id="glowVal" class="font-mono text-white/80">0%</span>
+          </div>
+          <input id="glowOpacity" type="range" min="0" max="100" value="0" class="w-full accent-white">
+        </div>
+
         <div class="space-y-2">
           <div class="flex items-center justify-between text-xs">
-            <span class="font-medium text-white/80">Page Background</span>
-            <span class="text-white/40 text-[11px]">Recommended: 1920×1080 (16:9)</span>
+            <span class="text-white/80 font-medium">Background Media (Image, Animated GIF, or MP4 Video)</span>
+            <span class="text-[11px] text-white/40 font-mono">1920x1080</span>
           </div>
-
+          <div id="bgUploadZone" class="upload-box p-3.5 flex flex-col items-center justify-center text-center cursor-pointer" onclick="document.getElementById('bgUpload').click()">
+            <svg class="w-6 h-6 text-white/40 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span class="text-xs text-white/70 font-medium">Click to upload file or drag & drop</span>
+            <span class="text-[10px] text-white/40 mt-0.5">Supports PNG, JPG, WEBP, GIF, and MP4</span>
+            <input id="bgUpload" type="file" accept="image/*,video/mp4" class="hidden">
+          </div>
           <div class="flex items-center gap-2">
-            <input id="in_bg_image_name" type="text" value="background.webp" placeholder="background.webp or direct image/video URL" class="flex-grow px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
-            <label class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 border border-white/15 text-xs font-semibold cursor-pointer text-white shrink-0 transition">
-              <span>Upload</span>
-              <input id="upload_bg" type="file" accept="image/*,video/mp4" class="hidden">
-            </label>
-            <button onclick="clearMedia('bg', 'in_bg_image_name')" type="button" class="px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/60 hover:text-white text-xs border border-white/10 transition" title="Clear image">
-              ✕
-            </button>
+            <input id="bgImageName" type="text" value="background.webp" placeholder="background.webp or direct URL" class="flex-grow px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
+            <button type="button" onclick="clearMedia('bg', 'bgImageName')" class="px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/60 hover:text-white text-xs border border-white/10 transition" title="Clear media">Clear</button>
           </div>
         </div>
-
-        <!-- Seamless Master Banner Mode -->
-        <div class="p-4 rounded-xl border border-white/10 bg-white/[0.02] space-y-3">
-          <div class="flex items-center justify-between">
-            <div>
-              <span class="text-xs font-bold text-white block">Stretch 1 Graphic Across All Buttons</span>
-              <p class="text-[11px] text-white/50 mt-0.5">Creates one continuous piece of art through the buttons without repeating or distorting.</p>
-            </div>
-            <label class="inline-flex items-center gap-2 cursor-pointer text-xs">
-              <input id="in_unified_box_enable" type="checkbox" class="w-4 h-4 accent-white">
-              <span class="text-white/80 font-medium">Enable</span>
-            </label>
-          </div>
-          
-          <div id="unifiedUploadGroup" class="hidden pt-1">
-            <div class="flex items-center gap-2">
-              <input id="in_unified_box_media" type="text" placeholder="art.jpg or 768×280 banner URL" class="flex-grow px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
-              <label class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 border border-white/15 text-xs font-semibold cursor-pointer text-white shrink-0 transition">
-                <span>Upload</span>
-                <input id="upload_unified" type="file" accept="image/*,video/mp4" class="hidden">
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <!-- Blank Canva / Photoshop Templates Drawer -->
-        <details class="group border border-white/5 rounded-xl bg-black/40 overflow-hidden">
-          <summary class="p-3 text-xs font-medium text-white/70 hover:text-white cursor-pointer flex items-center justify-between select-none">
-            <span>📐 Need blank image templates for Canva, Photoshop or Paint?</span>
-            <span class="text-white/40 group-open:rotate-180 transition-transform">▼</span>
-          </summary>
-          <div class="p-3.5 pt-1 border-t border-white/5 grid grid-cols-2 sm:grid-cols-4 gap-2">
-            <button onclick="downloadPng(1920, 1080, 'background.png')" class="p-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-left border border-white/10 text-xs transition">
-              <div class="font-bold text-white">Background</div>
-              <div class="text-[10px] text-white/50">1920 × 1080 px</div>
-            </button>
-            <button onclick="downloadPng(768, 280, 'unified-box-bg.png')" class="p-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-left border border-white/10 text-xs transition">
-              <div class="font-bold text-white">Banner Stack</div>
-              <div class="text-[10px] text-white/50">768 × 280 px</div>
-            </button>
-            <button onclick="downloadPng(768, 112, 'button-bg.png')" class="p-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-left border border-white/10 text-xs transition">
-              <div class="font-bold text-white">Join Button</div>
-              <div class="text-[10px] text-white/50">768 × 112 px</div>
-            </button>
-            <button onclick="downloadPng(768, 80, 'code-box-bg.png')" class="p-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-left border border-white/10 text-xs transition">
-              <div class="font-bold text-white">Code Box</div>
-              <div class="text-[10px] text-white/50">768 × 80 px</div>
-            </button>
-          </div>
-        </details>
       </div>
 
-      <!-- STEP 4: Personal Tag & Bubble -->
-      <div class="card-panel p-5 sm:p-6 space-y-4">
+      <!-- Typography & Text Outlines -->
+      <div class="panel p-5 sm:p-6 space-y-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
             <span class="w-6 h-6 rounded-full bg-white text-black font-bold text-xs flex items-center justify-center">4</span>
             <h2 class="font-orbitron text-sm sm:text-base font-bold uppercase tracking-wider text-white">
-              Who's Inviting?
+              Page Text & Outline Strokes
             </h2>
           </div>
-          <label class="inline-flex items-center gap-2 cursor-pointer text-xs">
-            <input id="in_show_bubble" type="checkbox" checked class="w-4 h-4 accent-white">
-            <span class="text-white/80 font-medium">Show Greeting</span>
-          </label>
+          <span class="text-[11px] text-white/50">Colors & Borders</span>
         </div>
 
-        <div id="bubbleSettingsGroup" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div>
-            <label class="text-xs font-medium text-white/70 block mb-1.5">Your Name or Handle</label>
-            <input id="in_invited_by" type="text" value="@user" placeholder="@yourname" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
+        <p class="text-xs text-white/60">Control both the fill color and the outline stroke for each text element:</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <!-- Main Heading -->
+          <div class="subpanel p-3.5 space-y-2.5">
+            <span class="text-xs font-bold text-white uppercase font-orbitron block">Main Heading</span>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-white/70">Text Color</span>
+              <input id="headingColor" type="color" value="#ffffff">
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-white/5">
+              <label class="inline-flex items-center gap-2 text-xs text-white/70 cursor-pointer">
+                <input id="headingBorderEnable" type="checkbox" checked class="w-3.5 h-3.5 accent-white">
+                <span>Outline Stroke</span>
+              </label>
+              <input id="headingBorderColor" type="color" value="#000000">
+            </div>
           </div>
-          <div>
-            <label class="text-xs font-medium text-white/70 block mb-1.5">Badge Text or Emoji</label>
-            <input id="in_bubble_icon" type="text" maxlength="4" value="TXT" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
+
+          <!-- Brand Logo -->
+          <div class="subpanel p-3.5 space-y-2.5">
+            <span class="text-xs font-bold text-white uppercase font-orbitron block">Brand Logo</span>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-white/70">Text Color</span>
+              <input id="logoColor" type="color" value="#ffffff">
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-white/5">
+              <label class="inline-flex items-center gap-2 text-xs text-white/70 cursor-pointer">
+                <input id="logoBorderEnable" type="checkbox" checked class="w-3.5 h-3.5 accent-white">
+                <span>Outline Stroke</span>
+              </label>
+              <input id="logoBorderColor" type="color" value="#000000">
+            </div>
           </div>
-          <div>
-            <label class="text-xs font-medium text-white/70 block mb-1.5">Badge Placement</label>
-            <select id="in_emoji_pos" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
-              <option value="left" selected>Left</option>
-              <option value="right">Right</option>
-              <option value="both">Both sides</option>
-              <option value="none">Hidden</option>
-            </select>
+
+          <!-- Navigation Links -->
+          <div class="subpanel p-3.5 space-y-2.5">
+            <span class="text-xs font-bold text-white uppercase font-orbitron block">Navigation Links</span>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-white/70">Text Color</span>
+              <input id="navColor" type="color" value="#ffffff">
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-white/5">
+              <label class="inline-flex items-center gap-2 text-xs text-white/70 cursor-pointer">
+                <input id="navBorderEnable" type="checkbox" checked class="w-3.5 h-3.5 accent-white">
+                <span>Outline Stroke</span>
+              </label>
+              <input id="navBorderColor" type="color" value="#000000">
+            </div>
+          </div>
+
+          <!-- Footer Text -->
+          <div class="subpanel p-3.5 space-y-2.5">
+            <span class="text-xs font-bold text-white uppercase font-orbitron block">Footer Text</span>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-white/70">Text Color</span>
+              <input id="footerColor" type="color" value="#ffffff">
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-white/5">
+              <label class="inline-flex items-center gap-2 text-xs text-white/70 cursor-pointer">
+                <input id="footerBorderEnable" type="checkbox" checked class="w-3.5 h-3.5 accent-white">
+                <span>Outline Stroke</span>
+              </label>
+              <input id="footerBorderColor" type="color" value="#000000">
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- STEP 5: Fine-Tuning Drawer (Collapsed by default so it's clean and not overwhelming) -->
-      <details class="group card-panel overflow-hidden border-white/10">
-        <summary class="p-5 sm:p-6 text-sm font-orbitron font-bold uppercase tracking-wider text-white/80 hover:text-white cursor-pointer flex items-center justify-between select-none">
-          <div class="flex items-center gap-2.5">
-            <span class="w-6 h-6 rounded-full bg-white/10 text-white font-bold text-xs flex items-center justify-center">5</span>
-            <span>Fine-Tune Colors & Glow (Optional)</span>
+      <!-- Unified Master Banner -->
+      <div class="panel p-5 sm:p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="font-orbitron text-sm sm:text-base font-bold uppercase tracking-wider text-white">
+              Unified Banner Mode
+            </h2>
+            <p class="text-xs text-white/50 mt-0.5">Stretch one continuous piece of artwork or animation across all buttons without repeating</p>
           </div>
-          <span class="text-xs font-sans text-white/40 group-open:hidden">Tap to tweak</span>
-        </summary>
+          <label class="inline-flex items-center gap-2 cursor-pointer text-xs">
+            <input id="unifiedBoxEnable" type="checkbox" class="w-4 h-4 accent-white">
+            <span class="text-white/80 font-medium">Enable</span>
+          </label>
+        </div>
 
-        <div class="p-5 sm:p-6 pt-0 border-t border-white/5 space-y-5">
-          
-          <!-- Ambient Glow -->
-          <div class="space-y-2 pt-2">
-            <div class="flex items-center justify-between text-xs">
-              <span class="font-medium text-white/80">Background Ambient Glow</span>
-              <span id="glow_val" class="font-mono text-white/60">0%</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <input id="in_glow_color" type="color" value="#ffffff" title="Glow color">
-              <input id="in_glow_opacity" type="range" min="0" max="100" value="0" class="flex-grow accent-white">
-            </div>
+        <div id="unifiedSettings" class="hidden space-y-2 pt-2 border-t border-white/5">
+          <div id="unifiedUploadZone" class="upload-box p-3 flex flex-col items-center justify-center text-center cursor-pointer" onclick="document.getElementById('unifiedUpload').click()">
+            <svg class="w-5 h-5 text-white/40 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+            <span class="text-xs text-white/70 font-medium">Upload unified banner media (768x280 px)</span>
+            <input id="unifiedUpload" type="file" accept="image/*,video/mp4" class="hidden">
           </div>
-
-          <!-- Color Pickers Grid -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            <div class="p-2.5 rounded-xl bg-black/60 border border-white/10 flex items-center justify-between">
-              <span class="text-xs text-white/80">Background</span>
-              <input id="in_bg_color" type="color" value="#070707">
-            </div>
-            <div class="p-2.5 rounded-xl bg-black/60 border border-white/10 flex items-center justify-between">
-              <span class="text-xs text-white/80">Heading Text</span>
-              <input id="in_heading_color" type="color" value="#ffffff">
-            </div>
-            <div class="p-2.5 rounded-xl bg-black/60 border border-white/10 flex items-center justify-between">
-              <span class="text-xs text-white/80">Join Button</span>
-              <input id="in_btn_color" type="color" value="#ffffff">
-            </div>
-            <div class="p-2.5 rounded-xl bg-black/60 border border-white/10 flex items-center justify-between">
-              <span class="text-xs text-white/80">Button Text</span>
-              <input id="in_btn_text_color" type="color" value="#000000">
-            </div>
-            <div class="p-2.5 rounded-xl bg-black/60 border border-white/10 flex items-center justify-between">
-              <span class="text-xs text-white/80">Code Box Fill</span>
-              <input id="in_code_box_bg" type="color" value="#ffffff">
-            </div>
-            <div class="p-2.5 rounded-xl bg-black/60 border border-white/10 flex items-center justify-between">
-              <span class="text-xs text-white/80">Code Box Text</span>
-              <input id="in_code_box_text_color" type="color" value="#ffffff">
-            </div>
-            <div class="p-2.5 rounded-xl bg-black/60 border border-white/10 flex items-center justify-between">
-              <span class="text-xs text-white/80">Logo Color</span>
-              <input id="in_logo_color" type="color" value="#ffffff">
-            </div>
-            <div class="p-2.5 rounded-xl bg-black/60 border border-white/10 flex items-center justify-between">
-              <span class="text-xs text-white/80">Nav Links</span>
-              <input id="in_nav_color" type="color" value="#ffffff">
-            </div>
-            <div class="p-2.5 rounded-xl bg-black/60 border border-white/10 flex items-center justify-between">
-              <span class="text-xs text-white/80">Greeting Box</span>
-              <input id="in_bubble_bg" type="color" value="#ffffff">
-            </div>
-          </div>
-
-          <!-- Hidden storage inputs for compatibility with config format -->
-          <div class="hidden">
-            <input id="in_heading_border" type="color" value="#000000">
-            <input id="in_heading_border_enable" type="checkbox">
-            <input id="in_logo_border" type="color" value="#000000">
-            <input id="in_logo_border_enable" type="checkbox">
-            <input id="in_nav_border" type="color" value="#000000">
-            <input id="in_nav_border_enable" type="checkbox">
-            <input id="in_footer_color" type="color" value="#ffffff">
-            <input id="in_footer_border" type="color" value="#000000">
-            <input id="in_footer_border_enable" type="checkbox">
-            <input id="in_btn_border_color" type="color" value="#ffffff">
-            <input id="in_btn_border_opacity" type="range" value="0">
-            <span id="btn_border_val">0%</span>
-            <input id="in_btn_text_border" type="color" value="#ffffff">
-            <input id="in_btn_text_border_enable" type="checkbox">
-            <input id="in_btn_bg_image" type="text" value="">
-            <input id="in_code_box_border" type="color" value="#ffffff">
-            <input id="in_code_box_bg_opacity" type="range" value="15">
-            <span id="code_box_bg_val">15%</span>
-            <input id="in_code_box_border_opacity" type="range" value="100">
-            <span id="code_box_border_val">100%</span>
-            <input id="in_code_box_label_color" type="color" value="#ffffff">
-            <input id="in_code_label_border" type="color" value="#000000">
-            <input id="in_code_label_border_enable" type="checkbox">
-            <input id="in_code_text_border" type="color" value="#000000">
-            <input id="in_code_text_border_enable" type="checkbox">
-            <input id="in_code_box_bg_image" type="text" value="">
-            <input id="in_bubble_border_color" type="color" value="#262626">
-            <input id="in_bubble_border_opacity" type="range" value="0">
-            <span id="bubble_border_val">0%</span>
-            <input id="in_bubble_text_color" type="color" value="#000000">
-            <input id="in_bubble_text_border" type="color" value="#ffffff">
-            <input id="in_bubble_text_border_enable" type="checkbox">
-            <input id="in_bubble_icon_color" type="color" value="#000000">
-            <input id="in_bubble_icon_border" type="color" value="#ffffff">
-            <input id="in_bubble_icon_border_enable" type="checkbox">
-            <input id="in_bubble_bg_image" type="text" value="">
+          <div class="flex items-center gap-2">
+            <input id="unifiedImageName" type="text" placeholder="art.jpg or direct media URL" class="flex-grow px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
+            <button type="button" onclick="clearMedia('unified', 'unifiedImageName')" class="px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/60 hover:text-white text-xs border border-white/10 transition">Clear</button>
           </div>
         </div>
-      </details>
+      </div>
 
-      <!-- STEP 6: Copyright & Rules (Friendly plain-English Austrian law notice) -->
-      <div class="card-panel p-5 sm:p-6 border-amber-500/20 bg-amber-950/10 space-y-4">
-        <div class="flex items-center gap-2 text-amber-400">
-          <span class="text-base">🛡️</span>
+      <!-- Join Button Styling & Custom Animations -->
+      <div class="panel p-5 sm:p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-white text-black font-bold text-xs flex items-center justify-center">5</span>
+            <h2 class="font-orbitron text-sm sm:text-base font-bold uppercase tracking-wider text-white">
+              Join Button (768x112 px)
+            </h2>
+          </div>
+          <span class="text-[11px] text-white/50">Custom Animations & Styling</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="subpanel p-3.5 space-y-2">
+            <span class="text-xs font-semibold text-white/80 block">Button Colors</span>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-white/70">Fill Color</span>
+              <input id="btnColor" type="color" value="#ffffff">
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-white/70">Border Color</span>
+              <input id="btnBorderColor" type="color" value="#000000">
+            </div>
+            <div class="pt-1">
+              <div class="flex justify-between text-xs text-white/60 mb-1">
+                <span>Border Opacity</span>
+                <span id="btnBorderVal" class="font-mono">0%</span>
+              </div>
+              <input id="btnBorderOpacity" type="range" min="0" max="100" value="0" class="w-full accent-white">
+            </div>
+          </div>
+
+          <div class="subpanel p-3.5 space-y-2">
+            <span class="text-xs font-semibold text-white/80 block">Button Text & Icon</span>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-white/70">Text & Icon Color</span>
+              <input id="btnTextColor" type="color" value="#000000">
+            </div>
+            <div class="flex items-center justify-between pt-1">
+              <label class="inline-flex items-center gap-2 text-xs text-white/70 cursor-pointer">
+                <input id="btnTextBorderEnable" type="checkbox" class="w-3.5 h-3.5 accent-white">
+                <span>Text Outline</span>
+              </label>
+              <input id="btnTextBorderColor" type="color" value="#ffffff">
+            </div>
+          </div>
+        </div>
+
+        <!-- Button Background Animation / Image -->
+        <div class="space-y-2 pt-2 border-t border-white/5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-white/80 font-medium">Custom Animation or Artwork Behind Button</span>
+            <span class="text-[11px] text-white/40 font-mono">768x112 px (GIF / MP4 / PNG)</span>
+          </div>
+          <div id="btnUploadZone" class="upload-box p-3 flex flex-col items-center justify-center text-center cursor-pointer" onclick="document.getElementById('btnUpload').click()">
+            <svg class="w-5 h-5 text-white/40 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span class="text-xs text-white/70 font-medium">Upload animated GIF, MP4 video, or image</span>
+            <input id="btnUpload" type="file" accept="image/*,video/mp4" class="hidden">
+          </div>
+          <div class="flex items-center gap-2">
+            <input id="btnImageName" type="text" placeholder="e.g. animation.gif or direct media URL" class="flex-grow px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
+            <button type="button" onclick="clearMedia('btn', 'btnImageName')" class="px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/60 hover:text-white text-xs border border-white/10 transition">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Invite Code Box Styling & Custom Animations -->
+      <div class="panel p-5 sm:p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-white text-black font-bold text-xs flex items-center justify-center">6</span>
+            <h2 class="font-orbitron text-sm sm:text-base font-bold uppercase tracking-wider text-white">
+              Invite Code Box (768x80 px)
+            </h2>
+          </div>
+          <span class="text-[11px] text-white/50">Custom Animations & Styling</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="subpanel p-3.5 space-y-2">
+            <span class="text-xs font-semibold text-white/80 block">Box Container</span>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-white/70">Fill Color</span>
+              <input id="codeBoxBg" type="color" value="#ffffff">
+            </div>
+            <div class="flex justify-between text-xs text-white/60">
+              <span>Fill Opacity</span>
+              <span id="codeBoxBgVal" class="font-mono">15%</span>
+            </div>
+            <input id="codeBoxBgOpacity" type="range" min="0" max="100" value="15" class="w-full accent-white">
+
+            <div class="flex items-center justify-between pt-2 border-t border-white/5">
+              <span class="text-xs text-white/70">Border Color</span>
+              <input id="codeBoxBorder" type="color" value="#ffffff">
+            </div>
+            <div class="flex justify-between text-xs text-white/60">
+              <span>Border Opacity</span>
+              <span id="codeBoxBorderVal" class="font-mono">100%</span>
+            </div>
+            <input id="codeBoxBorderOpacity" type="range" min="0" max="100" value="100" class="w-full accent-white">
+          </div>
+
+          <div class="subpanel p-3.5 space-y-2">
+            <span class="text-xs font-semibold text-white/80 block">Label & Code Typography</span>
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-white/70">"Invite Code:" Label</span>
+              <input id="codeBoxLabelColor" type="color" value="#ffffff">
+            </div>
+            <div class="flex items-center justify-between">
+              <label class="inline-flex items-center gap-2 text-xs text-white/70 cursor-pointer">
+                <input id="codeLabelBorderEnable" type="checkbox" class="w-3.5 h-3.5 accent-white">
+                <span>Label Outline</span>
+              </label>
+              <input id="codeLabelBorderColor" type="color" value="#000000">
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t border-white/5">
+              <span class="text-xs text-white/70">Code String Color</span>
+              <input id="codeBoxTextColor" type="color" value="#ffffff">
+            </div>
+            <div class="flex items-center justify-between">
+              <label class="inline-flex items-center gap-2 text-xs text-white/70 cursor-pointer">
+                <input id="codeTextBorderEnable" type="checkbox" class="w-3.5 h-3.5 accent-white">
+                <span>Code Outline</span>
+              </label>
+              <input id="codeTextBorderColor" type="color" value="#000000">
+            </div>
+          </div>
+        </div>
+
+        <!-- Code Box Background Animation / Image -->
+        <div class="space-y-2 pt-2 border-t border-white/5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-white/80 font-medium">Custom Animation or Artwork Behind Code Box</span>
+            <span class="text-[11px] text-white/40 font-mono">768x80 px (GIF / MP4 / PNG)</span>
+          </div>
+          <div id="codeBoxUploadZone" class="upload-box p-3 flex flex-col items-center justify-center text-center cursor-pointer" onclick="document.getElementById('codeBoxUpload').click()">
+            <svg class="w-5 h-5 text-white/40 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span class="text-xs text-white/70 font-medium">Upload animated GIF, MP4 video, or image</span>
+            <input id="codeBoxUpload" type="file" accept="image/*,video/mp4" class="hidden">
+          </div>
+          <div class="flex items-center gap-2">
+            <input id="codeBoxImageName" type="text" placeholder="e.g. animation.gif or direct media URL" class="flex-grow px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
+            <button type="button" onclick="clearMedia('codeBox', 'codeBoxImageName')" class="px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/60 hover:text-white text-xs border border-white/10 transition">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inviter Bubble Box -->
+      <div class="panel p-5 sm:p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-full bg-white text-black font-bold text-xs flex items-center justify-center">7</span>
+            <h2 class="font-orbitron text-sm sm:text-base font-bold uppercase tracking-wider text-white">
+              Inviter Greeting Bubble
+            </h2>
+          </div>
+          <label class="inline-flex items-center gap-2 cursor-pointer text-xs">
+            <input id="showBubble" type="checkbox" checked class="w-4 h-4 accent-white">
+            <span class="text-white/80 font-medium">Enable</span>
+          </label>
+        </div>
+
+        <div id="bubbleSettings" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="text-xs font-medium text-white/70 block mb-1.5">Inviter Name / Handle</label>
+              <input id="invitedBy" type="text" value="@user" placeholder="@yourname" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
+            </div>
+            <div>
+              <label class="text-xs font-medium text-white/70 block mb-1.5">Badge Text (3-4 chars)</label>
+              <input id="bubbleIcon" type="text" maxlength="4" value="TXT" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs font-mono text-white focus:outline-none focus:border-white/40">
+            </div>
+            <div>
+              <label class="text-xs font-medium text-white/70 block mb-1.5">Badge Placement</label>
+              <select id="emojiPos" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
+                <option value="left" selected>Left</option>
+                <option value="right">Right</option>
+                <option value="both">Both sides</option>
+                <option value="none">Hidden</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="subpanel p-3.5 space-y-2">
+              <span class="text-xs font-semibold text-white/80 block">Bubble Container</span>
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-white/70">Fill Color</span>
+                <input id="bubbleBg" type="color" value="#ffffff">
+              </div>
+              <div class="flex justify-between text-xs text-white/60">
+                <span>Fill Opacity</span>
+                <span id="bubbleBgVal" class="font-mono">100%</span>
+              </div>
+              <input id="bubbleBgOpacity" type="range" min="0" max="100" value="100" class="w-full accent-white">
+
+              <div class="flex items-center justify-between pt-2 border-t border-white/5">
+                <span class="text-xs text-white/70">Border Color</span>
+                <input id="bubbleBorderColor" type="color" value="#262626">
+              </div>
+              <div class="flex justify-between text-xs text-white/60">
+                <span>Border Opacity</span>
+                <span id="bubbleBorderVal" class="font-mono">0%</span>
+              </div>
+              <input id="bubbleBorderOpacity" type="range" min="0" max="100" value="0" class="w-full accent-white">
+            </div>
+
+            <div class="subpanel p-3.5 space-y-2">
+              <span class="text-xs font-semibold text-white/80 block">Bubble Typography</span>
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-white/70">Greeting Text Color</span>
+                <input id="bubbleTextColor" type="color" value="#000000">
+              </div>
+              <div class="flex items-center justify-between">
+                <label class="inline-flex items-center gap-2 text-xs text-white/70 cursor-pointer">
+                  <input id="bubbleTextBorderEnable" type="checkbox" class="w-3.5 h-3.5 accent-white">
+                  <span>Greeting Outline</span>
+                </label>
+                <input id="bubbleTextBorderColor" type="color" value="#ffffff">
+              </div>
+
+              <div class="flex items-center justify-between pt-2 border-t border-white/5">
+                <span class="text-xs text-white/70">Badge Icon Color</span>
+                <input id="bubbleIconColor" type="color" value="#000000">
+              </div>
+              <div class="flex items-center justify-between">
+                <label class="inline-flex items-center gap-2 text-xs text-white/70 cursor-pointer">
+                  <input id="bubbleIconBorderEnable" type="checkbox" class="w-3.5 h-3.5 accent-white">
+                  <span>Badge Outline</span>
+                </label>
+                <input id="bubbleIconBorderColor" type="color" value="#ffffff">
+              </div>
+            </div>
+          </div>
+
+          <!-- Bubble Background Animation / Image -->
+          <div class="space-y-2 pt-2 border-t border-white/5">
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-white/80 font-medium">Custom Animation or Artwork Behind Bubble</span>
+              <span class="text-[11px] text-white/40 font-mono">768x112 px (GIF / MP4 / PNG)</span>
+            </div>
+            <div id="bubbleUploadZone" class="upload-box p-3 flex flex-col items-center justify-center text-center cursor-pointer" onclick="document.getElementById('bubbleUpload').click()">
+              <svg class="w-5 h-5 text-white/40 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span class="text-xs text-white/70 font-medium">Upload animated GIF, MP4 video, or image</span>
+              <input id="bubbleUpload" type="file" accept="image/*,video/mp4" class="hidden">
+            </div>
+            <div class="flex items-center gap-2">
+              <input id="bubbleImageName" type="text" placeholder="e.g. animation.gif or direct media URL" class="flex-grow px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
+              <button type="button" onclick="clearMedia('bubble', 'bubbleImageName')" class="px-3 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/60 hover:text-white text-xs border border-white/10 transition">Clear</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Blank Canvas Templates Download -->
+      <div class="panel p-5 sm:p-6 space-y-3">
+        <h2 class="font-orbitron text-xs sm:text-sm font-bold uppercase tracking-wider text-white">
+          Blank Image & Animation Templates
+        </h2>
+        <p class="text-xs text-white/60">
+          Download transparent templates with the exact pixel dimensions to create graphics in Canva, Photoshop, or animation software:
+        </p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+          <button type="button" onclick="downloadPng(1920, 1080, 'background.png')" class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-left border border-white/10 text-xs transition">
+            <div class="font-bold text-white">Background</div>
+            <div class="text-[10px] text-white/40 font-mono">1920 x 1080 px</div>
+          </button>
+          <button type="button" onclick="downloadPng(768, 280, 'unified-stack.png')" class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-left border border-white/10 text-xs transition">
+            <div class="font-bold text-white">Unified Stack</div>
+            <div class="text-[10px] text-white/40 font-mono">768 x 280 px</div>
+          </button>
+          <button type="button" onclick="downloadPng(768, 112, 'join-button.png')" class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-left border border-white/10 text-xs transition">
+            <div class="font-bold text-white">Join Button</div>
+            <div class="text-[10px] text-white/40 font-mono">768 x 112 px</div>
+          </button>
+          <button type="button" onclick="downloadPng(768, 80, 'code-box.png')" class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-left border border-white/10 text-xs transition">
+            <div class="font-bold text-white">Code Box</div>
+            <div class="text-[10px] text-white/40 font-mono">768 x 80 px</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Legal Compliance & Terms of Use (Austrian Law) -->
+      <div class="panel p-5 sm:p-6 border-white/15 bg-neutral-900/60 space-y-4">
+        <div class="flex items-center gap-2 text-white">
+          <svg class="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
           <h2 class="font-orbitron text-xs sm:text-sm font-bold uppercase tracking-wider">
             Artwork Copyright & Responsibility (Austrian Law)
           </h2>
         </div>
 
-        <p class="text-xs text-white/80 leading-relaxed">
-          Under Austrian copyright rules, you must make sure you have the right to use your artwork. Only use images you made yourself, copyright-free art (e.g. from <a href="https://pixabay.com" target="_blank" class="text-white underline font-bold">Pixabay</a>), or art you have a valid license for. You are personally responsible for the media you provide.
+        <p class="text-xs text-white/70 leading-relaxed">
+          Under Austrian copyright law (UrhG), you must ensure you have valid usage rights for all media, animations, and graphics provided. You are personally liable for any copyright infringement resulting from unauthorized assets. Free creative commons media can be found on services like <a href="https://pixabay.com" target="_blank" class="text-white underline font-semibold">Pixabay</a>.
         </p>
 
         <div class="space-y-3 pt-1">
           <div>
-            <label class="text-xs font-medium text-white/80 block mb-1">
-              Your Name & Discord Handle (Electronic Signature)
-            </label>
-            <input id="in_author_signature" type="text" placeholder="e.g. Alex (@alex24)" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
+            <label class="text-xs font-medium text-white/80 block mb-1">Your Name & Discord Handle (Electronic Signature)</label>
+            <input id="authorSignature" type="text" placeholder="e.g. Alex (@alex24)" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40">
           </div>
 
           <div>
-            <label class="text-xs font-medium text-white/70 block mb-1">
-              Have a license document or commercial receipt? (Optional)
-            </label>
+            <label class="text-xs font-medium text-white/70 block mb-1">Commercial License / Receipt Document (Optional)</label>
             <div class="flex items-center gap-2">
-              <input id="in_license_file_name" type="text" readonly placeholder="No file selected" class="flex-grow px-3.5 py-2 rounded-xl bg-black border border-white/10 text-xs text-white/60">
+              <input id="licenseFileName" type="text" readonly placeholder="No file selected" class="flex-grow px-3.5 py-2 rounded-xl bg-black border border-white/10 text-xs text-white/60">
               <label class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-xs font-semibold cursor-pointer text-white shrink-0 transition">
-                <span>Upload Proof</span>
-                <input id="upload_license_doc" type="file" accept=".pdf,.txt,.png,.jpg,.jpeg,.webp" class="hidden">
+                <span>Upload</span>
+                <input id="uploadLicenseDoc" type="file" accept=".pdf,.txt,.png,.jpg,.jpeg,.webp" class="hidden">
               </label>
             </div>
           </div>
 
           <label class="flex items-start gap-2.5 pt-2 cursor-pointer">
-            <input id="agree_terms" type="checkbox" class="w-4 h-4 mt-0.5 accent-white shrink-0">
+            <input id="agreeTerms" type="checkbox" class="w-4 h-4 mt-0.5 accent-white shrink-0">
             <span class="text-xs text-white/90 font-medium">
-              I confirm that my artwork is legal for public use and I accept personal responsibility under Austrian law.
+              I certify that all uploaded artwork and animations are legally licensed or created by me, and I accept full personal responsibility under Austrian law.
             </span>
           </label>
         </div>
       </div>
 
-      <!-- Action Button -->
+      <!-- Action & Download -->
       <div class="space-y-3">
-        <button id="downloadBtn" onclick="downloadConfig()" class="w-full py-4 px-6 rounded-2xl bg-white text-black font-extrabold text-sm sm:text-base tracking-wide hover:bg-neutral-200 active:scale-[0.98] transition flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-          </svg>
-          <span>Download My Page Files</span>
+        <button id="downloadBtn" onclick="downloadConfig()" disabled class="w-full py-4 px-6 rounded-2xl bg-white text-black font-extrabold text-sm sm:text-base tracking-wide hover:bg-neutral-200 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none transition flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.15)]">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          <span>Download Configuration Files</span>
         </button>
 
-        <!-- Post-download instructions -->
         <div class="p-4 rounded-xl border border-white/5 bg-white/[0.02] text-xs text-white/60 space-y-1">
-          <span class="font-bold text-white block">What do I do next?</span>
-          <p>1. Clicking download gives you <span class="text-white font-mono">config.txt</span> and <span class="text-white font-mono">terms-of-use.txt</span>.</p>
-          <p>2. Send those files and any artwork images you used to an @admin on the Discord server.</p>
-          <p>3. They will activate your personal page live at <span class="text-white font-mono">/discord/user/</span>!</p>
+          <span class="font-bold text-white block">Next Steps:</span>
+          <p>1. Clicking download creates <span class="text-white font-mono">config.txt</span> and <span class="text-white font-mono">terms-of-use.txt</span>.</p>
+          <p>2. Send these files along with your media files to an @admin on the server.</p>
+          <p>3. They will activate your personal page live at <span class="text-white font-mono">/discord/user/</span>.</p>
         </div>
       </div>
 
@@ -435,74 +671,74 @@
 
     <!-- RIGHT: Sticky Interactive Live Preview -->
     <div id="previewPanel" class="lg:col-span-5 lg:sticky lg:top-24 hidden lg:block">
-      <div class="card-panel p-3 sm:p-4 bg-neutral-900/80 border-white/10">
+      <div class="panel p-3 sm:p-4 bg-neutral-900/80 border-white/10">
         <div class="flex items-center justify-between px-2 py-1 mb-3">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
             <span class="text-xs font-mono tracking-wider uppercase text-white/60">Live Preview</span>
           </div>
           <button onclick="toggleModal(true)" class="text-xs text-white/70 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 px-2.5 py-1 rounded-lg transition">
-            Expand ↗
+            Expand
           </button>
         </div>
         
-        <!-- Live Preview Phone/Card Viewport -->
-        <div id="prev_stage" class="w-full min-h-[560px] rounded-2xl flex flex-col justify-between relative overflow-hidden bg-cover bg-center border border-white/10 shadow-2xl transition-all">
-          <video id="prev_bg_video" class="media-layer hidden" autoplay loop muted playsinline></video>
+        <!-- Live Preview Stage -->
+        <div id="previewStage" class="w-full min-h-[560px] rounded-2xl flex flex-col justify-between relative overflow-hidden bg-cover bg-center border border-white/10 shadow-2xl transition-all">
+          <video id="previewBgVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
           
-          <div id="prev_glow" class="absolute inset-0 pointer-events-none flex items-center justify-center">
+          <div id="previewGlow" class="absolute inset-0 pointer-events-none flex items-center justify-center">
             <div class="w-[280px] h-[280px] blur-[80px] rounded-full transition-all"></div>
           </div>
 
           <!-- Top Brand Bar -->
           <div class="w-full px-4 py-3.5 flex items-center justify-between relative z-10">
-            <span class="prev_logo stroke-text font-orbitron font-bold text-xs uppercase text-white">pr0jectz3ro</span>
+            <span class="prev-logo stroke-text font-orbitron font-bold text-xs uppercase text-white">pr0jectz3ro</span>
             <div class="flex items-center gap-3 text-[10px] font-orbitron uppercase text-white/70">
-              <span class="prev_nav stroke-text font-bold">Features</span>
-              <span class="prev_nav stroke-text font-bold">Team</span>
+              <span class="prev-nav stroke-text font-bold">Features</span>
+              <span class="prev-nav stroke-text font-bold">Team</span>
             </div>
           </div>
 
-          <!-- Main CTA Content -->
+          <!-- Main Center Action Stack -->
           <div class="relative z-10 w-full px-4 py-6 flex flex-col items-center justify-center text-center my-auto">
-            <h1 class="prev_heading stroke-text font-orbitron text-xl sm:text-2xl font-black uppercase tracking-wider mb-5 text-white">
+            <h1 class="prev-heading stroke-text font-orbitron text-xl sm:text-2xl font-black uppercase tracking-wider mb-5 text-white">
               Join the Discord
             </h1>
 
-            <div id="prev_stack" class="w-full max-w-[280px] flex flex-col gap-2.5 relative">
-              <div id="prev_unified_wrapper" class="absolute inset-0 rounded-2xl pointer-events-none overflow-hidden hidden">
-                <video id="prev_unified_video" class="media-layer hidden" autoplay loop muted playsinline></video>
+            <div id="previewStack" class="w-full max-w-[280px] flex flex-col gap-2.5 relative">
+              <div id="previewUnifiedWrapper" class="absolute inset-0 rounded-2xl pointer-events-none overflow-hidden hidden">
+                <video id="previewUnifiedVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
               </div>
 
               <!-- Join Button -->
-              <div class="prev_btn w-full py-3.5 px-4 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg relative bg-cover bg-center overflow-hidden z-10 cursor-pointer active:scale-95 transition">
-                <video id="prev_btn_video" class="media-layer hidden" autoplay loop muted playsinline></video>
-                <svg id="prev_btn_icon" class="w-4 h-4 fill-current shrink-0 relative z-10" viewBox="0 0 24 24">
+              <div class="prev-btn w-full py-3.5 px-4 rounded-2xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg relative bg-cover bg-center overflow-hidden z-10 cursor-pointer active:scale-95 transition">
+                <video id="previewBtnVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+                <svg id="previewBtnIcon" class="w-4 h-4 fill-current shrink-0 relative z-10" viewBox="0 0 24 24">
                   <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.078.078 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
                 </svg>
-                <span class="prev_btn_text stroke-text relative z-10">Join Server</span>
+                <span class="prev-btn-text stroke-text relative z-10">Join Server</span>
               </div>
 
               <!-- Invite Code Box -->
-              <div onclick="testCopyCode()" class="prev_code_box w-full py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 relative bg-cover bg-center overflow-hidden z-10 cursor-pointer active:scale-95 transition">
-                <video id="prev_code_box_video" class="media-layer hidden" autoplay loop muted playsinline></video>
-                <span class="prev_code_label stroke-text font-medium relative z-10">Invite Code:</span>
-                <span class="prev_code_text stroke-text font-mono font-bold relative z-10">default-code</span>
+              <div onclick="testCopyCode()" class="prev-code-box w-full py-2.5 px-3 rounded-xl text-xs flex items-center justify-center gap-1.5 relative bg-cover bg-center overflow-hidden z-10 cursor-pointer active:scale-95 transition">
+                <video id="previewCodeBoxVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+                <span class="prev-code-label stroke-text font-medium relative z-10">Invite Code:</span>
+                <span class="prev-code-text stroke-text font-mono font-bold relative z-10">default-code</span>
                 <span id="copyTip" class="text-[10px] bg-white/20 px-1.5 py-0.5 rounded text-white ml-1 relative z-10">Copy</span>
               </div>
 
               <!-- Inviter Greeting Bubble -->
-              <div class="prev_bubble w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 shadow-lg relative bg-cover bg-center overflow-hidden z-10">
-                <video id="prev_bubble_video" class="media-layer hidden" autoplay loop muted playsinline></video>
-                <span class="prev_bubble_icon_left stroke-text text-xs font-bold shrink-0 relative z-10">TXT</span>
-                <span class="prev_bubble_msg stroke-text text-xs font-semibold tracking-wide text-center relative z-10"></span>
-                <span class="prev_bubble_icon_right stroke-text text-xs font-bold shrink-0 hidden relative z-10">TXT</span>
+              <div class="prev-bubble w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-2 shadow-lg relative bg-cover bg-center overflow-hidden z-10">
+                <video id="previewBubbleVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+                <span class="prev-bubble-icon-left stroke-text text-xs font-bold shrink-0 relative z-10">TXT</span>
+                <span class="prev-bubble-msg stroke-text text-xs font-semibold tracking-wide text-center relative z-10"></span>
+                <span class="prev-bubble-icon-right stroke-text text-xs font-bold shrink-0 hidden relative z-10">TXT</span>
               </div>
             </div>
           </div>
 
           <!-- Mini Footer -->
-          <div class="prev_footer w-full px-4 py-3 text-[10px] text-center relative z-10 flex flex-wrap justify-center items-center gap-1 text-white/50">
+          <div class="prev-footer w-full px-4 py-3 text-[10px] text-center relative z-10 flex flex-wrap justify-center items-center gap-1 text-white/50">
             <span class="stroke-text footer-seg inline-block">&copy; 2026 pr0jectz3ro</span>
             <span class="stroke-text footer-seg inline-block">-</span>
             <span class="stroke-text footer-seg inline-block">powered by thataustrianone.eu</span>
@@ -512,267 +748,265 @@
     </div>
   </main>
 
-  <!-- Expanded Modal -->
+  <!-- Expanded Modal for Fullscreen Review -->
   <div id="fullViewModal" class="fixed inset-0 z-50 bg-black/90 hidden flex-col">
     <div class="w-full h-14 bg-black/80 border-b border-white/10 px-4 sm:px-6 flex items-center justify-between">
       <span class="font-orbitron font-bold text-sm text-white">Full Page Preview</span>
       <button onclick="toggleModal(false)" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs transition">
-        Close ✕
+        Close
       </button>
     </div>
 
     <div class="flex-grow w-full overflow-y-auto flex items-center justify-center p-4">
-      <div id="modal_stage" class="w-full max-w-5xl h-[85vh] rounded-2xl relative overflow-hidden flex flex-col justify-between bg-cover bg-center shadow-2xl border border-white/10">
-        <video id="modal_bg_video" class="media-layer hidden" autoplay loop muted playsinline></video>
+      <div id="modalStage" class="w-full max-w-5xl h-[85vh] rounded-2xl relative overflow-hidden flex flex-col justify-between bg-cover bg-center shadow-2xl border border-white/10">
+        <video id="modalBgVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
         
-        <div id="modal_glow" class="absolute inset-0 pointer-events-none flex items-center justify-center">
+        <div id="modalGlow" class="absolute inset-0 pointer-events-none flex items-center justify-center">
           <div class="w-[500px] h-[350px] blur-[120px] rounded-full"></div>
         </div>
 
         <header class="w-full px-6 h-16 flex items-center justify-between relative z-10">
-          <span class="prev_logo stroke-text font-orbitron font-bold tracking-wider text-base uppercase text-white">pr0jectz3ro</span>
+          <span class="prev-logo stroke-text font-orbitron font-bold tracking-wider text-base uppercase text-white">pr0jectz3ro</span>
           <nav class="flex items-center gap-6 font-orbitron font-bold text-sm uppercase text-white/70">
-            <span class="prev_nav stroke-text">Features</span>
-            <span class="prev_nav stroke-text">Team</span>
+            <span class="prev-nav stroke-text">Features</span>
+            <span class="prev-nav stroke-text">Team</span>
           </nav>
         </header>
 
         <div class="relative z-10 w-full px-6 flex flex-col items-center justify-center text-center my-auto">
-          <h1 class="prev_heading stroke-text font-orbitron text-3xl sm:text-5xl font-black uppercase tracking-wider mb-8 text-white">
+          <h1 class="prev-heading stroke-text font-orbitron text-3xl sm:text-5xl font-black uppercase tracking-wider mb-8 text-white">
             Join the Discord
           </h1>
 
-          <div id="modal_stack" class="w-full max-w-sm flex flex-col items-center gap-4 relative">
-            <div id="modal_unified_wrapper" class="absolute inset-0 rounded-2xl pointer-events-none overflow-hidden hidden">
-              <video id="modal_unified_video" class="media-layer hidden" autoplay loop muted playsinline></video>
+          <div id="modalStack" class="w-full max-w-sm flex flex-col items-center gap-4 relative">
+            <div id="modalUnifiedWrapper" class="absolute inset-0 rounded-2xl pointer-events-none overflow-hidden hidden">
+              <video id="modalUnifiedVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
             </div>
 
-            <div class="prev_btn w-full py-4 px-8 rounded-2xl font-bold text-base flex items-center justify-center gap-3 shadow-xl relative bg-cover bg-center overflow-hidden z-10">
-              <video id="modal_btn_video" class="media-layer hidden" autoplay loop muted playsinline></video>
-              <svg id="modal_btn_icon" class="w-5 h-5 fill-current shrink-0 relative z-10" viewBox="0 0 24 24">
+            <div class="prev-btn w-full py-4 px-8 rounded-2xl font-bold text-base flex items-center justify-center gap-3 shadow-xl relative bg-cover bg-center overflow-hidden z-10">
+              <video id="modalBtnVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+              <svg class="w-5 h-5 fill-current shrink-0 relative z-10" viewBox="0 0 24 24">
                 <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.078.078 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
               </svg>
-              <span class="prev_btn_text stroke-text relative z-10">Join Server</span>
+              <span class="prev-btn-text stroke-text relative z-10">Join Server</span>
             </div>
 
-            <div class="prev_code_box w-full py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 relative bg-cover bg-center overflow-hidden z-10">
-              <video id="modal_code_box_video" class="media-layer hidden" autoplay loop muted playsinline></video>
-              <span class="prev_code_label stroke-text font-medium relative z-10">Invite Code:</span>
-              <span class="prev_code_text stroke-text font-mono font-bold relative z-10">default-code</span>
+            <div class="prev-code-box w-full py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 relative bg-cover bg-center overflow-hidden z-10">
+              <video id="modalCodeBoxVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+              <span class="prev-code-label stroke-text font-medium relative z-10">Invite Code:</span>
+              <span class="prev-code-text stroke-text font-mono font-bold relative z-10">default-code</span>
             </div>
 
-            <div class="prev_bubble w-full py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 shadow-xl relative bg-cover bg-center overflow-hidden z-10">
-              <video id="modal_bubble_video" class="media-layer hidden" autoplay loop muted playsinline></video>
-              <span class="prev_bubble_icon_left stroke-text text-sm font-bold shrink-0 relative z-10">TXT</span>
-              <span class="prev_bubble_msg stroke-text text-xs sm:text-sm font-semibold tracking-wide text-center relative z-10"></span>
-              <span class="prev_bubble_icon_right stroke-text text-sm font-bold shrink-0 hidden relative z-10">TXT</span>
+            <div class="prev-bubble w-full py-3 px-4 rounded-xl flex items-center justify-center gap-2.5 shadow-xl relative bg-cover bg-center overflow-hidden z-10">
+              <video id="modalBubbleVideo" class="media-layer hidden" autoplay loop muted playsinline></video>
+              <span class="prev-bubble-icon-left stroke-text text-sm font-bold shrink-0 relative z-10">TXT</span>
+              <span class="prev-bubble-msg stroke-text text-xs sm:text-sm font-semibold tracking-wide text-center relative z-10"></span>
+              <span class="prev-bubble-icon-right stroke-text text-sm font-bold shrink-0 hidden relative z-10">TXT</span>
             </div>
           </div>
         </div>
 
-        <footer class="prev_footer w-full pb-6 pt-3 text-center relative z-10 text-xs text-white/50">
-          &copy; 2026 pr0jectz3ro — powered by thataustrianone.eu
+        <footer class="prev-footer w-full pb-6 pt-3 text-center relative z-10 text-xs text-white/50">
+          &copy; 2026 pr0jectz3ro &mdash; powered by thataustrianone.eu
         </footer>
       </div>
     </div>
   </div>
 
-  <canvas id="exportCanvas" class="hidden"></canvas>
+  <div id="toast" class="toast"></div>
 
   <script>
-    // Preset Vibes configured for 14-25 age aesthetic preferences
-    const PRESETS = [
+    // Helpers
+    const $ = id => document.getElementById(id);
+    const localMedia = { bg: null, btn: null, codeBox: null, bubble: null, unified: null };
+    const imageSizeCache = {};
+    let isRenderScheduled = false;
+    let licenseProofFile = null;
+
+    // Starting Themes (Zero Emojis)
+    const THEMES = [
       {
-        id: 'obsidian',
-        name: 'Obsidian Stealth',
-        emoji: '🖤',
-        bg: '#070707',
-        heading: '#ffffff',
-        glow: '#ffffff',
-        glowOp: 0,
-        btnBg: '#ffffff',
-        btnText: '#000000',
-        codeBg: '#ffffff',
-        codeText: '#ffffff',
-        bubbleBg: '#ffffff',
-        bubbleText: '#000000'
+        id: 'stealth',
+        name: 'Stealth Black',
+        bg: '#070707', glow: '#ffffff', glowOp: 0,
+        heading: '#ffffff', logo: '#ffffff', nav: '#ffffff', footer: '#ffffff',
+        btnBg: '#ffffff', btnBorder: '#000000', btnBorderOp: 0, btnText: '#000000',
+        codeBg: '#ffffff', codeBgOp: 15, codeBorder: '#ffffff', codeBorderOp: 100, codeLabel: '#ffffff', codeText: '#ffffff',
+        bubbleBg: '#ffffff', bubbleBgOp: 100, bubbleBorder: '#262626', bubbleBorderOp: 0, bubbleText: '#000000', bubbleIcon: '#000000'
       },
       {
-        id: 'cyberpunk',
-        name: 'Cyber Neon',
-        emoji: '⚡',
-        bg: '#050814',
-        heading: '#00f0ff',
-        glow: '#00f0ff',
-        glowOp: 35,
-        btnBg: '#00f0ff',
-        btnText: '#050814',
-        codeBg: '#00f0ff',
-        codeText: '#00f0ff',
-        bubbleBg: '#00f0ff',
-        bubbleText: '#050814'
+        id: 'neon-cyan',
+        name: 'Cyber Cyan',
+        bg: '#050a12', glow: '#00e5ff', glowOp: 35,
+        heading: '#00e5ff', logo: '#00e5ff', nav: '#00e5ff', footer: '#00e5ff',
+        btnBg: '#00e5ff', btnBorder: '#00b8cc', btnBorderOp: 50, btnText: '#050a12',
+        codeBg: '#00e5ff', codeBgOp: 15, codeBorder: '#00e5ff', codeBorderOp: 100, codeLabel: '#00e5ff', codeText: '#e0f7fa',
+        bubbleBg: '#00e5ff', bubbleBgOp: 100, bubbleBorder: '#00b8cc', bubbleBorderOp: 50, bubbleText: '#050a12', bubbleIcon: '#050a12'
       },
       {
-        id: 'amethyst',
+        id: 'violet',
         name: 'Midnight Violet',
-        emoji: '🔮',
-        bg: '#090514',
-        heading: '#d8b4fe',
-        glow: '#a855f7',
-        glowOp: 30,
-        btnBg: '#c084fc',
-        btnText: '#090514',
-        codeBg: '#c084fc',
-        codeText: '#f3e8ff',
-        bubbleBg: '#c084fc',
-        bubbleText: '#090514'
+        bg: '#0a0614', glow: '#a855f7', glowOp: 30,
+        heading: '#d8b4fe', logo: '#d8b4fe', nav: '#d8b4fe', footer: '#d8b4fe',
+        btnBg: '#c084fc', btnBorder: '#9333ea', btnBorderOp: 50, btnText: '#0a0614',
+        codeBg: '#c084fc', codeBgOp: 20, codeBorder: '#c084fc', codeBorderOp: 100, codeLabel: '#e9d5ff', codeText: '#faf5ff',
+        bubbleBg: '#c084fc', bubbleBgOp: 100, bubbleBorder: '#9333ea', bubbleBorderOp: 50, bubbleText: '#0a0614', bubbleIcon: '#0a0614'
       },
       {
-        id: 'emerald',
-        name: 'Matrix Emerald',
-        emoji: '🟢',
-        bg: '#030c07',
-        heading: '#4ade80',
-        glow: '#22c55e',
-        glowOp: 30,
-        btnBg: '#22c55e',
-        btnText: '#030c07',
-        codeBg: '#22c55e',
-        codeText: '#bbf7d0',
-        bubbleBg: '#22c55e',
-        bubbleText: '#030c07'
+        id: 'matrix',
+        name: 'Matrix Green',
+        bg: '#030d07', glow: '#22c55e', glowOp: 30,
+        heading: '#4ade80', logo: '#4ade80', nav: '#4ade80', footer: '#4ade80',
+        btnBg: '#22c55e', btnBorder: '#16a34a', btnBorderOp: 50, btnText: '#030d07',
+        codeBg: '#22c55e', codeBgOp: 20, codeBorder: '#22c55e', codeBorderOp: 100, codeLabel: '#bbf7d0', codeText: '#f0fdf4',
+        bubbleBg: '#22c55e', bubbleBgOp: 100, bubbleBorder: '#16a34a', bubbleBorderOp: 50, bubbleText: '#030d07', bubbleIcon: '#030d07'
       },
       {
-        id: 'sunset',
-        name: 'Sunset Gold',
-        emoji: '🌅',
-        bg: '#0c0704',
-        heading: '#fb923c',
-        glow: '#f97316',
-        glowOp: 30,
-        btnBg: '#fb923c',
-        btnText: '#0c0704',
-        codeBg: '#fb923c',
-        codeText: '#ffedd5',
-        bubbleBg: '#fb923c',
-        bubbleText: '#0c0704'
+        id: 'amber',
+        name: 'Solar Amber',
+        bg: '#0d0703', glow: '#f97316', glowOp: 30,
+        heading: '#fb923c', logo: '#fb923c', nav: '#fb923c', footer: '#fb923c',
+        btnBg: '#fb923c', btnBorder: '#ea580c', btnBorderOp: 50, btnText: '#0d0703',
+        codeBg: '#fb923c', codeBgOp: 20, codeBorder: '#fb923c', codeBorderOp: 100, codeLabel: '#ffedd5', codeText: '#fff7ed',
+        bubbleBg: '#fb923c', bubbleBgOp: 100, bubbleBorder: '#ea580c', bubbleBorderOp: 50, bubbleText: '#0d0703', bubbleIcon: '#0d0703'
       },
       {
-        id: 'sakura',
-        name: 'Sakura Pink',
-        emoji: '🌸',
-        bg: '#0e050b',
-        heading: '#f472b6',
-        glow: '#ec4899',
-        glowOp: 30,
-        btnBg: '#f472b6',
-        btnText: '#0e050b',
-        codeBg: '#f472b6',
-        codeText: '#fce7f3',
-        bubbleBg: '#f472b6',
-        bubbleText: '#0e050b'
+        id: 'crimson',
+        name: 'Crimson Red',
+        bg: '#0e0406', glow: '#ef4444', glowOp: 35,
+        heading: '#f87171', logo: '#f87171', nav: '#f87171', footer: '#f87171',
+        btnBg: '#ef4444', btnBorder: '#dc2626', btnBorderOp: 50, btnText: '#ffffff',
+        codeBg: '#ef4444', codeBgOp: 20, codeBorder: '#ef4444', codeBorderOp: 100, codeLabel: '#fee2e2', codeText: '#ffffff',
+        bubbleBg: '#ef4444', bubbleBgOp: 100, bubbleBorder: '#dc2626', bubbleBorderOp: 50, bubbleText: '#ffffff', bubbleIcon: '#ffffff'
+      },
+      {
+        id: 'rose',
+        name: 'Sakura Rose',
+        bg: '#0e050c', glow: '#ec4899', glowOp: 30,
+        heading: '#f472b6', logo: '#f472b6', nav: '#f472b6', footer: '#f472b6',
+        btnBg: '#f472b6', btnBorder: '#db2777', btnBorderOp: 50, btnText: '#0e050c',
+        codeBg: '#f472b6', codeBgOp: 20, codeBorder: '#f472b6', codeBorderOp: 100, codeLabel: '#fce7f3', codeText: '#fdf2f8',
+        bubbleBg: '#f472b6', bubbleBgOp: 100, bubbleBorder: '#db2777', bubbleBorderOp: 50, bubbleText: '#0e050c', bubbleIcon: '#0e050c'
       },
       {
         id: 'arctic',
-        name: 'Arctic Ice',
-        emoji: '❄️',
-        bg: '#04090f',
-        heading: '#38bdf8',
-        glow: '#0ea5e9',
-        glowOp: 30,
-        btnBg: '#38bdf8',
-        btnText: '#04090f',
-        codeBg: '#38bdf8',
-        codeText: '#e0f2fe',
-        bubbleBg: '#38bdf8',
-        bubbleText: '#04090f'
-      },
-      {
-        id: 'ruby',
-        name: 'Crimson Blood',
-        emoji: '🩸',
-        bg: '#0d0406',
-        heading: '#f87171',
-        glow: '#ef4444',
-        glowOp: 35,
-        btnBg: '#ef4444',
-        btnText: '#ffffff',
-        codeBg: '#ef4444',
-        codeText: '#fee2e2',
-        bubbleBg: '#ef4444',
-        bubbleText: '#ffffff'
+        name: 'Glacier Blue',
+        bg: '#040912', glow: '#38bdf8', glowOp: 30,
+        heading: '#7dd3fc', logo: '#7dd3fc', nav: '#7dd3fc', footer: '#7dd3fc',
+        btnBg: '#38bdf8', btnBorder: '#0284c7', btnBorderOp: 50, btnText: '#040912',
+        codeBg: '#38bdf8', codeBgOp: 20, codeBorder: '#38bdf8', codeBorderOp: 100, codeLabel: '#e0f2fe', codeText: '#f0f9ff',
+        bubbleBg: '#38bdf8', bubbleBgOp: 100, bubbleBorder: '#0284c7', bubbleBorderOp: 50, bubbleText: '#040912', bubbleIcon: '#040912'
       }
     ];
 
-    const localPreviews = { bg: null, btn: null, code_box: null, bubble: null, unified: null };
-    const imageSizeCache = {};
-    let licenseProofFile = null;
-    let renderScheduled = false;
-
-    // Build preset buttons
-    const presetGrid = document.getElementById('presetGrid');
-    PRESETS.forEach((p, idx) => {
+    // Build Theme Grid (No Emojis)
+    const presetGrid = $('presetGrid');
+    THEMES.forEach((t, i) => {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = `p-3 rounded-xl border border-white/10 bg-black/50 hover:border-white/30 text-left transition flex flex-col justify-between gap-2 group active:scale-95 ${idx === 0 ? 'ring-2 ring-white/50' : ''}`;
+      btn.className = `p-3 rounded-xl border border-white/10 bg-black/50 hover:border-white/30 text-left transition flex flex-col justify-between gap-2 group active:scale-95 ${i === 0 ? 'ring-2 ring-white/50' : ''}`;
       btn.innerHTML = `
         <div class="flex items-center justify-between w-full">
-          <span class="text-base">${p.emoji}</span>
-          <div class="flex gap-1">
-            <span class="w-3 h-3 rounded-full border border-black" style="background:${p.btnBg}"></span>
-            <span class="w-3 h-3 rounded-full border border-black" style="background:${p.bg}"></span>
+          <div class="flex gap-1.5 items-center">
+            <span class="w-3.5 h-3.5 rounded-full border border-black/40 shadow-sm" style="background:${t.btnBg}"></span>
+            <span class="w-3.5 h-3.5 rounded-full border border-white/10 shadow-sm" style="background:${t.bg}"></span>
           </div>
+          <span class="text-[10px] text-white/40 font-mono">0${i+1}</span>
         </div>
-        <span class="text-xs font-semibold text-white/90 group-hover:text-white truncate">${p.name}</span>
+        <span class="text-xs font-semibold text-white/90 group-hover:text-white truncate">${t.name}</span>
       `;
       btn.onclick = () => {
         document.querySelectorAll('#presetGrid button').forEach(b => b.classList.remove('ring-2', 'ring-white/50'));
         btn.classList.add('ring-2', 'ring-white/50');
-        applyPreset(p);
+        applyTheme(t);
       };
       presetGrid.appendChild(btn);
     });
 
-    function applyPreset(p) {
-      document.getElementById('in_bg_color').value = p.bg;
-      document.getElementById('in_heading_color').value = p.heading;
-      document.getElementById('in_glow_color').value = p.glow;
-      document.getElementById('in_glow_opacity').value = p.glowOp;
-      document.getElementById('in_btn_color').value = p.btnBg;
-      document.getElementById('in_btn_text_color').value = p.btnText;
-      document.getElementById('in_code_box_bg').value = p.codeBg;
-      document.getElementById('in_code_box_text_color').value = p.codeText;
-      document.getElementById('in_bubble_bg').value = p.bubbleBg;
-      document.getElementById('in_bubble_text_color').value = p.bubbleText;
-      schedulePreviewUpdate();
+    function applyTheme(t) {
+      $('bgColor').value = t.bg;
+      $('glowColor').value = t.glow;
+      $('glowOpacity').value = t.glowOp;
+      $('glowVal').textContent = `${t.glowOp}%`;
+
+      $('headingColor').value = t.heading;
+      $('logoColor').value = t.logo;
+      $('navColor').value = t.nav;
+      $('footerColor').value = t.footer;
+
+      $('btnColor').value = t.btnBg;
+      $('btnBorderColor').value = t.btnBorder;
+      $('btnBorderOpacity').value = t.btnBorderOp;
+      $('btnBorderVal').textContent = `${t.btnBorderOp}%`;
+      $('btnTextColor').value = t.btnText;
+
+      $('codeBoxBg').value = t.codeBg;
+      $('codeBoxBgOpacity').value = t.codeBgOp;
+      $('codeBoxBgVal').textContent = `${t.codeBgOp}%`;
+      $('codeBoxBorder').value = t.codeBorder;
+      $('codeBoxBorderOpacity').value = t.codeBorderOp;
+      $('codeBoxBorderVal').textContent = `${t.codeBorderOp}%`;
+      $('codeBoxLabelColor').value = t.codeLabel;
+      $('codeBoxTextColor').value = t.codeText;
+
+      $('bubbleBg').value = t.bubbleBg;
+      $('bubbleBgOpacity').value = t.bubbleBgOp;
+      $('bubbleBgVal').textContent = `${t.bubbleBgOp}%`;
+      $('bubbleBorderColor').value = t.bubbleBorder;
+      $('bubbleBorderOpacity').value = t.bubbleBorderOp;
+      $('bubbleBorderVal').textContent = `${t.bubbleBorderOp}%`;
+      $('bubbleTextColor').value = t.bubbleText;
+      $('bubbleIconColor').value = t.bubbleIcon;
+
+      scheduleUpdate();
+      showToast(`Applied ${t.name} theme`);
+    }
+
+    function hexToRgba(hex, opacityPercent) {
+      if (!hex) return '';
+      let h = hex.replace('#', '').trim();
+      if (h.length === 3) h = h.split('').map(x => x + x).join('');
+      if (h.length !== 6) return hex;
+      const r = parseInt(h.substring(0, 2), 16);
+      const g = parseInt(h.substring(2, 4), 16);
+      const b = parseInt(h.substring(4, 6), 16);
+      const a = (parseFloat(opacityPercent) ?? 100) / 100;
+      return `rgba(${r}, ${g}, ${b}, ${a})`;
     }
 
     function isVideo(path) {
       return typeof path === 'string' && (path.endsWith('.mp4') || path.startsWith('data:video/mp4'));
     }
 
-    function resolveMediaSource(localKey, inputId) {
-      if (localPreviews[localKey]) return localPreviews[localKey];
-      const val = document.getElementById(inputId).value.trim();
+    function resolveMedia(key, inputId) {
+      if (localMedia[key]) return localMedia[key];
+      const val = $(inputId).value.trim();
       if (!val) return null;
       if (val.startsWith('http://') || val.startsWith('https://') || val.startsWith('data:')) return val;
       return null;
     }
 
-    function setLayerMedia(container, videoEl, sourcePath) {
+    function clearMedia(key, inputId) {
+      localMedia[key] = null;
+      $(inputId).value = '';
+      scheduleUpdate();
+      showToast('Media cleared');
+    }
+
+    function setLayerMedia(container, videoEl, source) {
       if (!container) return;
-      if (videoEl && isVideo(sourcePath)) {
+      if (videoEl && isVideo(source)) {
         container.style.backgroundImage = 'none';
-        if (videoEl.src !== sourcePath) videoEl.src = sourcePath;
+        if (videoEl.src !== source) videoEl.src = source;
         videoEl.classList.remove('hidden');
         videoEl.play().catch(() => {});
-      } else if (sourcePath) {
+      } else if (source) {
         if (videoEl) {
           videoEl.classList.add('hidden');
           videoEl.pause();
           videoEl.removeAttribute('src');
         }
-        container.style.backgroundImage = `url('${sourcePath}')`;
+        container.style.backgroundImage = `url('${source}')`;
       } else {
         if (videoEl) {
           videoEl.classList.add('hidden');
@@ -783,37 +1017,24 @@
       }
     }
 
-    function hexToRgba(hex, opacityPercent) {
-      if (!hex) return '';
-      let cleanHex = hex.replace('#', '').trim();
-      if (cleanHex.length === 3) cleanHex = cleanHex.split('').map(x => x + x).join('');
-      if (cleanHex.length !== 6) return hex;
-      const r = parseInt(cleanHex.substring(0, 2), 16);
-      const g = parseInt(cleanHex.substring(2, 4), 16);
-      const b = parseInt(cleanHex.substring(4, 6), 16);
-      const alpha = (parseFloat(opacityPercent) ?? 100) / 100;
-      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-    }
-
     function applyCoverSlice(el, stackEl, imgUrl) {
       if (!el || !stackEl || !imgUrl) return;
       const stackRect = stackEl.getBoundingClientRect();
       const elRect = el.getBoundingClientRect();
       if (stackRect.width === 0 || stackRect.height === 0) return;
 
-      const apply = (naturalW, naturalH) => {
-        const scale = Math.max(stackRect.width / naturalW, stackRect.height / naturalH);
-        const renderedW = naturalW * scale;
-        const renderedH = naturalH * scale;
-
-        const leftOffset = (stackRect.width - renderedW) / 2;
-        const topOffset = (stackRect.height - renderedH) / 2;
-        const elementOffsetY = elRect.top - stackRect.top;
+      const apply = (nw, nh) => {
+        const scale = Math.max(stackRect.width / nw, stackRect.height / nh);
+        const rw = nw * scale;
+        const rh = nh * scale;
+        const lo = (stackRect.width - rw) / 2;
+        const to = (stackRect.height - rh) / 2;
+        const ey = elRect.top - stackRect.top;
 
         el.style.backgroundImage = `url('${imgUrl}')`;
         el.style.backgroundRepeat = 'no-repeat';
-        el.style.backgroundSize = `${renderedW}px ${renderedH}px`;
-        el.style.backgroundPosition = `${leftOffset}px ${topOffset - elementOffsetY}px`;
+        el.style.backgroundSize = `${rw}px ${rh}px`;
+        el.style.backgroundPosition = `${lo}px ${to - ey}px`;
       };
 
       if (imageSizeCache[imgUrl]) {
@@ -829,450 +1050,514 @@
       }
     }
 
-    function schedulePreviewUpdate() {
-      if (renderScheduled) return;
-      renderScheduled = true;
-      requestAnimationFrame(() => {
-        executePreviewUpdate();
-        renderScheduled = false;
+    function applyStroke(elements, isEnabled, color, width = '2.5px') {
+      elements.forEach(el => {
+        if (isEnabled && color && color !== 'none') {
+          el.style.webkitTextStroke = `${width} ${color}`;
+          el.style.paintOrder = 'stroke fill';
+        } else {
+          el.style.webkitTextStroke = '0px transparent';
+          el.style.paintOrder = 'normal';
+        }
       });
     }
 
-    function executePreviewUpdate() {
-      const bgColor = document.getElementById('in_bg_color').value;
-      const glowColor = document.getElementById('in_glow_color').value;
-      const glowOp = document.getElementById('in_glow_opacity').value;
-      document.getElementById('glow_val').innerText = `${glowOp}%`;
+    function scheduleUpdate() {
+      if (isRenderScheduled) return;
+      isRenderScheduled = true;
+      requestAnimationFrame(() => {
+        renderPreview();
+        isRenderScheduled = false;
+      });
+    }
 
+    function renderPreview() {
+      // 1. Page Background & Glow
+      const bgColor = $('bgColor').value;
+      const glowColor = $('glowColor').value;
+      const glowOp = $('glowOpacity').value;
       const rgbaGlow = hexToRgba(glowColor, glowOp);
 
-      // Background
-      const bgSource = resolveMediaSource('bg', 'in_bg_image_name');
-      const prevStage = document.getElementById('prev_stage');
-      const prevBgVid = document.getElementById('prev_bg_video');
-      const modalStage = document.getElementById('modal_stage');
-      const modalBgVid = document.getElementById('modal_bg_video');
+      const bgMedia = resolveMedia('bg', 'bgImageName');
+      const prevStage = $('previewStage');
+      const modalStage = $('modalStage');
 
       if (prevStage) prevStage.style.backgroundColor = bgColor;
       if (modalStage) modalStage.style.backgroundColor = bgColor;
 
-      setLayerMedia(prevStage, prevBgVid, bgSource);
-      setLayerMedia(modalStage, modalBgVid, bgSource);
+      setLayerMedia(prevStage, $('previewBgVideo'), bgMedia);
+      setLayerMedia(modalStage, $('modalBgVideo'), bgMedia);
 
-      ['prev_glow', 'modal_glow'].forEach(id => {
-        const container = document.getElementById(id);
-        if (container && container.firstElementChild) {
-          container.firstElementChild.style.backgroundColor = rgbaGlow;
-        }
+      ['previewGlow', 'modalGlow'].forEach(id => {
+        const wrap = $(id);
+        if (wrap && wrap.firstElementChild) wrap.firstElementChild.style.backgroundColor = rgbaGlow;
       });
 
-      // Headings & Typography
-      const headingColor = document.getElementById('in_heading_color').value;
-      const logoColor = document.getElementById('in_logo_color').value;
-      const navColor = document.getElementById('in_nav_color').value;
-      const inviteCode = document.getElementById('in_invite_code').value || 'default-code';
+      // 2. Texts & Outlines
+      const headingColor = $('headingColor').value;
+      const headingBorder = $('headingBorderEnable').checked ? $('headingBorderColor').value : 'none';
+      document.querySelectorAll('.prev-heading').forEach(el => el.style.color = headingColor);
+      applyStroke(document.querySelectorAll('.prev-heading'), $('headingBorderEnable').checked, headingBorder, '3.5px');
 
-      document.querySelectorAll('.prev_heading').forEach(el => el.style.color = headingColor);
-      document.querySelectorAll('.prev_logo').forEach(el => el.style.color = logoColor);
-      document.querySelectorAll('.prev_nav').forEach(el => el.style.color = navColor);
-      document.querySelectorAll('.prev_code_text').forEach(el => el.innerText = inviteCode);
+      const logoColor = $('logoColor').value;
+      const logoBorder = $('logoBorderEnable').checked ? $('logoBorderColor').value : 'none';
+      document.querySelectorAll('.prev-logo').forEach(el => el.style.color = logoColor);
+      applyStroke(document.querySelectorAll('.prev-logo'), $('logoBorderEnable').checked, logoBorder, '2.5px');
 
-      // Master Unified Banner Check
-      const isUnified = document.getElementById('in_unified_box_enable').checked;
-      document.getElementById('unifiedUploadGroup').classList.toggle('hidden', !isUnified);
-      const unifiedSource = resolveMediaSource('unified', 'in_unified_box_media');
-      const isUnifiedVideo = isVideo(unifiedSource);
+      const navColor = $('navColor').value;
+      const navBorder = $('navBorderEnable').checked ? $('navBorderColor').value : 'none';
+      document.querySelectorAll('.prev-nav').forEach(el => el.style.color = navColor);
+      applyStroke(document.querySelectorAll('.prev-nav'), $('navBorderEnable').checked, navBorder, '2.5px');
 
-      const prevStack = document.getElementById('prev_stack');
-      const prevUniWrap = document.getElementById('prev_unified_wrapper');
-      const prevUniVid = document.getElementById('prev_unified_video');
-      const modalStack = document.getElementById('modal_stack');
-      const modalUniWrap = document.getElementById('modal_unified_wrapper');
-      const modalUniVid = document.getElementById('modal_unified_video');
+      const footerColor = $('footerColor').value;
+      const footerBorder = $('footerBorderEnable').checked ? $('footerBorderColor').value : 'none';
+      document.querySelectorAll('.prev-footer').forEach(el => el.style.color = footerColor);
+      applyStroke(document.querySelectorAll('.footer-seg'), $('footerBorderEnable').checked, footerBorder, '2px');
 
-      if (isUnified && unifiedSource && isUnifiedVideo) {
+      // 3. Codes & Links
+      const inviteCode = $('inviteCode').value || 'default-code';
+      document.querySelectorAll('.prev-code-text').forEach(el => el.innerText = inviteCode);
+
+      // 4. Unified Mode
+      const isUnified = $('unifiedBoxEnable').checked;
+      $('unifiedSettings').classList.toggle('hidden', !isUnified);
+      const unifiedMedia = resolveMedia('unified', 'unifiedImageName');
+      const isUnifiedVid = isVideo(unifiedMedia);
+
+      const prevStack = $('previewStack');
+      const modalStack = $('modalStack');
+      const prevUniWrap = $('previewUnifiedWrapper');
+      const modalUniWrap = $('modalUnifiedWrapper');
+
+      if (isUnified && unifiedMedia && isUnifiedVid) {
         if (prevUniWrap) prevUniWrap.classList.remove('hidden');
         if (modalUniWrap) modalUniWrap.classList.remove('hidden');
-        setLayerMedia(prevUniWrap, prevUniVid, unifiedSource);
-        setLayerMedia(modalUniWrap, modalUniVid, unifiedSource);
+        setLayerMedia(prevUniWrap, $('previewUnifiedVideo'), unifiedMedia);
+        setLayerMedia(modalUniWrap, $('modalUnifiedVideo'), unifiedMedia);
       } else {
         if (prevUniWrap) prevUniWrap.classList.add('hidden');
         if (modalUniWrap) modalUniWrap.classList.add('hidden');
       }
 
-      // Join Button
-      const btnBg = document.getElementById('in_btn_color').value;
-      const btnTextColor = document.getElementById('in_btn_text_color').value;
-      document.querySelectorAll('.prev_btn').forEach((el, idx) => {
+      // 5. Join Button
+      const btnBg = $('btnColor').value;
+      const btnBorder = $('btnBorderColor').value;
+      const btnBorderOp = $('btnBorderOpacity').value;
+      const btnText = $('btnTextColor').value;
+      const btnTextBorder = $('btnTextBorderEnable').checked ? $('btnTextBorderColor').value : 'none';
+      const btnMedia = resolveMedia('btn', 'btnImageName');
+
+      document.querySelectorAll('.prev-btn').forEach((el, idx) => {
         const parentStack = idx === 0 ? prevStack : modalStack;
-        if (isUnified && unifiedSource && !isUnifiedVideo) {
-          applyCoverSlice(el, parentStack, unifiedSource);
-        } else {
-          el.style.backgroundColor = btnBg;
-          el.style.backgroundImage = 'none';
-        }
-        el.style.color = btnTextColor;
-      });
+        const vidEl = idx === 0 ? $('previewBtnVideo') : $('modalBtnVideo');
 
-      // Code Box
-      const cbBg = document.getElementById('in_code_box_bg').value;
-      const cbTextColor = document.getElementById('in_code_box_text_color').value;
-      document.querySelectorAll('.prev_code_box').forEach((el, idx) => {
+        if (isUnified && unifiedMedia && !isUnifiedVid) {
+          applyCoverSlice(el, parentStack, unifiedMedia);
+        } else if (!isUnified && btnMedia) {
+          setLayerMedia(el, vidEl, btnMedia);
+        } else {
+          setLayerMedia(el, vidEl, null);
+          el.style.backgroundColor = (isUnified && isUnifiedVid) ? 'transparent' : btnBg;
+        }
+
+        el.style.borderWidth = parseInt(btnBorderOp, 10) > 0 ? '1px' : '0px';
+        el.style.borderColor = hexToRgba(btnBorder, btnBorderOp);
+        el.style.color = btnText;
+      });
+      applyStroke(document.querySelectorAll('.prev-btn-text'), $('btnTextBorderEnable').checked, btnTextBorder, '2.5px');
+
+      // 6. Code Box
+      const codeBg = $('codeBoxBg').value;
+      const codeBgOp = $('codeBoxBgOpacity').value;
+      const codeBorder = $('codeBoxBorder').value;
+      const codeBorderOp = $('codeBoxBorderOpacity').value;
+      const codeLabelColor = $('codeBoxLabelColor').value;
+      const codeLabelBorder = $('codeLabelBorderEnable').checked ? $('codeLabelBorderColor').value : 'none';
+      const codeTextColor = $('codeBoxTextColor').value;
+      const codeTextBorder = $('codeTextBorderEnable').checked ? $('codeTextBorderColor').value : 'none';
+      const codeMedia = resolveMedia('codeBox', 'codeBoxImageName');
+
+      document.querySelectorAll('.prev-code-box').forEach((el, idx) => {
         const parentStack = idx === 0 ? prevStack : modalStack;
-        if (isUnified && unifiedSource && !isUnifiedVideo) {
-          applyCoverSlice(el, parentStack, unifiedSource);
+        const vidEl = idx === 0 ? $('previewCodeBoxVideo') : $('modalCodeBoxVideo');
+
+        if (isUnified && unifiedMedia && !isUnifiedVid) {
+          applyCoverSlice(el, parentStack, unifiedMedia);
+        } else if (!isUnified && codeMedia) {
+          setLayerMedia(el, vidEl, codeMedia);
         } else {
-          el.style.backgroundColor = hexToRgba(cbBg, 15);
-          el.style.borderColor = hexToRgba(cbBg, 40);
-          el.style.borderWidth = '1px';
-          el.style.backgroundImage = 'none';
+          setLayerMedia(el, vidEl, null);
+          el.style.backgroundColor = (isUnified && isUnifiedVid) ? 'transparent' : hexToRgba(codeBg, codeBgOp);
         }
+
+        el.style.borderWidth = parseInt(codeBorderOp, 10) > 0 ? '1px' : '0px';
+        el.style.borderColor = hexToRgba(codeBorder, codeBorderOp);
       });
-      document.querySelectorAll('.prev_code_text').forEach(el => el.style.color = cbTextColor);
+      document.querySelectorAll('.prev-code-label').forEach(el => el.style.color = codeLabelColor);
+      applyStroke(document.querySelectorAll('.prev-code-label'), $('codeLabelBorderEnable').checked, codeLabelBorder, '2px');
+      document.querySelectorAll('.prev-code-text').forEach(el => el.style.color = codeTextColor);
+      applyStroke(document.querySelectorAll('.prev-code-text'), $('codeTextBorderEnable').checked, codeTextBorder, '2px');
 
-      // Greeting Bubble
-      const showBubble = document.getElementById('in_show_bubble').checked;
-      const bubbleSettingsGroup = document.getElementById('bubbleSettingsGroup');
-      if (bubbleSettingsGroup) bubbleSettingsGroup.classList.toggle('opacity-40', !showBubble);
+      // 7. Inviter Bubble
+      const isBubble = $('showBubble').checked;
+      $('bubbleSettings').style.display = isBubble ? 'block' : 'none';
 
-      const bBg = document.getElementById('in_bubble_bg').value;
-      const bTextColor = document.getElementById('in_bubble_text_color').value;
-      const inviter = document.getElementById('in_invited_by').value || '@user';
-      const iconText = Array.from(document.getElementById('in_bubble_icon').value || 'TXT').slice(0, 4).join('');
-      const emojiPos = document.getElementById('in_emoji_pos').value;
+      const inviter = $('invitedBy').value || '@user';
+      const badgeIcon = ($('bubbleIcon').value || 'TXT').slice(0, 4);
+      const emojiPos = $('emojiPos').value;
+      const bubbleBg = $('bubbleBg').value;
+      const bubbleBgOp = $('bubbleBgOpacity').value;
+      const bubbleBorder = $('bubbleBorderColor').value;
+      const bubbleBorderOp = $('bubbleBorderOpacity').value;
+      const bubbleText = $('bubbleTextColor').value;
+      const bubbleTextBorder = $('bubbleTextBorderEnable').checked ? $('bubbleTextBorderColor').value : 'none';
+      const bubbleIconColor = $('bubbleIconColor').value;
+      const bubbleIconBorder = $('bubbleIconBorderEnable').checked ? $('bubbleIconBorderColor').value : 'none';
+      const bubbleMedia = resolveMedia('bubble', 'bubbleImageName');
 
-      document.querySelectorAll('.prev_bubble').forEach((el, idx) => {
-        if (!showBubble) {
+      document.querySelectorAll('.prev-bubble').forEach((el, idx) => {
+        if (!isBubble) {
           el.classList.add('hidden');
           el.classList.remove('flex');
-        } else {
-          el.classList.remove('hidden');
-          el.classList.add('flex');
-          const parentStack = idx === 0 ? prevStack : modalStack;
-          if (isUnified && unifiedSource && !isUnifiedVideo) {
-            applyCoverSlice(el, parentStack, unifiedSource);
-          } else {
-            el.style.backgroundColor = bBg;
-            el.style.backgroundImage = 'none';
-          }
+          return;
         }
+        el.classList.remove('hidden');
+        el.classList.add('flex');
+
+        const parentStack = idx === 0 ? prevStack : modalStack;
+        const vidEl = idx === 0 ? $('previewBubbleVideo') : $('modalBubbleVideo');
+
+        if (isUnified && unifiedMedia && !isUnifiedVid) {
+          applyCoverSlice(el, parentStack, unifiedMedia);
+        } else if (!isUnified && bubbleMedia) {
+          setLayerMedia(el, vidEl, bubbleMedia);
+        } else {
+          setLayerMedia(el, vidEl, null);
+          el.style.backgroundColor = (isUnified && isUnifiedVid) ? 'transparent' : hexToRgba(bubbleBg, bubbleBgOp);
+        }
+
+        el.style.borderWidth = parseInt(bubbleBorderOp, 10) > 0 ? '1px' : '0px';
+        el.style.borderColor = hexToRgba(bubbleBorder, bubbleBorderOp);
       });
 
-      document.querySelectorAll('.prev_bubble_msg').forEach(el => {
+      document.querySelectorAll('.prev-bubble-msg').forEach(el => {
         el.innerText = `${inviter} has invited you`;
-        el.style.color = bTextColor;
+        el.style.color = bubbleText;
       });
+      applyStroke(document.querySelectorAll('.prev-bubble-msg'), $('bubbleTextBorderEnable').checked, bubbleTextBorder, '2px');
 
-      document.querySelectorAll('.prev_bubble_icon_left, .prev_bubble_icon_right').forEach(el => {
-        el.innerText = iconText;
-        el.style.color = bTextColor;
+      document.querySelectorAll('.prev-bubble-icon-left').forEach(el => {
+        el.innerText = badgeIcon;
+        el.style.color = bubbleIconColor;
+        el.classList.toggle('hidden', emojiPos !== 'left' && emojiPos !== 'both');
       });
+      document.querySelectorAll('.prev-bubble-icon-right').forEach(el => {
+        el.innerText = badgeIcon;
+        el.style.color = bubbleIconColor;
+        el.classList.toggle('hidden', emojiPos !== 'right' && emojiPos !== 'both');
+      });
+      applyStroke(document.querySelectorAll('.prev-bubble-icon-left, .prev-bubble-icon-right'), $('bubbleIconBorderEnable').checked, bubbleIconBorder, '2px');
 
-      document.querySelectorAll('.prev_bubble_icon_left').forEach(el => {
-        el.classList.toggle('hidden', !(emojiPos === 'left' || emojiPos === 'both'));
-      });
-      document.querySelectorAll('.prev_bubble_icon_right').forEach(el => {
-        el.classList.toggle('hidden', !(emojiPos === 'right' || emojiPos === 'both'));
-      });
+      // Check download enablement
+      checkDownloadReady();
     }
 
-    // Auto extract code from invite URL
-    document.getElementById('in_discord_link').addEventListener('input', (e) => {
-      const url = e.target.value.trim();
-      const match = url.match(/(?:discord\.gg|discord\.com\/invite)\/([a-zA-Z0-9_-]+)/);
-      if (match && match[1]) {
-        document.getElementById('in_invite_code').value = match[1];
-      }
-      schedulePreviewUpdate();
-    });
+    function checkDownloadReady() {
+      const linkValid = $('discordLink').value.trim().length > 0;
+      const codeValid = $('inviteCode').value.trim().length > 0;
+      const agreed = $('agreeTerms').checked;
+      $('downloadBtn').disabled = !(linkValid && codeValid && agreed);
+    }
 
-    document.querySelectorAll('input:not([type="file"]), select').forEach(el => {
-      el.addEventListener('input', schedulePreviewUpdate);
-    });
+    function setupDragAndDrop(key, zoneId, inputId, textInputId) {
+      const zone = $(zoneId);
+      const input = $(inputId);
+      if (!zone || !input) return;
 
-    // File Upload Helpers
-    function setupFileUploader(inputId, textInputId, previewKey) {
-      const fileInput = document.getElementById(inputId);
-      if (!fileInput) return;
-      fileInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        if (textInputId) document.getElementById(textInputId).value = file.name;
-
+      const handleFiles = files => {
+        if (!files || !files[0]) return;
+        const file = files[0];
+        $(textInputId).value = file.name;
         const reader = new FileReader();
-        reader.onload = (event) => {
-          localPreviews[previewKey] = event.target.result;
-          schedulePreviewUpdate();
+        reader.onload = e => {
+          localMedia[key] = e.target.result;
+          scheduleUpdate();
+          showToast(`Loaded ${file.name}`);
         };
         reader.readAsDataURL(file);
+      };
+
+      zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+      zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        zone.classList.remove('dragover');
+        handleFiles(e.dataTransfer.files);
       });
-    }
-
-    setupFileUploader('upload_bg', 'in_bg_image_name', 'bg');
-    setupFileUploader('upload_unified', 'in_unified_box_media', 'unified');
-
-    document.getElementById('upload_license_doc').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        licenseProofFile = file.name;
-        document.getElementById('in_license_file_name').value = file.name;
-      }
-    });
-
-    function clearMedia(key, textInputId) {
-      localPreviews[key] = null;
-      if (textInputId) document.getElementById(textInputId).value = '';
-      schedulePreviewUpdate();
-    }
-
-    function toggleModal(show) {
-      const modal = document.getElementById('fullViewModal');
-      modal.classList.toggle('hidden', !show);
-      modal.classList.toggle('flex', show);
-      document.body.style.overflow = show ? 'hidden' : '';
-      if (show) schedulePreviewUpdate();
-    }
-
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') toggleModal(false);
-    });
-
-    // Mobile Preview Toggle
-    let mobileViewingPreview = false;
-    function toggleMobileTab() {
-      mobileViewingPreview = !mobileViewingPreview;
-      const editor = document.getElementById('editorPanel');
-      const preview = document.getElementById('previewPanel');
-      const label = document.getElementById('mobileTabLabel');
-
-      if (mobileViewingPreview) {
-        editor.classList.add('hidden');
-        preview.classList.remove('hidden');
-        label.innerText = '← Edit Settings';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        editor.classList.remove('hidden');
-        preview.classList.add('hidden');
-        label.innerText = 'Show Preview →';
-      }
-      schedulePreviewUpdate();
+      input.addEventListener('change', e => handleFiles(e.target.files));
     }
 
     function testCopyCode() {
-      const code = document.getElementById('in_invite_code').value || 'default-code';
-      navigator.clipboard.writeText(code);
-      const tip = document.getElementById('copyTip');
-      if (tip) {
-        tip.innerText = 'Copied!';
-        tip.className = 'text-[10px] bg-emerald-500 text-black px-1.5 py-0.5 rounded font-bold ml-1 relative z-10';
-        setTimeout(() => {
-          tip.innerText = 'Copy';
-          tip.className = 'text-[10px] bg-white/20 text-white px-1.5 py-0.5 rounded ml-1 relative z-10';
-        }, 1200);
-      }
+      const code = $('inviteCode').value || 'default-code';
+      navigator.clipboard.writeText(code).then(() => {
+        const tip = $('copyTip');
+        if (tip) {
+          tip.innerText = 'Copied!';
+          setTimeout(() => tip.innerText = 'Copy', 2000);
+        }
+        showToast(`Copied code: ${code}`);
+      }).catch(() => {
+        showToast(`Invite code: ${code}`);
+      });
     }
 
-    function downloadPng(width, height, filename) {
-      const canvas = document.getElementById('exportCanvas');
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext('2d');
-
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-      ctx.fillRect(0, 0, width, height);
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(1, 1, width - 2, height - 2);
-
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-      ctx.font = `bold ${Math.max(14, Math.floor(height / 4))}px sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`${width} × ${height}`, width / 2, height / 2);
-
-      const link = document.createElement('a');
-      link.download = filename;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+    function toggleModal(show) {
+      $('fullViewModal').classList.toggle('hidden', !show);
+      $('fullViewModal').classList.toggle('flex', show);
+      document.body.style.overflow = show ? 'hidden' : '';
+      if (show) scheduleUpdate();
     }
 
-    function triggerFileDownload(content, filename) {
-      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      setTimeout(() => {
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }, 150);
+    let isMobilePreviewActive = false;
+    function toggleMobileTab() {
+      isMobilePreviewActive = !isMobilePreviewActive;
+      $('editorPanel').classList.toggle('hidden', isMobilePreviewActive);
+      $('previewPanel').classList.toggle('hidden', !isMobilePreviewActive);
+      $('mobileTabLabel').innerText = isMobilePreviewActive ? 'Editor' : 'Preview';
+      if (isMobilePreviewActive) window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showToast(msg) {
+      const t = $('toast');
+      t.innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2800);
+    }
+
+    function downloadPng(w, h, filename) {
+      const c = $('exportCanvas') || document.createElement('canvas');
+      c.width = w;
+      c.height = h;
+      const ctx = c.getContext('2d');
+      ctx.clearRect(0, 0, w, h);
+      const a = document.createElement('a');
+      a.download = filename;
+      a.href = c.toDataURL('image/png');
+      a.click();
+      showToast(`Downloaded template: ${filename}`);
     }
 
     function downloadConfig() {
-      try {
-        const agreed = document.getElementById('agree_terms').checked;
-        if (!agreed) {
-          alert('Please check the Copyright & Responsibility box to confirm your artwork before downloading.');
-          return;
-        }
-
-        const val = (id, fallback = '') => {
-          const el = document.getElementById(id);
-          return el ? el.value : fallback;
-        };
-        const checked = (id) => {
-          const el = document.getElementById(id);
-          return el ? el.checked : false;
-        };
-
-        const showBubble = checked('in_show_bubble') ? 'yes' : 'no';
-        const isUnified = checked('in_unified_box_enable') ? 'yes' : 'no';
-        const authorSignature = val('in_author_signature', 'Not provided / Using Licensed or CC0 media');
-        const licenseDoc = licenseProofFile || 'None uploaded / Declared public domain or self-authored';
-
-        const configContent = `# ==========================================
-# DISCORD SETTINGS
-# ==========================================
-discord_link = ${val('in_discord_link', 'https://discord.gg/default-code')}
-invite_code = ${val('in_invite_code', 'default-code')}
-
-# ==========================================
-# PAGE LOOK & FEEL
-# ==========================================
-background_color = ${val('in_bg_color', '#070707')}
-background_image = ${val('in_bg_image_name', 'background.webp')}
-
-background_glow_color = ${val('in_glow_color', '#ffffff')}
-background_glow_opacity = ${val('in_glow_opacity', '0')}
-
-heading_color = ${val('in_heading_color', '#ffffff')}
-heading_border_color = ${checked('in_heading_border_enable') ? val('in_heading_border', '#000000') : 'none'}
-
-logo_color = ${val('in_logo_color', '#ffffff')}
-logo_border_color = ${checked('in_logo_border_enable') ? val('in_logo_border', '#000000') : 'none'}
-
-navigation_link_color = ${val('in_nav_color', '#ffffff')}
-nav_border_color = ${checked('in_nav_border_enable') ? val('in_nav_border', '#000000') : 'none'}
-
-footer_text_color = ${val('in_footer_color', '#ffffff')}
-footer_border_color = ${checked('in_footer_border_enable') ? val('in_footer_border', '#000000') : 'none'}
-
-# ==========================================
-# CONSISTENT BOX MASTER (768x280 px)
-# ==========================================
-unified_box_image = ${isUnified}
-box_media = ${val('in_unified_box_media', '')}
-
-# ==========================================
-# JOIN BUTTON (768x112 px / 7:1)
-# ==========================================
-button_color = ${val('in_btn_color', '#ffffff')}
-button_border_color = ${val('in_btn_border_color', '#ffffff')}
-button_border_opacity = ${val('in_btn_border_opacity', '0')}
-button_text_color = ${val('in_btn_text_color', '#000000')}
-button_text_border_color = ${checked('in_btn_text_border_enable') ? val('in_btn_text_border', '#ffffff') : 'none'}
-button_background_image = ${val('in_btn_bg_image', '')}
-
-# ==========================================
-# INVITE CODE BOX (768x80 px / 10:1)
-# ==========================================
-code_box_background = ${val('in_code_box_bg', '#ffffff')}
-code_box_background_opacity = ${val('in_code_box_bg_opacity', '15')}
-code_box_border = ${val('in_code_box_border', '#ffffff')}
-code_box_border_opacity = ${val('in_code_box_border_opacity', '100')}
-code_box_label_color = ${val('in_code_box_label_color', '#ffffff')}
-code_box_label_border_color = ${checked('in_code_label_border_enable') ? val('in_code_label_border', '#000000') : 'none'}
-code_box_text_color = ${val('in_code_box_text_color', '#ffffff')}
-code_box_text_border_color = ${checked('in_code_text_border_enable') ? val('in_code_text_border', '#000000') : 'none'}
-code_box_background_image = ${val('in_code_box_bg_image', '')}
-
-# ==========================================
-# INVITE BOX (BELOW CODE BOX) (768x112 px / 7:1)
-# ==========================================
-show_invite_bubble = ${showBubble}
-invited_by = ${val('in_invited_by', '@user')}
-bubble_icon = ${val('in_bubble_icon', 'TXT')}
-emoji_position = ${val('in_emoji_pos', 'left')}
-
-bubble_background_color = ${val('in_bubble_bg', '#ffffff')}
-bubble_background_opacity = 100
-bubble_border_color = ${val('in_bubble_border_color', '#262626')}
-bubble_border_opacity = ${val('in_bubble_border_opacity', '0')}
-bubble_background_image = ${val('in_bubble_bg_image', '')}
-
-bubble_icon_color = ${val('in_bubble_icon_color', '#000000')}
-bubble_icon_border_color = ${checked('in_bubble_icon_border_enable') ? val('in_bubble_icon_border', '#ffffff') : 'none'}
-bubble_text_color = ${val('in_bubble_text_color', '#000000')}
-bubble_text_border_color = ${checked('in_bubble_text_border_enable') ? val('in_bubble_text_border', '#ffffff') : 'none'}
-
-# ==========================================
-# LEGAL & COPYRIGHT VERIFICATION (AUSTRIAN URHG)
-# ==========================================
-terms_agreed = yes
-author_signature = ${authorSignature}
-license_proof_file = ${licenseDoc}
-`;
-
-        const termsContent = `================================================================================
-TERMS OF SERVICE & COPYRIGHT ACCOUNTABILITY AGREEMENT
-Governed by the Laws of the Republic of Austria (UrhG & ABGB)
-Platform: pr0jectz3ro (thataustrianone.eu)
-================================================================================
-
-1. EASY-TO-UNDERSTAND OVERVIEW (WHAT YOU ARE AGREEING TO):
-You are about to use custom pictures, videos, or artwork for your landing page. 
-Copyright law in Austria is strict. To keep everyone safe, you must be 100% 
-honest about where your pictures come from.
-
-By using this builder and downloading your files, you confirm that:
-  - You created the artwork yourself, OR
-  - You bought a license or have written permission from the artist, OR
-  - The artwork is completely free of copyright (CC0 or Public Domain).
-
-2. RULES FOR USING ARTWORK:
-  a) IF IT IS YOUR OWN ARTWORK:
-     You confirm you created it. You have provided your real name and Discord handle 
-     (@username) below as an electronic signature.
-  b) IF IT IS LICENSED ARTWORK:
-     You confirm you possess a valid license sheet, commercial invoice, or permission 
-     grant, and that you have uploaded or archived proof of this license.
-  c) IF YOU NEED FREE ARTWORK:
-     If you are unsure whether an image is copyrighted, do NOT risk it. Only use 
-     safe, royalty-free libraries such as: https://pixabay.com
-
-3. PERSONAL LIABILITY & FINES (AUSTRIAN LAW §§ 86ff UrhG, § 1295 ABGB):
-In the event that any copyright holder, lawyer, or third party files a copyright 
-infringement claim, warning letter (Abmahnung), or demand for damages regarding 
-the materials you provided:
-  - You are SOLELY and PERSONALLY responsible for the violation.
-  - You agree to pay all resulting fines, legal fees, court costs, and statutory 
-    compensation (Schadenersatz und angemessenes Entgelt nach § 86 UrhG).
-  - You agree to fully indemnify and hold harmless pr0jectz3ro, its team, and 
-    the domain thataustrianone.eu from any liability.
-
-4. USER VERIFICATION RECORD:
-  - Target Discord Invite Code: ${val('in_invite_code', 'default-code')}
-  - Author Signature (Name & @): ${authorSignature}
-  - License Proof Document:    ${licenseDoc}
-  - Agreed & Generated on:     ${new Date().toISOString()}
-
-Jurisdiction: Linz / Vienna, Republic of Austria.
-================================================================================
-`;
-
-        triggerFileDownload(configContent, 'config.txt');
-        setTimeout(() => triggerFileDownload(termsContent, 'terms-of-use.txt'), 200);
-
-      } catch (err) {
-        console.error('Failed to export configuration:', err);
+      if (!$('agreeTerms').checked) {
+        showToast('Please confirm the copyright agreement');
+        return;
       }
+
+      const discordLink = $('discordLink').value.trim();
+      const inviteCode = $('inviteCode').value.trim();
+
+      const bgImg = $('bgImageName').value.trim();
+      const btnImg = $('btnImageName').value.trim();
+      const codeBoxImg = $('codeBoxImageName').value.trim();
+      const bubbleImg = $('bubbleImageName').value.trim();
+      const unifiedImg = $('unifiedImageName').value.trim();
+
+      const headingBorder = $('headingBorderEnable').checked ? $('headingBorderColor').value : 'none';
+      const logoBorder = $('logoBorderEnable').checked ? $('logoBorderColor').value : 'none';
+      const navBorder = $('navBorderEnable').checked ? $('navBorderColor').value : 'none';
+      const footerBorder = $('footerBorderEnable').checked ? $('footerBorderColor').value : 'none';
+      const btnTextBorder = $('btnTextBorderEnable').checked ? $('btnTextBorderColor').value : 'none';
+      const codeLabelBorder = $('codeLabelBorderEnable').checked ? $('codeLabelBorderColor').value : 'none';
+      const codeTextBorder = $('codeTextBorderEnable').checked ? $('codeTextBorderColor').value : 'none';
+      const bubbleTextBorder = $('bubbleTextBorderEnable').checked ? $('bubbleTextBorderColor').value : 'none';
+      const bubbleIconBorder = $('bubbleIconBorderEnable').checked ? $('bubbleIconBorderColor').value : 'none';
+
+      let cfg = `# ==========================================\n`;
+      cfg += `# DISCORD SETTINGS\n`;
+      cfg += `# ==========================================\n`;
+      cfg += `discord_link = ${discordLink}\n`;
+      cfg += `invite_code = ${inviteCode}\n\n`;
+
+      cfg += `# ==========================================\n`;
+      cfg += `# PAGE LOOK & FEEL\n`;
+      cfg += `# ==========================================\n`;
+      cfg += `background_color = ${$('bgColor').value}\n`;
+      if (bgImg) cfg += `background_image = ${bgImg}\n`;
+      else if (localMedia.bg) cfg += `background_image = custom-bg.png\n`;
+      cfg += `background_glow_color = ${$('glowColor').value}\n`;
+      cfg += `background_glow_opacity = ${$('glowOpacity').value}\n\n`;
+
+      cfg += `heading_color = ${$('headingColor').value}\n`;
+      cfg += `heading_border_color = ${headingBorder}\n\n`;
+
+      cfg += `logo_color = ${$('logoColor').value}\n`;
+      cfg += `logo_border_color = ${logoBorder}\n\n`;
+
+      cfg += `navigation_link_color = ${$('navColor').value}\n`;
+      cfg += `nav_border_color = ${navBorder}\n\n`;
+
+      cfg += `footer_text_color = ${$('footerColor').value}\n`;
+      cfg += `footer_border_color = ${footerBorder}\n\n`;
+
+      cfg += `# ==========================================\n`;
+      cfg += `# JOIN BUTTON (768x112 px / 7:1)\n`;
+      cfg += `# ==========================================\n`;
+      cfg += `button_color = ${$('btnColor').value}\n`;
+      cfg += `button_border_color = ${$('btnBorderColor').value}\n`;
+      cfg += `button_border_opacity = ${$('btnBorderOpacity').value}\n`;
+      cfg += `button_text_color = ${$('btnTextColor').value}\n`;
+      cfg += `button_text_border_color = ${btnTextBorder}\n`;
+      if (btnImg) cfg += `button_background_image = ${btnImg}\n`;
+      else if (localMedia.btn) cfg += `button_background_image = custom-btn.png\n`;
+      cfg += `\n`;
+
+      cfg += `# ==========================================\n`;
+      cfg += `# INVITE CODE BOX (768x80 px / 10:1)\n`;
+      cfg += `# ==========================================\n`;
+      cfg += `code_box_background = ${$('codeBoxBg').value}\n`;
+      cfg += `code_box_background_opacity = ${$('codeBoxBgOpacity').value}\n`;
+      cfg += `code_box_border = ${$('codeBoxBorder').value}\n`;
+      cfg += `code_box_border_opacity = ${$('codeBoxBorderOpacity').value}\n`;
+      cfg += `code_box_label_color = ${$('codeBoxLabelColor').value}\n`;
+      cfg += `code_box_label_border_color = ${codeLabelBorder}\n`;
+      cfg += `code_box_text_color = ${$('codeBoxTextColor').value}\n`;
+      cfg += `code_box_text_border_color = ${codeTextBorder}\n`;
+      if (codeBoxImg) cfg += `code_box_background_image = ${codeBoxImg}\n`;
+      else if (localMedia.codeBox) cfg += `code_box_background_image = custom-codebox.png\n`;
+      cfg += `\n`;
+
+      cfg += `# ==========================================\n`;
+      cfg += `# INVITE BOX (BELOW CODE BOX) (768x112 px / 7:1)\n`;
+      cfg += `# ==========================================\n`;
+      cfg += `show_invite_bubble = ${$('showBubble').checked ? 'yes' : 'no'}\n`;
+      cfg += `invited_by = ${$('invitedBy').value || '@user'}\n`;
+      cfg += `bubble_icon = ${$('bubbleIcon').value || 'TXT'}\n`;
+      cfg += `emoji_position = ${$('emojiPos').value}\n\n`;
+
+      cfg += `bubble_background_color = ${$('bubbleBg').value}\n`;
+      cfg += `bubble_background_opacity = ${$('bubbleBgOpacity').value}\n`;
+      cfg += `bubble_border_color = ${$('bubbleBorderColor').value}\n`;
+      cfg += `bubble_border_opacity = ${$('bubbleBorderOpacity').value}\n`;
+      if (bubbleImg) cfg += `bubble_background_image = ${bubbleImg}\n`;
+      else if (localMedia.bubble) cfg += `bubble_background_image = custom-bubble.png\n`;
+      cfg += `bubble_icon_color = ${$('bubbleIconColor').value}\n`;
+      cfg += `bubble_icon_border_color = ${bubbleIconBorder}\n`;
+      cfg += `bubble_text_color = ${$('bubbleTextColor').value}\n`;
+      cfg += `bubble_text_border_color = ${bubbleTextBorder}\n\n`;
+
+      if ($('unifiedBoxEnable').checked) {
+        cfg += `# ==========================================\n`;
+        cfg += `# UNIFIED BOX\n`;
+        cfg += `# ==========================================\n`;
+        cfg += `unified_box_image = yes\n`;
+        if (unifiedImg) cfg += `box_media = ${unifiedImg}\n`;
+        else if (localMedia.unified) cfg += `box_media = custom-unified.png\n`;
+      }
+
+      // Download config.txt
+      const blob = new Blob([cfg], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'config.txt';
+      a.click();
+      URL.revokeObjectURL(a.href);
+
+      // Download terms-of-use.txt
+      const author = $('authorSignature').value.trim() || $('invitedBy').value.trim() || 'Anonymous User';
+      const licenseDoc = $('licenseFileName').value.trim();
+      const terms = `# =======================================================
+# pr0jectz3ro — DISCORD PAGE TERMS OF USE & COPYRIGHT ACKNOWLEDGEMENT
+# Compliance with Austrian Copyright Act (UrhG)
+# =======================================================
+
+Date: ${new Date().toISOString()}
+Author Signature: ${author}
+Discord Handle: ${$('invitedBy').value || '@user'}
+Invite Code: ${inviteCode}
+Discord Link: ${discordLink}
+Attached License Proof: ${licenseDoc || 'None provided'}
+
+1. DECLARATION OF OWNERSHIP AND USAGE RIGHTS:
+   The undersigned certifies that all digital assets, images, video loops,
+   artwork, graphics, animations, fonts, and copy provided for use on the
+   pr0jectz3ro custom invite landing page are either:
+   a) The author's original creative work,
+   b) Sourced under an authorized commercial/free license, or
+   c) Public domain / Creative Commons zero.
+
+2. LIABILITY AND INDEMNIFICATION UNDER AUSTRIAN LAW:
+   The author accepts full personal, civil, and financial responsibility
+   under Austrian law (Urheberrechtsgesetz - UrhG) for the media uploaded.
+   The pr0jectz3ro server administrators and thataustrianone.eu are fully
+   indemnified against any third-party claims or damages.
+
+Signature: ${author}
+`;
+      const termsBlob = new Blob([terms], { type: 'text/plain;charset=utf-8' });
+      const a2 = document.createElement('a');
+      a2.href = URL.createObjectURL(termsBlob);
+      a2.download = 'terms-of-use.txt';
+      setTimeout(() => {
+        a2.click();
+        URL.revokeObjectURL(a2.href);
+      }, 250);
+
+      showToast('Downloaded config.txt and terms-of-use.txt');
     }
 
-    window.addEventListener('resize', schedulePreviewUpdate);
-    schedulePreviewUpdate();
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      // Setup Drag and Drop for all media
+      setupDragAndDrop('bg', 'bgUploadZone', 'bgUpload', 'bgImageName');
+      setupDragAndDrop('btn', 'btnUploadZone', 'btnUpload', 'btnImageName');
+      setupDragAndDrop('codeBox', 'codeBoxUploadZone', 'codeBoxUpload', 'codeBoxImageName');
+      setupDragAndDrop('bubble', 'bubbleUploadZone', 'bubbleUpload', 'bubbleImageName');
+      setupDragAndDrop('unified', 'unifiedUploadZone', 'unifiedUpload', 'unifiedImageName');
+
+      // License document upload
+      const licUpload = $('uploadLicenseDoc');
+      if (licUpload) {
+        licUpload.addEventListener('change', e => {
+          if (e.target.files && e.target.files[0]) {
+            licenseProofFile = e.target.files[0];
+            $('licenseFileName').value = licenseProofFile.name;
+            showToast(`Attached: ${licenseProofFile.name}`);
+          }
+        });
+      }
+
+      // Auto-extract invite code if full link pasted into code field or link field
+      $('discordLink').addEventListener('input', e => {
+        const val = e.target.value.trim();
+        const m = val.match(/discord\.gg\/([a-zA-Z0-9_-]+)/);
+        if (m && m[1]) {
+          $('inviteCode').value = m[1];
+        }
+        scheduleUpdate();
+      });
+
+      // Event Listeners for Live Updates
+      document.querySelectorAll('input, select').forEach(el => {
+        el.addEventListener('input', scheduleUpdate);
+        el.addEventListener('change', scheduleUpdate);
+      });
+
+      // Range text indicators
+      $('glowOpacity').addEventListener('input', e => $('glowVal').textContent = `${e.target.value}%`);
+      $('btnBorderOpacity').addEventListener('input', e => $('btnBorderVal').textContent = `${e.target.value}%`);
+      $('codeBoxBgOpacity').addEventListener('input', e => $('codeBoxBgVal').textContent = `${e.target.value}%`);
+      $('codeBoxBorderOpacity').addEventListener('input', e => $('codeBoxBorderVal').textContent = `${e.target.value}%`);
+      $('bubbleBgOpacity').addEventListener('input', e => $('bubbleBgVal').textContent = `${e.target.value}%`);
+      $('bubbleBorderOpacity').addEventListener('input', e => $('bubbleBorderVal').textContent = `${e.target.value}%`);
+
+      // Keyboard escape
+      window.addEventListener('keydown', e => {
+        if (e.key === 'Escape') toggleModal(false);
+      });
+
+      // Initial Render
+      renderPreview();
+    });
   </script>
 </body>
 </html>
