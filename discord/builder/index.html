@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>pr0jectz3ro — Asset Generator & Config Builder</title>
+  <title>pr0jectz3ro — Community Page Builder</title>
   <link rel="icon" type="image/webp" href="https://raw.githubusercontent.com/der46er/pr0jectz3ro/main/assets/favicon.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,7 +80,7 @@
         pr0jectz3ro
       </a>
       <span class="text-xs font-mono tracking-wider uppercase text-white/70 border border-white/10 px-3 py-1.5 rounded-full bg-white/[0.02]">
-        Assets
+        Page Builder
       </span>
     </div>
   </header>
@@ -93,31 +93,31 @@
       <!-- Template PNGs -->
       <div class="p-5 sm:p-6 rounded-2xl bg-neutral-900/60 border border-white/10 backdrop-blur-sm">
         <h2 class="font-orbitron text-base font-bold uppercase tracking-wider text-white mb-2">
-          1. Empty Template Downloads
+           1. Download Starter Files
         </h2>
         <p class="text-xs text-white/60 mb-5">
-          Generate clean blank PNG placeholders.
+           Download blank image files you can use as starting points for your page design.
         </p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <button onclick="downloadPng(1920, 1080, 'background.png')" class="p-3.5 sm:p-3 rounded-xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.08] active:scale-[0.98] transition text-left flex flex-col justify-between touch-target">
-            <span class="text-xs font-bold text-white">Page Background</span>
-            <span class="text-[11px] font-mono text-white/50 mt-1">1920 × 1080 px (16:9)</span>
+              <span class="text-xs font-bold text-white">Full Page Background</span>
+              <span class="text-[11px] font-mono text-white/50 mt-1">A wide image for the whole page · 1920 × 1080 px</span>
           </button>
           
           <button onclick="downloadPng(768, 280, 'unified-box-bg.png')" class="p-3.5 sm:p-3 rounded-xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.08] active:scale-[0.98] transition text-left flex flex-col justify-between touch-target">
-            <span class="text-xs font-bold text-white">Consistent Stack Master</span>
-            <span class="text-[11px] font-mono text-white/50 mt-1">768 × 280 px (Full Stack)</span>
+              <span class="text-xs font-bold text-white">Shared Box Background</span>
+              <span class="text-[11px] font-mono text-white/50 mt-1">One image shared by all buttons and boxes · 768 × 280 px</span>
           </button>
 
           <button onclick="downloadPng(768, 112, 'button-bg.png')" class="p-3.5 sm:p-3 rounded-xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.08] active:scale-[0.98] transition text-left flex flex-col justify-between touch-target">
-            <span class="text-xs font-bold text-white">Individual Join Button</span>
-            <span class="text-[11px] font-mono text-white/50 mt-1">768 × 112 px (~7:1)</span>
+              <span class="text-xs font-bold text-white">Join Button Background</span>
+              <span class="text-[11px] font-mono text-white/50 mt-1">An image for the main button · 768 × 112 px</span>
           </button>
 
           <button onclick="downloadPng(768, 80, 'code-box-bg.png')" class="p-3.5 sm:p-3 rounded-xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.08] active:scale-[0.98] transition text-left flex flex-col justify-between touch-target">
-            <span class="text-xs font-bold text-white">Individual Code Box</span>
-            <span class="text-[11px] font-mono text-white/50 mt-1">768 × 80 px (~10:1)</span>
+              <span class="text-xs font-bold text-white">Invite Code Background</span>
+              <span class="text-[11px] font-mono text-white/50 mt-1">An image for the invite code box · 768 × 80 px</span>
           </button>
         </div>
       </div>
@@ -125,22 +125,26 @@
       <!-- Config Form -->
       <div class="p-5 sm:p-6 rounded-2xl bg-neutral-900/60 border border-white/10 backdrop-blur-sm flex flex-col gap-6">
         <h2 class="font-orbitron text-base font-bold uppercase tracking-wider text-white">
-          2. Visual Settings & Media Inputs
+           2. Build Your Page
         </h2>
 
-        <!-- Discord Target Info -->
+         <p class="text-xs text-white/60 -mt-4">
+           Start with the invite details, then choose colors and images. The preview on the right updates as you make changes.
+         </p>
+
+         <!-- Discord Target Info -->
         <div class="space-y-3 border-b border-white/10 pb-5">
           <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-white/40 block">Discord Target</span>
-            <p class="text-[11px] text-white/50 mt-0.5">(You will get the invite URL and Code from an @admin)</p>
+             <span class="text-xs font-bold uppercase tracking-wider text-white/40 block">Your Community Link</span>
+             <p class="text-[11px] text-white/50 mt-0.5">Ask a community admin for these details if you do not have them yet.</p>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label class="text-[11px] text-white/70 block mb-1">Invite URL</label>
+               <label class="text-[11px] text-white/70 block mb-1">Invite link</label>
               <input id="in_discord_link" type="text" value="https://discord.gg/default-code" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
             </div>
             <div>
-              <label class="text-[11px] text-white/70 block mb-1">Invite Code</label>
+               <label class="text-[11px] text-white/70 block mb-1">Short invite code</label>
               <input id="in_invite_code" type="text" value="default-code" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
             </div>
           </div>
@@ -150,8 +154,8 @@
         <div class="p-4 rounded-xl border border-white/10 bg-white/[0.02] space-y-3">
           <div class="flex items-center justify-between">
             <div>
-              <span class="text-xs font-bold uppercase tracking-wider text-white block">One Consistent Image for All Boxes</span>
-              <p class="text-[11px] text-white/50 mt-0.5">Stretches a single seamless graphic across all buttons without distortion or repeating.</p>
+               <span class="text-xs font-bold uppercase tracking-wider text-white block">Use one image across the boxes</span>
+               <p class="text-[11px] text-white/50 mt-0.5">Turn this on when you want the button and boxes to look like one connected design.</p>
             </div>
             <label class="inline-flex items-center gap-2 cursor-pointer text-xs p-1 touch-target">
               <input id="in_unified_box_enable" type="checkbox" class="w-4 h-4 accent-white">
@@ -159,9 +163,9 @@
             </label>
           </div>
           <div>
-            <label class="text-[11px] text-white/70 block mb-1">Consistent Master Media (768×280 px file, Direct Image/Video URL, or local upload)</label>
+             <label class="text-[11px] text-white/70 block mb-1">Shared background image or video</label>
             <div class="flex items-center gap-2">
-              <input id="in_unified_box_media" type="text" placeholder="https://example.com/art.jpg or unified-box-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
+               <input id="in_unified_box_media" type="text" placeholder="Paste an image or video link, or upload a file" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
                 <span>Upload</span>
                 <input id="upload_unified" type="file" accept="image/webp,image/gif,image/png,image/jpeg,video/mp4" class="hidden">
@@ -172,72 +176,72 @@
 
         <!-- Page Colors & Typography -->
         <div class="space-y-3 border-b border-white/10 pb-5">
-          <span class="text-xs font-bold uppercase tracking-wider text-white/40">Page & Text Colors</span>
+           <span class="text-xs font-bold uppercase tracking-wider text-white/40">Page colors and images</span>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Background</span>
+               <span class="text-xs">Page background</span>
               <input id="in_bg_color" type="color" value="#070707">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Main Heading</span>
+               <span class="text-xs">Main title</span>
               <input id="in_heading_color" type="color" value="#ffffff">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Heading Border</span>
+               <span class="text-xs">Title outline</span>
               <div class="flex items-center gap-1.5">
                 <input id="in_heading_border" type="color" value="#000000">
                 <input id="in_heading_border_enable" type="checkbox" class="accent-white" title="Enable border">
               </div>
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Top Logo</span>
+               <span class="text-xs">Logo</span>
               <input id="in_logo_color" type="color" value="#ffffff">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Logo Border</span>
+               <span class="text-xs">Logo outline</span>
               <div class="flex items-center gap-1.5">
                 <input id="in_logo_border" type="color" value="#000000">
                 <input id="in_logo_border_enable" type="checkbox" class="accent-white" title="Enable border">
               </div>
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Nav Links</span>
+               <span class="text-xs">Menu links</span>
               <input id="in_nav_color" type="color" value="#ffffff">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Nav Border</span>
+               <span class="text-xs">Menu link outline</span>
               <div class="flex items-center gap-1.5">
                 <input id="in_nav_border" type="color" value="#000000">
                 <input id="in_nav_border_enable" type="checkbox" class="accent-white" title="Enable border">
               </div>
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Footer Text</span>
+               <span class="text-xs">Bottom text</span>
               <input id="in_footer_color" type="color" value="#ffffff">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Footer Border</span>
+               <span class="text-xs">Bottom text outline</span>
               <div class="flex items-center gap-1.5">
                 <input id="in_footer_border" type="color" value="#000000">
                 <input id="in_footer_border_enable" type="checkbox" class="accent-white" title="Enable border">
               </div>
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Ambient Glow</span>
+               <span class="text-xs">Background glow</span>
               <input id="in_glow_color" type="color" value="#ffffff">
             </div>
           </div>
           <div>
             <div class="flex justify-between text-[11px] text-white/70 mb-1">
-              <span>Glow Opacity (Set to 0% for pure images)</span>
+               <span>Glow strength (0% turns it off)</span>
               <span id="glow_val">0%</span>
             </div>
             <input id="in_glow_opacity" type="range" min="0" max="100" value="0" class="w-full accent-white py-2">
           </div>
           <div class="pt-1">
-            <label class="text-[11px] text-white/70 block mb-1">Page Background Media (1920×1080 px file, Direct URL, or local upload)</label>
+             <label class="text-[11px] text-white/70 block mb-1">Page background image or video</label>
             <div class="flex items-center gap-2">
-              <input id="in_bg_image_name" type="text" value="background.webp" placeholder="https://example.com/bg.jpg or background.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
+               <input id="in_bg_image_name" type="text" value="background.webp" placeholder="Paste an image or video link, or upload a file" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
                 <span>Upload</span>
                 <input id="upload_bg" type="file" accept="image/webp,image/gif,image/png,image/jpeg,video/mp4" class="hidden">
@@ -248,22 +252,22 @@
 
         <!-- Join Button -->
         <div class="space-y-3 border-b border-white/10 pb-5">
-          <span class="text-xs font-bold uppercase tracking-wider text-white/40">Join Button</span>
+           <span class="text-xs font-bold uppercase tracking-wider text-white/40">Join button</span>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Button Fill</span>
+               <span class="text-xs">Button color</span>
               <input id="in_btn_color" type="color" value="#ffffff">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Button Border</span>
+               <span class="text-xs">Button outline</span>
               <input id="in_btn_border_color" type="color" value="#ffffff">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Text & Icon</span>
+               <span class="text-xs">Text and icon</span>
               <input id="in_btn_text_color" type="color" value="#000000">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Text Border</span>
+               <span class="text-xs">Text outline</span>
               <div class="flex items-center gap-1.5">
                 <input id="in_btn_text_border" type="color" value="#ffffff">
                 <input id="in_btn_text_border_enable" type="checkbox" class="accent-white" title="Enable border">
@@ -272,15 +276,15 @@
           </div>
           <div>
             <div class="flex justify-between text-[11px] text-white/70 mb-1">
-              <span>Button Border Opacity (0% = none)</span>
+               <span>Button outline strength (0% turns it off)</span>
               <span id="btn_border_val">0%</span>
             </div>
             <input id="in_btn_border_opacity" type="range" min="0" max="100" value="0" class="w-full accent-white py-2">
           </div>
           <div>
-            <label class="text-[11px] text-white/70 block mb-1">Custom Background Media (Direct URL, file, or upload)</label>
+             <label class="text-[11px] text-white/70 block mb-1">Button image or video</label>
             <div class="flex items-center gap-2">
-              <input id="in_btn_bg_image" type="text" placeholder="https://example.com/btn.jpg or button-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
+               <input id="in_btn_bg_image" type="text" placeholder="Paste an image or video link, or upload a file" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
                 <span>Upload</span>
                 <input id="upload_btn" type="file" accept="image/webp,image/gif,image/png,image/jpeg,video/mp4" class="hidden">
@@ -291,33 +295,33 @@
 
         <!-- Code Box -->
         <div class="space-y-3 border-b border-white/10 pb-5">
-          <span class="text-xs font-bold uppercase tracking-wider text-white/40">Code Box</span>
+           <span class="text-xs font-bold uppercase tracking-wider text-white/40">Invite code box</span>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Box Fill</span>
+               <span class="text-xs">Box color</span>
               <input id="in_code_box_bg" type="color" value="#ffffff">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Border Color</span>
+               <span class="text-xs">Box outline</span>
               <input id="in_code_box_border" type="color" value="#ffffff">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Label Text</span>
+               <span class="text-xs">Label color</span>
               <input id="in_code_box_label_color" type="color" value="#ffffff">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Label Border</span>
+               <span class="text-xs">Label outline</span>
               <div class="flex items-center gap-1.5">
                 <input id="in_code_label_border" type="color" value="#000000">
                 <input id="in_code_label_border_enable" type="checkbox" class="accent-white" title="Enable border">
               </div>
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Code Text</span>
+               <span class="text-xs">Code color</span>
               <input id="in_code_box_text_color" type="color" value="#ffffff">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Code Border</span>
+               <span class="text-xs">Code outline</span>
               <div class="flex items-center gap-1.5">
                 <input id="in_code_text_border" type="color" value="#000000">
                 <input id="in_code_text_border_enable" type="checkbox" class="accent-white" title="Enable border">
@@ -327,23 +331,23 @@
           <div class="grid grid-cols-2 gap-3">
             <div>
               <div class="flex justify-between text-[11px] text-white/70 mb-1">
-                <span>Fill Opacity</span>
+                 <span>Box color strength</span>
                 <span id="code_box_bg_val">15%</span>
               </div>
               <input id="in_code_box_bg_opacity" type="range" min="0" max="100" value="15" class="w-full accent-white py-2">
             </div>
             <div>
               <div class="flex justify-between text-[11px] text-white/70 mb-1">
-                <span>Border Opacity (0% = none)</span>
+                 <span>Box outline strength (0% turns it off)</span>
                 <span id="code_box_border_val">100%</span>
               </div>
               <input id="in_code_box_border_opacity" type="range" min="0" max="100" value="100" class="w-full accent-white py-2">
             </div>
           </div>
           <div>
-            <label class="text-[11px] text-white/70 block mb-1">Custom Background Media (Direct URL, file, or upload)</label>
+             <label class="text-[11px] text-white/70 block mb-1">Invite code box image or video</label>
             <div class="flex items-center gap-2">
-              <input id="in_code_box_bg_image" type="text" placeholder="https://example.com/box.jpg or code-box-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
+               <input id="in_code_box_bg_image" type="text" placeholder="Paste an image or video link, or upload a file" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
                 <span>Upload</span>
                 <input id="upload_code_box" type="file" accept="image/webp,image/gif,image/png,image/jpeg,video/mp4" class="hidden">
@@ -355,7 +359,7 @@
         <!-- Inviter Box -->
         <div class="space-y-3">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-bold uppercase tracking-wider text-white/40">Inviter Box</span>
+             <span class="text-xs font-bold uppercase tracking-wider text-white/40">Invite message</span>
             <label class="inline-flex items-center gap-2 cursor-pointer text-xs p-1 touch-target">
               <input id="in_show_bubble" type="checkbox" checked class="w-4 h-4 accent-white">
               <span>Enable</span>
@@ -364,50 +368,50 @@
           
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label class="text-[11px] text-white/70 block mb-1">Inviter Name</label>
+               <label class="text-[11px] text-white/70 block mb-1">Person who invited you</label>
               <input id="in_invited_by" type="text" value="@user" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
             </div>
             <div>
-              <label class="text-[11px] text-white/70 block mb-1">Icon / Text (max 3 chars)</label>
+               <label class="text-[11px] text-white/70 block mb-1">Small label (up to 3 characters)</label>
               <input id="in_bubble_icon" type="text" maxlength="3" value="TXT" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
             </div>
             <div>
-              <label class="text-[11px] text-white/70 block mb-1">Emoji / Icon Position</label>
+               <label class="text-[11px] text-white/70 block mb-1">Small label position</label>
               <select id="in_emoji_pos" class="w-full px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
-                <option value="left" selected>Left</option>
-                <option value="right">Right</option>
-                <option value="both">Both</option>
-                <option value="none">None</option>
+                 <option value="left" selected>Left side</option>
+                 <option value="right">Right side</option>
+                 <option value="both">Both sides</option>
+                 <option value="none">Hide it</option>
               </select>
             </div>
           </div>
 
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Box Fill</span>
+               <span class="text-xs">Message color</span>
               <input id="in_bubble_bg" type="color" value="#ffffff">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Box Border</span>
+               <span class="text-xs">Message outline</span>
               <input id="in_bubble_border_color" type="color" value="#262626">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Text Color</span>
+               <span class="text-xs">Message text</span>
               <input id="in_bubble_text_color" type="color" value="#000000">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Text Border</span>
+               <span class="text-xs">Text outline</span>
               <div class="flex items-center gap-1.5">
                 <input id="in_bubble_text_border" type="color" value="#ffffff">
                 <input id="in_bubble_text_border_enable" type="checkbox" class="accent-white" title="Enable border">
               </div>
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Icon Color</span>
+               <span class="text-xs">Small label color</span>
               <input id="in_bubble_icon_color" type="color" value="#000000">
             </div>
             <div class="flex items-center justify-between p-2.5 rounded-xl bg-black border border-white/10">
-              <span class="text-xs">Icon Border</span>
+               <span class="text-xs">Small label outline</span>
               <div class="flex items-center gap-1.5">
                 <input id="in_bubble_icon_border" type="color" value="#ffffff">
                 <input id="in_bubble_icon_border_enable" type="checkbox" class="accent-white" title="Enable border">
@@ -417,16 +421,16 @@
 
           <div>
             <div class="flex justify-between text-[11px] text-white/70 mb-1">
-              <span>Inviter Box Border Opacity (0% = none)</span>
+               <span>Message outline strength (0% turns it off)</span>
               <span id="bubble_border_val">0%</span>
             </div>
             <input id="in_bubble_border_opacity" type="range" min="0" max="100" value="0" class="w-full accent-white py-2">
           </div>
 
           <div>
-            <label class="text-[11px] text-white/70 block mb-1">Custom Background Media (Direct URL, file, or upload)</label>
+             <label class="text-[11px] text-white/70 block mb-1">Invite message image or video</label>
             <div class="flex items-center gap-2">
-              <input id="in_bubble_bg_image" type="text" placeholder="https://example.com/bubble.jpg or bubble-bg.webp" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
+               <input id="in_bubble_bg_image" type="text" placeholder="Paste an image or video link, or upload a file" class="flex-grow min-w-0 px-3.5 py-2.5 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
               <label class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
                 <span>Upload</span>
                 <input id="upload_bubble" type="file" accept="image/webp,image/gif,image/png,image/jpeg,video/mp4" class="hidden">
@@ -435,52 +439,52 @@
           </div>
         </div>
 
-        <!-- 3. Austrian-Law Compliant Copyright & License Declaration -->
+        <!-- 3. Copyright check -->
         <div class="p-4 rounded-xl border border-red-500/30 bg-red-950/20 space-y-4">
           <div class="flex items-center gap-2">
             <svg class="w-4 h-4 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
             </svg>
             <span class="text-xs font-bold uppercase tracking-wider text-red-300">
-              Copyright Notice &amp; Terms of Service (Austrian Law / UrhG)
+              Copyright check before you download
             </span>
           </div>
 
           <!-- Plain-Language Explainer -->
           <div class="space-y-2 text-xs text-white/90 leading-relaxed">
             <p>
-              To keep our community safe and compliant with the Austrian Copyright Act (<em>Urheberrechtsgesetz - UrhG</em>), you must ensure that you are legally allowed to use all artwork, photos, videos, and music you provide:
+              Only add images, videos, or music that you are allowed to use. This helps protect you and the community from copyright problems under Austrian law.
             </p>
             <ul class="list-disc list-inside space-y-1 text-white/80 pl-1">
-              <li><strong>Your own creation:</strong> You created it yourself. You must sign the declaration below with your real name and Discord handle (<code>@username</code>).</li>
-              <li><strong>Licensed copyrighted work:</strong> You bought or received permission to use it. You must upload your official license confirmation sheet below.</li>
-              <li><strong>Copyright-free (Public Domain / CC0):</strong> The media is explicitly royalty-free and free for public use.</li>
+               <li><strong>You made it:</strong> You created the image, video, or music yourself.</li>
+               <li><strong>You have permission:</strong> You bought it or received permission to use it. Upload proof if you have it.</li>
+               <li><strong>It is free to use:</strong> It is clearly marked Public Domain or CC0.</li>
             </ul>
           </div>
 
           <!-- Accountability Warning -->
           <div class="p-3 rounded-lg bg-black/40 border border-amber-500/30 text-[11px] text-amber-200/90 leading-relaxed space-y-1">
-            <p class="font-bold text-amber-300">Liability &amp; Indemnity Notice (§§ 86ff UrhG, § 1295 ABGB):</p>
+             <p class="font-bold text-amber-300">Important:</p>
             <p>
-              If any copyright claims, legal warnings (<em>Abmahnungen</em>), or fines are filed regarding the media you provide, you are held 100% personally accountable. You agree to take full legal and financial responsibility and to indemnify and hold harmless pr0jectz3ro and thataustrianone.eu from all costs, attorney fees, and statutory penalty payments.
+               If you use media without permission and someone makes a copyright claim, you are responsible for that media and any related costs. If you are unsure, ask an adult or use a trusted free-media library.
             </p>
           </div>
 
           <!-- Royalty-Free Recommendation -->
           <p class="text-xs text-white/70 leading-relaxed">
-            Need high-quality free media without copyright worries? Please source your graphics and clips from verified platforms such as 
+             Need free media with clear usage rules? Try a trusted library such as 
             <a href="https://pixabay.com" target="_blank" rel="noopener noreferrer" class="text-white underline hover:text-white/80 font-bold">https://pixabay.com</a>.
           </p>
 
           <!-- Upload License Sheet / Proof -->
           <div class="pt-1">
             <label class="text-[11px] text-white/80 block mb-1">
-              Proof of License / Permission Document (PDF, TXT, or Image — required if using licensed material):
+               Permission proof (optional unless you are using licensed media):
             </label>
             <div class="flex items-center gap-2">
               <input id="in_license_file_name" type="text" readonly placeholder="No license document selected" class="flex-grow min-w-0 px-3 py-2 rounded-xl bg-black border border-white/10 text-xs text-white/60">
               <label class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 active:scale-[0.98] border border-white/10 text-xs cursor-pointer text-white shrink-0 touch-target">
-                <span>Upload Proof</span>
+               <span>Upload document</span>
                 <input id="upload_license_doc" type="file" accept=".pdf,.txt,.png,.jpg,.jpeg,.webp" class="hidden">
               </label>
             </div>
@@ -489,7 +493,7 @@
           <!-- Signature input for original authors -->
           <div class="pt-1">
             <label class="text-[11px] text-white/80 block mb-1">
-              If this is your own original artwork, sign here with your Full Name and @Handle:
+               If you made the media yourself, add your name and @handle here:
             </label>
             <input id="in_author_signature" type="text" placeholder="e.g. John Doe (@johndoe)" class="w-full px-3.5 py-2 rounded-xl bg-black border border-white/10 text-xs text-white focus:outline-none focus:border-white/40 touch-target">
           </div>
@@ -498,7 +502,7 @@
           <label class="flex items-start gap-2.5 pt-2 cursor-pointer touch-target border-t border-white/10">
             <input id="agree_terms" type="checkbox" class="w-4 h-4 mt-0.5 accent-white shrink-0">
             <span class="text-xs text-white font-medium">
-              I certify that my assets comply with Austrian copyright law, accept full financial liability for any claims, and authorize the download of <code>terms-of-use.txt</code>.
+               I confirm that I am allowed to use the media I added and agree to the copyright terms included in <code>terms-of-use.txt</code>.
             </span>
           </label>
         </div>
@@ -507,7 +511,7 @@
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
           </svg>
-          Download config.txt &amp; terms-of-use.txt
+           Download my page files
         </button>
 
       </div>
@@ -517,12 +521,15 @@
     <div class="lg:col-span-5 lg:sticky lg:top-24">
       <div class="p-3 rounded-2xl bg-neutral-900/60 border border-white/10 backdrop-blur-sm">
         <div class="flex items-center justify-between px-3 py-1.5 mb-2">
-          <span class="text-[11px] font-mono tracking-wider uppercase text-white/40">Live Preview</span>
-          <button onclick="toggleModal(true)" class="flex items-center gap-1.5 text-xs text-white/70 hover:text-white active:scale-[0.98] bg-white/5 hover:bg-white/10 border border-white/10 px-3 py-1.5 rounded-lg transition touch-target">
+           <div>
+             <span class="text-[11px] font-mono tracking-wider uppercase text-white/40 block">Live preview</span>
+             <span class="text-[11px] text-white/45">See how your community page will look.</span>
+           </div>
+           <button type="button" onclick="toggleModal(true)" aria-label="Open full-screen preview" class="flex items-center gap-1.5 text-xs text-white/70 hover:text-white active:scale-[0.98] bg-white/5 hover:bg-white/10 border border-white/10 px-3 py-1.5 rounded-lg transition touch-target">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
             </svg>
-            <span>Full View</span>
+             <span>Open full view</span>
           </button>
         </div>
         
@@ -605,19 +612,19 @@
   </footer>
 
   <!-- FULLSCREEN / EXPANDED VIEW MODAL -->
-  <div id="fullViewModal" class="fixed inset-0 z-50 bg-black/90 hidden flex-col">
+  <div id="fullViewModal" class="fixed inset-0 z-50 bg-black/95 hidden flex-col" role="dialog" aria-modal="true" aria-labelledby="fullViewTitle" aria-hidden="true">
     <div class="w-full h-14 bg-black/80 border-b border-white/10 px-4 sm:px-6 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <span class="font-orbitron font-bold text-sm text-white">Expanded Page View</span>
-        <span class="text-xs text-white/40 font-mono hidden sm:inline">(100% Unfiltered Image View)</span>
+        <span id="fullViewTitle" class="font-orbitron font-bold text-sm text-white">Full-screen preview</span>
+        <span class="text-xs text-white/40 hidden sm:inline">Your page at a larger size</span>
       </div>
-      <button onclick="toggleModal(false)" class="p-2 sm:px-3 rounded-lg bg-white/10 hover:bg-white/20 active:scale-[0.98] text-white transition text-xs flex items-center gap-1 touch-target">
-        <span>Close</span>
+      <button type="button" onclick="toggleModal(false)" aria-label="Close full-screen preview" class="px-3 py-2 rounded-lg bg-white/10 hover:bg-white/20 active:scale-[0.98] text-white transition text-xs flex items-center gap-1 touch-target">
+        <span>Close preview</span>
       </button>
     </div>
 
-    <div class="flex-grow w-full overflow-y-auto flex items-center justify-center p-3 sm:p-4">
-      <div id="modal_stage" class="w-full max-w-5xl h-[85vh] rounded-2xl relative overflow-hidden flex flex-col justify-between bg-cover bg-center shadow-2xl">
+    <div class="flex-grow min-h-0 w-full overflow-auto flex items-stretch justify-center p-0" onclick="if (event.target === this) toggleModal(false)">
+      <div id="modal_stage" class="w-full min-h-full rounded-none relative overflow-hidden flex flex-col justify-between bg-cover bg-center shadow-2xl">
         <video id="modal_bg_video" class="media-layer hidden" autoplay loop muted playsinline></video>
         
         <div id="modal_glow" class="absolute inset-0 pointer-events-none flex items-center justify-center">
@@ -801,10 +808,15 @@
       if (show) {
         modal.classList.remove('hidden');
         modal.classList.add('flex');
+        modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
+        requestAnimationFrame(() => {
+          modal.querySelector('button')?.focus();
+        });
       } else {
         modal.classList.add('hidden');
         modal.classList.remove('flex');
+        modal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
       }
       schedulePreviewUpdate();
@@ -1127,7 +1139,7 @@
       try {
         const agreed = document.getElementById('agree_terms').checked;
         if (!agreed) {
-          alert('You must review and accept the Copyright Terms & Austrian Law Compliance Agreement before downloading.');
+          alert('Please confirm that you are allowed to use the media before downloading your page files.');
           return;
         }
 
