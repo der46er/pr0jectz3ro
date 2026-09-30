@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Discord Stream Overlay Widget</title>
+  <link rel="icon" type="image/x-icon" href="https://cdn.jsdelivr.net/gh/der46er/pr0jectz3ro@main/assets/favicon.ico">
   <link rel="preload" href="https://cdn.jsdelivr.net/gh/der46er/pr0jectz3ro@main/assets/fonts/ScienceGothic-variable.woff2" as="font" type="font/woff2" crossorigin>
   <style>
     @font-face {
@@ -20,31 +21,36 @@
     }
 
     html, body {
-      width: fit-content;
-      height: fit-content;
+      width: 800px;
+      height: 600px;
       background: transparent;
       overflow: hidden;
       font-family: 'Science Gothic Widget', sans-serif;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
     }
 
     body {
-      display: inline-flex;
-      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .widget-container {
       position: relative;
       display: flex;
       align-items: center;
-      padding: 10px 12px 10px 10px;
+      padding: 10px 14px 10px 10px;
       background: #070707;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 9999px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 45px rgba(255, 255, 255, 0.05);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.75), 0 0 30px rgba(255, 255, 255, 0.05);
       animation: streamCycle 360s cubic-bezier(0.16, 1, 0.3, 1) infinite;
       overflow: hidden;
       isolation: isolate;
+      transform: translateZ(0);
+      backface-visibility: hidden;
       will-change: transform, opacity;
     }
 
@@ -52,11 +58,10 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 160px;
-      height: 80px;
-      background: rgba(255, 255, 255, 0.08);
+      width: 220px;
+      height: 100px;
+      background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 45%, transparent 75%);
       transform: translate(-50%, -50%);
-      filter: blur(35px);
       border-radius: 9999px;
       pointer-events: none;
       z-index: 0;
@@ -73,14 +78,17 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 0 24px rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
       animation: iconPop 360s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+      transform: translateZ(0);
+      backface-visibility: hidden;
     }
 
     .badge-icon svg {
       width: 22px;
       height: 22px;
       fill: #070707;
+      shape-rendering: geometricPrecision;
     }
 
     .shimmer-line {
@@ -128,7 +136,7 @@
     .tagline {
       font-size: 10px;
       font-weight: 500;
-      color: rgba(255, 255, 255, 0.6);
+      color: rgba(255, 255, 255, 0.7);
       text-transform: uppercase;
       letter-spacing: 0.16em;
       line-height: 1;
@@ -205,7 +213,7 @@
         opacity: 1;
       }
       0.47%, 16.2% {
-        max-width: 320px;
+        max-width: 340px;
         opacity: 1;
       }
       16.5% {
