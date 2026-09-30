@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Discord Stream Overlay Widget</title>
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/der46er/pr0jectz3ro@main/assets/fonts/ScienceGothic-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Science Gothic Widget';
+      src: url('https://cdn.jsdelivr.net/gh/der46er/pr0jectz3ro@main/assets/fonts/ScienceGothic-variable.woff2') format('woff2-variations');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: transparent;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Science Gothic Widget', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .widget-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 10px 12px 10px 10px;
+      background: #070707;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 45px rgba(255, 255, 255, 0.05);
+      animation: streamCycle 360s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+      overflow: hidden;
+      isolation: isolate;
+      will-change: transform, opacity;
+    }
+
+    .ambient-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 160px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.08);
+      transform: translate(-50%, -50%);
+      filter: blur(35px);
+      border-radius: 9999px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .badge-icon {
+      position: relative;
+      z-index: 2;
+      width: 44px;
+      height: 44px;
+      background: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 24px rgba(255, 255, 255, 0.25);
+      animation: iconPop 360s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+    }
+
+    .badge-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: #070707;
+    }
+
+    .shimmer-line {
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.15),
+        transparent
+      );
+      transform: skewX(-25deg);
+      z-index: 3;
+      pointer-events: none;
+      animation: sweepGlint 360s ease-in-out infinite;
+    }
+
+    .slide-wrapper {
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      max-width: 0;
+      opacity: 0;
+      animation: expandContent 360s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+      will-change: max-width, opacity;
+      z-index: 1;
+    }
+
+    .info-block {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      padding-left: 14px;
+      padding-right: 18px;
+      white-space: nowrap;
+      transform: translateX(-24px);
+      animation: slideInText 360s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+      will-change: transform;
+    }
+
+    .tagline {
+      font-size: 10px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      line-height: 1;
+    }
+
+    .link-group {
+      display: flex;
+      align-items: baseline;
+      gap: 1px;
+      line-height: 1.15;
+    }
+
+    .link-main {
+      font-size: 19px;
+      font-weight: 500;
+      color: #EDEDED;
+      letter-spacing: 0.02em;
+    }
+
+    .link-path {
+      font-size: 19px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.65);
+      letter-spacing: 0.02em;
+    }
+
+    @keyframes streamCycle {
+      0% {
+        opacity: 0;
+        transform: translateY(28px) scale(0.92);
+      }
+      0.22% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      16.44% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      16.67% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+      }
+      16.68%, 100% {
+        opacity: 0;
+        transform: translateY(28px) scale(0.92);
+      }
+    }
+
+    @keyframes iconPop {
+      0%, 0.08% {
+        transform: scale(0.4) rotate(-35deg);
+      }
+      0.2% {
+        transform: scale(1.08) rotate(6deg);
+      }
+      0.27%, 16.3% {
+        transform: scale(1) rotate(0deg);
+      }
+      16.45% {
+        transform: scale(0.6) rotate(-15deg);
+      }
+      16.67%, 100% {
+        transform: scale(0.4) rotate(0deg);
+      }
+    }
+
+    @keyframes expandContent {
+      0%, 0.19% {
+        max-width: 0;
+        opacity: 0;
+      }
+      0.35% {
+        opacity: 1;
+      }
+      0.47%, 16.2% {
+        max-width: 320px;
+        opacity: 1;
+      }
+      16.5% {
+        max-width: 0;
+        opacity: 0;
+      }
+      16.67%, 100% {
+        max-width: 0;
+        opacity: 0;
+      }
+    }
+
+    @keyframes slideInText {
+      0%, 0.19% {
+        transform: translateX(-35px);
+      }
+      0.43%, 16.2% {
+        transform: translateX(0);
+      }
+      16.5% {
+        transform: translateX(-30px);
+      }
+      16.67%, 100% {
+        transform: translateX(-35px);
+      }
+    }
+
+    @keyframes sweepGlint {
+      0%, 0.43% {
+        left: -120%;
+      }
+      0.62% {
+        left: 180%;
+      }
+      100% {
+        left: 180%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="widget-container">
+    <div class="shimmer-line"></div>
+    <div class="ambient-glow"></div>
+    <div class="badge-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+      </svg>
+    </div>
+    <div class="slide-wrapper">
+      <div class="info-block">
+        <span class="tagline">Join The Discord</span>
+        <div class="link-group">
+          <span class="link-main">prØjectz3ro.eu</span>
+          <span class="link-path">/discord</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
