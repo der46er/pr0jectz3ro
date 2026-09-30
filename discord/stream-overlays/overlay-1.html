@@ -19,15 +19,18 @@
       padding: 0;
     }
 
-    body {
+    html, body {
+      width: fit-content;
+      height: fit-content;
       background: transparent;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
       font-family: 'Science Gothic Widget', sans-serif;
       -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: inline-flex;
+      padding: 24px;
     }
 
     .widget-container {
